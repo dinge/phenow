@@ -1,0 +1,15 @@
+-#
+  Locals:
+    title: string - The modal title
+    &block - Content to render in modal body
+
+= turbo_frame_tag "modal" do
+  .modal-backdrop{ data: { controller: "modal", action: "click->modal#close" } }
+    .modal{ data: { action: "click->modal#stopPropagation" } }
+      .modal-header
+        %h2.modal-title= title
+        %button{ type: "button", class: "modal-close", data: { action: "click->modal#close" }, "aria-label": "Close" }
+          &times;
+
+      .modal-body
+        = yield

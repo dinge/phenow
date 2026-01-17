@@ -1,0 +1,45 @@
+= simple_form_for organization, url: settings_organization_path do |f|
+  = f.error_notification
+
+  = f.input :name,
+    required: true,
+    input_html: { class: "form-input", placeholder: "Organization name" },
+    wrapper_html: { class: "form-group" },
+    label_html: { class: "form-label" }
+
+  = f.input :slug,
+    required: true,
+    input_html: { class: "form-input", placeholder: "organization-slug" },
+    wrapper_html: { class: "form-group" },
+    label_html: { class: "form-label" },
+    hint: "URL-friendly identifier (lowercase, hyphens only)",
+    hint_html: { class: "form-hint" }
+
+  %h2.section-heading Organization Settings
+
+  .form-group
+    = label_tag "organization[settings][timezone]", "Timezone", class: "form-label"
+    = text_field_tag "organization[settings][timezone]",
+      organization.settings&.[]("timezone"),
+      class: "form-input",
+      placeholder: "America/Los_Angeles"
+    %p.form-hint Default timezone for the organization
+
+  .form-group
+    = label_tag "organization[settings][default_flowering_schedule]", "Default Flowering Schedule", class: "form-label"
+    = text_field_tag "organization[settings][default_flowering_schedule]",
+      organization.settings&.[]("default_flowering_schedule"),
+      class: "form-input",
+      placeholder: "12/12"
+    %p.form-hint Default light schedule (e.g., 12/12, 11/13)
+
+  .form-group
+    = label_tag "organization[settings][require_observation_photos]", "Require Observation Photos", class: "form-label"
+    = check_box_tag "organization[settings][require_observation_photos]",
+      "1",
+      organization.settings&.[]("require_observation_photos"),
+      class: "form-checkbox"
+    %span.form-hint Require photos for all observations
+
+  .form-actions
+    = f.submit "Save Settings", class: "btn-primary"

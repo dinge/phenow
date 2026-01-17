@@ -16,6 +16,11 @@ gem "propshaft"
 gem "importmap-rails"
 gem "tailwindcss-rails"
 
+# Views
+gem "haml-rails"      # HAML templates
+gem "simple_form"     # Form DSL
+gem "datagrid"        # Filterable tables
+
 # Hotwire
 gem "turbo-rails"
 gem "stimulus-rails"

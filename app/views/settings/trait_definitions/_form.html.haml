@@ -1,0 +1,66 @@
+= simple_form_for trait_definition, url: trait_definition.persisted? ? settings_trait_definition_path(trait_definition) : settings_trait_category_trait_definitions_path(trait_definition.trait_category || @trait_category) do |f|
+  = f.error_notification
+
+  = f.input :name,
+    required: true,
+    input_html: { class: "form-input", placeholder: "e.g., Plant Height" },
+    wrapper_html: { class: "form-group" },
+    label_html: { class: "form-label" }
+
+  = f.association :trait_category,
+    collection: TraitCategory.ordered,
+    label_method: :name,
+    value_method: :id,
+    prompt: "Select a category",
+    required: true,
+    input_html: { class: "form-input" },
+    wrapper_html: { class: "form-group" },
+    label: "Category",
+    label_html: { class: "form-label" }
+
+  = f.input :description,
+    as: :text,
+    input_html: { rows: 2, class: "form-input", placeholder: "Describe what this trait measures..." },
+    wrapper_html: { class: "form-group" },
+    label_html: { class: "form-label" }
+
+  = f.input :data_type,
+    collection: TraitDefinition::DATA_TYPES.map { |t| [t.titleize, t] },
+    prompt: "Select data type",
+    required: true,
+    input_html: { class: "form-input" },
+    wrapper_html: { class: "form-group" },
+    label_html: { class: "form-label" },
+    hint: "Numeric (measurements), Scale (1-10 ratings), Select (predefined options), Boolean (yes/no), Text (free-form)",
+    hint_html: { class: "form-hint" }
+
+  = f.input :unit,
+    input_html: { class: "form-input", placeholder: "e.g., cm, g, days" },
+    wrapper_html: { class: "form-group" },
+    label_html: { class: "form-label" },
+    hint: "For numeric data types",
+    hint_html: { class: "form-hint" }
+
+  = f.input :min_value,
+    as: :number,
+    input_html: { step: 0.01, class: "form-input" },
+    wrapper_html: { class: "form-group" },
+    label_html: { class: "form-label" }
+
+  = f.input :max_value,
+    as: :number,
+    input_html: { step: 0.01, class: "form-input" },
+    wrapper_html: { class: "form-group" },
+    label_html: { class: "form-label" }
+
+  = f.input :display_order,
+    as: :number,
+    input_html: { min: 0, class: "form-input", value: trait_definition.display_order || 0 },
+    wrapper_html: { class: "form-group" },
+    label_html: { class: "form-label" },
+    hint: "Lower numbers appear first",
+    hint_html: { class: "form-hint" }
+
+  .form-actions
+    = link_to "Cancel", settings_trait_categories_path, class: "btn-secondary"
+    = f.submit class: "btn-primary"

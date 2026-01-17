@@ -1,0 +1,35 @@
+.page-header
+  %h1.page-title Strains
+  .page-actions
+    = link_to "New Strain", new_strain_path, class: "btn-primary", data: { turbo_frame: "modal" }
+
+-# Datagrid filters and table
+.card
+  = datagrid_form_for @grid, url: strains_path, method: :get, html: { class: "filter-bar", data: { controller: "filters", turbo_frame: "_top" } } do |f|
+    .filter-grid
+      .form-group
+        = f.label :name, "Search", class: "form-label"
+        = f.datagrid_filter :name, class: "form-input", placeholder: "Name, breeder, or description...", data: { action: "input->filters#submit" }
+
+      .form-group
+        = f.label :strain_type, "Type", class: "form-label"
+        = f.datagrid_filter :strain_type, class: "form-select", data: { action: "change->filters#submit" }
+
+      .form-group
+        = f.label :genetics_type, "Genetics", class: "form-label"
+        = f.datagrid_filter :genetics_type, class: "form-select", data: { action: "change->filters#submit" }
+
+    .filter-actions
+      = link_to "Clear Filters", strains_path, class: "btn-secondary btn-sm"
+
+  - if @grid.assets.any?
+    .overflow-x-auto
+      = datagrid_table(@grid, class: "data-table") do |grid|
+        - grid.column(:actions) do |strain|
+          .text-right
+            = link_to "Edit", edit_strain_path(strain), class: "btn-ghost btn-sm", data: { turbo_frame: "modal" }
+            = button_to "Delete", strain_path(strain), method: :delete, class: "btn-ghost btn-sm text-red-600", form: { data: { turbo_confirm: "Are you sure you want to delete this strain?" } }
+
+    = render "shared/pagination", pagy: @pagy
+  - else
+    = render "shared/empty_state", title: "No strains found", description: "Get started by adding your first strain to the library.", action_path: new_strain_path, action_text: "Add Strain"

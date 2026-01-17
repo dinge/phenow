@@ -1,0 +1,19 @@
+.page-header
+  %h1.page-title Projects
+  .page-actions
+    = link_to "New Project", new_team_project_path(@team), class: "btn-primary", data: { turbo_frame: "modal" }
+
+= datagrid_form_for @grid, url: team_projects_path(@team), html: { class: "mb-4" }
+
+.card
+  - if @grid.assets.any?
+    .overflow-x-auto
+      = datagrid_table(@grid, class: "data-table") do |grid|
+        - grid.column(:actions, html: true) do |project|
+          .flex.gap-2.justify-end
+            = link_to "View", team_project_path(@team, project), class: "btn-sm btn-secondary"
+            = link_to "Edit", edit_team_project_path(@team, project), class: "btn-sm btn-secondary", data: { turbo_frame: "modal" }
+            = link_to "Plants", team_project_plants_path(@team, project), class: "btn-sm btn-primary"
+    = render "shared/pagination", pagy: @pagy
+  - else
+    = render "shared/empty_state", title: "No projects yet", description: "Get started by creating your first project.", action_path: new_team_project_path(@team), action_text: "New Project"

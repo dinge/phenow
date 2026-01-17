@@ -18,28 +18,31 @@
 ## Philosophy
 
 ### Keep It Simple
-- **No gem for simple stuff** - build small helpers in-house
-- **Convention over configuration** - Rails already knows what to do
+- **HAML over ERB** - cleaner, faster, less noise
+- **Simple Form for forms** - DRY form DSL with semantic wrappers
+- **Datagrid for lists** - filterable, sortable tables with minimal code
 - **Semantic HTML + CSS** - no utility class soup in views
 - **Importmaps** - no Node.js, no npm, no bundlers
 - **Tailwind standalone** - CSS only, compiled by CLI
+- **Reusable partials** - common views for index/form/row patterns
 
 ### What We Use
 | Need | Solution |
 |------|----------|
+| Views | **HAML** (haml-rails) - faster, cleaner templates |
+| Forms | **simple_form** - semantic form DSL with wrappers |
+| Lists | **datagrid** - filterable/sortable tables |
 | JS modules | Importmaps (Rails 8 default) |
 | CSS | Tailwind standalone CLI via `tailwindcss-rails` |
 | Pagination | `pagy` (already in Gemfile) |
 | Auth | `devise` + `pundit` (already in Gemfile) |
-| Forms | Rails form helpers (no simple_form needed) |
-| Tables | Simple partials (no datagrid gem) |
 
-### What We Don't Need
-- ~~simple_form~~ - Rails form helpers are fine
-- ~~datagrid~~ - simple scopes + partials
-- ~~view_component~~ - partials are enough
-- ~~jsbundling-rails~~ - importmaps instead
-- ~~cssbundling-rails~~ - tailwindcss-rails standalone
+### Rules (MUST FOLLOW)
+1. **All views MUST be HAML** - no ERB files
+2. **All forms MUST use simple_form** - `simple_form_for` not `form_with`
+3. **All list views MUST use datagrid** - define grid classes in `app/grids/`
+4. **Semantic CSS only** - use `.btn-primary` not `class="px-4 py-2 bg-green-600..."`
+5. **Reusable partials** - common patterns in `app/views/application/`
 
 ---
 

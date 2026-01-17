@@ -1,0 +1,15 @@
+.page-header
+  %h1.page-title= "Photos - #{@plant.display_name}"
+  .page-actions
+    = link_to "Upload Photo", new_team_project_plant_photo_path(@team, @project, @plant), class: "btn-primary", data: { turbo_frame: "modal" }
+
+= datagrid_form_for @grid, url: team_project_plant_photos_path(@team, @project, @plant), html: { class: "mb-4" }
+
+.card
+  - if @grid.assets.any?
+    .photo-grid
+      - @grid.assets.each do |photo|
+        = render "card", photo: photo
+    = render "shared/pagination", pagy: @pagy
+  - else
+    = render "shared/empty_state", title: "No photos yet", description: "Start documenting this plant by uploading your first photo.", action_path: new_team_project_plant_photo_path(@team, @project, @plant), action_text: "Upload Photo"

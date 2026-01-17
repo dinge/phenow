@@ -9,6 +9,10 @@ module Settings
 
     private
 
+    def grid_class
+      Settings::TraitCategoriesGrid
+    end
+
     def resource_scope
       # Show both system defaults and org-specific categories
       TraitCategory.for_organization(current_organization).ordered

@@ -8,6 +8,10 @@ module Settings
 
     private
 
+    def grid_class
+      Settings::TagsGrid
+    end
+
     def resource_scope
       # Only show tags for current organization
       current_organization.tags.alphabetical

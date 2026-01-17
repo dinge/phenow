@@ -70,6 +70,17 @@ module CrudController
   def after_save_path = url_for(action: :index)
   def after_destroy_path = url_for(action: :index)
 
+  def grid_class
+    "#{controller_name.classify}Grid".constantize
+  rescue NameError
+    nil
+  end
+
+  def grid_params
+    # Datagrid accepts filter params directly
+    params.to_unsafe_h
+  end
+
   # ============================================
   # BEFORE ACTIONS
   # ============================================
@@ -92,11 +103,19 @@ module CrudController
   end
 
   def set_collection
-    scope = resource_scope
-    scope = apply_filters(scope)
-    scope = apply_search(scope)
-    scope = apply_sorting(scope)
-    @pagy, @collection = pagy(scope)
+    # Try to use datagrid if a grid class exists
+    if grid_class.present?
+      @grid = grid_class.new(grid_params)
+      @grid = @grid.scope { resource_scope }
+      @pagy, @collection = pagy(@grid.assets)
+    else
+      # Fallback to manual filtering/sorting
+      scope = resource_scope
+      scope = apply_filters(scope)
+      scope = apply_search(scope)
+      scope = apply_sorting(scope)
+      @pagy, @collection = pagy(scope)
+    end
   end
 
   # ============================================

@@ -1,0 +1,20 @@
+= simple_form_for tag, url: tag.persisted? ? settings_tag_path(tag) : settings_tags_path do |f|
+  = f.error_notification
+
+  = f.input :name,
+    required: true,
+    input_html: { class: "form-input", placeholder: "e.g., Keeper, High Terps, Frosty" },
+    wrapper_html: { class: "form-group" },
+    label_html: { class: "form-label" }
+
+  = f.input :color,
+    as: :color,
+    input_html: { class: "form-input", value: tag.color || "#10B981" },
+    wrapper_html: { class: "form-group" },
+    label_html: { class: "form-label" },
+    hint: "Choose a color for this tag",
+    hint_html: { class: "form-hint" }
+
+  .form-actions
+    = link_to "Cancel", settings_tags_path, class: "btn-secondary"
+    = f.submit class: "btn-primary"

@@ -1,0 +1,39 @@
+= simple_form_for photo, url: (photo.new_record? ? team_project_plant_photos_path(@team, @project, @plant) : photo_path(photo)), html: { class: "form" } do |f|
+  = f.error_notification
+
+  -# Show existing image if editing
+  - if photo.persisted? && photo.image.attached?
+    .form-group
+      %label.form-label Current Photo
+      .photo-preview
+        = image_tag photo.image.variant(resize_to_limit: [400, 400]), alt: photo.caption || "Photo preview", class: "photo-preview-image"
+
+  -# File upload
+  = f.input :image, as: :file, input_html: { accept: "image/*", required: photo.new_record? }, hint: "JPG, PNG, or HEIC. Max 10MB. For best results, use high-resolution photos."
+
+  -# Caption
+  = f.input :caption, as: :text, input_html: { rows: 3, placeholder: "Describe what's notable about this photo..." }, required: false
+
+  -# Metadata row
+  .form-row
+    .form-group
+      = f.input :taken_at, label: "Date & Time Taken", as: :datetime_local, input_html: { value: (photo.taken_at || Time.current).strftime("%Y-%m-%dT%H:%M") }, hint: false
+
+    .form-group
+      = f.input :photo_type, label: "Photo Type", collection: Photo::PHOTO_TYPES.map { |t| [t.titleize, t] }, prompt: "Select type...", hint: "What does this photo show?", required: false
+
+  -# Stage and primary toggle
+  .form-row
+    .form-group
+      = f.input :stage, label: "Growth Stage", collection: Plant::STAGES.map { |s| [s.titleize.gsub("_", " "), s] }, selected: photo.stage || @plant&.current_stage, prompt: "Select stage...", required: false
+
+    .form-group
+      %label.form-checkbox-label
+        = f.input_field :is_primary, as: :boolean, class: "form-checkbox"
+        Set as primary photo for this plant
+      %p.form-hint Primary photo shows in plant listings
+
+  -# Actions
+  .form-actions
+    = link_to "Cancel", team_project_plant_photos_path(@team, @project, @plant), class: "btn-secondary"
+    = f.submit photo.new_record? ? "Upload Photo" : "Update Photo", class: "btn-primary"

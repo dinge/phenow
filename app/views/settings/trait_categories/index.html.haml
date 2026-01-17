@@ -1,0 +1,15 @@
+.page-header
+  %h1.page-title Trait Categories
+  .page-actions
+    = link_to "New Category", new_settings_trait_category_path, class: "btn-primary"
+
+.card
+  - if collection.any?
+    = datagrid_table(@grid, collection, class: "data-table")
+    = render "shared/pagination", pagy: @pagy
+  - else
+    = render "shared/empty_state",
+      title: "No trait categories found",
+      description: "Get started by creating your first trait category.",
+      action_path: new_settings_trait_category_path,
+      action_text: "New Category"

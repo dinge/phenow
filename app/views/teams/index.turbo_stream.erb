@@ -1,9 +1,0 @@
-<%= turbo_stream.replace "teams-list" do %>
-  <div id="teams-list">
-    <% @collection.each do |team| %>
-      <div class="team-item">
-        <%= link_to team.name, edit_team_path(team) %>
-      </div>
-    <% end %>
-  </div>
-<% end %>

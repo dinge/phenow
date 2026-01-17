@@ -10,6 +10,10 @@ module Settings
 
     private
 
+    def grid_class
+      Settings::TraitDefinitionsGrid
+    end
+
     def resource_scope
       # Show both system defaults and org-specific definitions
       scope = TraitDefinition.for_organization(current_organization).ordered
