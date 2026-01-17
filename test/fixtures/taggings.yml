@@ -1,0 +1,61 @@
+# Taggings - connecting tags to various records (polymorphic)
+
+plant_1_keeper:
+  tag: keeper_tag
+  taggable_type: Plant
+  taggable_id: <%= ActiveRecord::FixtureSet.identify(:plant_1) %>
+  created_at: <%= 3.days.ago %>
+
+plant_1_terpy:
+  tag: terpy_tag
+  taggable_type: Plant
+  taggable_id: <%= ActiveRecord::FixtureSet.identify(:plant_1) %>
+  created_at: <%= 18.days.ago %>
+
+plant_1_frosty:
+  tag: frosty_tag
+  taggable_type: Plant
+  taggable_id: <%= ActiveRecord::FixtureSet.identify(:plant_1) %>
+  created_at: <%= 18.days.ago %>
+
+plant_4_keeper:
+  tag: keeper_tag
+  taggable_type: Plant
+  taggable_id: <%= ActiveRecord::FixtureSet.identify(:plant_4) %>
+  created_at: <%= 2.days.ago %>
+
+plant_4_high_yield:
+  tag: high_yield_tag
+  taggable_type: Plant
+  taggable_id: <%= ActiveRecord::FixtureSet.identify(:plant_4) %>
+  created_at: <%= 7.days.ago %>
+
+plant_3_priority:
+  tag: priority_tag
+  taggable_type: Plant
+  taggable_id: <%= ActiveRecord::FixtureSet.identify(:plant_3) %>
+  created_at: <%= 14.days.ago %>
+
+plant_3_frosty:
+  tag: frosty_tag
+  taggable_type: Plant
+  taggable_id: <%= ActiveRecord::FixtureSet.identify(:plant_3) %>
+  created_at: <%= 1.day.ago %>
+
+project_priority:
+  tag: priority_tag
+  taggable_type: Project
+  taggable_id: <%= ActiveRecord::FixtureSet.identify(:gmo_zkittlez_hunt) %>
+  created_at: <%= 60.days.ago %>
+
+strain_terpy:
+  tag: terpy_tag
+  taggable_type: Strain
+  taggable_id: <%= ActiveRecord::FixtureSet.identify(:zkittlez) %>
+  created_at: <%= 6.months.ago %>
+
+strain_frosty:
+  tag: frosty_tag
+  taggable_type: Strain
+  taggable_id: <%= ActiveRecord::FixtureSet.identify(:gmo) %>
+  created_at: <%= 6.months.ago %>

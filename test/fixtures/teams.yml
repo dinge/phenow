@@ -1,0 +1,30 @@
+# Main breeding team - handles phenohunts
+breeding_team:
+  organization: exotic_genetics
+  name: Breeding Team
+  slug: breeding-team
+  description: Core breeding and phenohunting operations
+  settings:
+    default_project_visibility: private
+  created_at: <%= 1.year.ago %>
+  updated_at: <%= 1.month.ago %>
+
+# Testing team - smoke tests and lab coordination
+testing_team:
+  organization: exotic_genetics
+  name: Testing Team
+  slug: testing-team
+  description: Quality testing and lab result coordination
+  settings: {}
+  created_at: <%= 8.months.ago %>
+  updated_at: <%= 1.month.ago %>
+
+# Another org's team for isolation testing
+wcs_main_team:
+  organization: west_coast_seeds
+  name: Main Operations
+  slug: main-ops
+  description: Primary operations team
+  settings: {}
+  created_at: <%= 6.months.ago %>
+  updated_at: <%= 1.month.ago %>

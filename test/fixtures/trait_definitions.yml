@@ -1,0 +1,209 @@
+# Key trait definitions for testing
+# Full set is created in db/seeds.rb
+
+overall_vigor:
+  trait_category: vigor_health
+  organization: ~
+  name: Overall Vigor
+  slug: overall-vigor
+  description: General health and growth rate
+  data_type: scale
+  min_value: 1
+  max_value: 10
+  scale_labels:
+    "1": Poor
+    "5": Average
+    "10": Excellent
+  options: []
+  applicable_stages:
+    - seedling
+    - vegetative
+    - flowering
+  display_order: 1
+  system_default: true
+  created_at: <%= 1.year.ago %>
+  updated_at: <%= 1.year.ago %>
+
+height:
+  trait_category: structure
+  organization: ~
+  name: Height
+  slug: height
+  description: Plant height measurement
+  data_type: numeric
+  unit: cm
+  min_value: 0
+  max_value: 500
+  scale_labels: {}
+  options: []
+  applicable_stages:
+    - vegetative
+    - pre_flower
+    - flowering
+  display_order: 1
+  system_default: true
+  created_at: <%= 1.year.ago %>
+  updated_at: <%= 1.year.ago %>
+
+bud_structure:
+  trait_category: flowering
+  organization: ~
+  name: Bud Structure
+  slug: bud-structure
+  description: Density and formation of buds
+  data_type: select
+  min_value: ~
+  max_value: ~
+  scale_labels: {}
+  options:
+    - airy
+    - moderate
+    - dense
+    - rock-hard
+  applicable_stages:
+    - flowering
+  display_order: 4
+  system_default: true
+  created_at: <%= 1.year.ago %>
+  updated_at: <%= 1.year.ago %>
+
+trichome_coverage:
+  trait_category: resin_trichomes
+  organization: ~
+  name: Trichome Coverage
+  slug: trichome-coverage
+  description: Density of trichome coverage (frost level)
+  data_type: scale
+  min_value: 1
+  max_value: 10
+  scale_labels:
+    "1": Sparse
+    "5": Average
+    "10": Extremely Frosty
+  options: []
+  applicable_stages:
+    - flowering
+  display_order: 1
+  system_default: true
+  created_at: <%= 1.year.ago %>
+  updated_at: <%= 1.year.ago %>
+
+aroma_intensity:
+  trait_category: aroma_flavor
+  organization: ~
+  name: Aroma Intensity
+  slug: aroma-intensity
+  description: How strong the smell is
+  data_type: scale
+  min_value: 1
+  max_value: 10
+  scale_labels:
+    "1": Very Faint
+    "5": Moderate
+    "10": Extremely Loud
+  options: []
+  applicable_stages:
+    - vegetative
+    - flowering
+    - curing
+    - testing
+  display_order: 1
+  system_default: true
+  created_at: <%= 1.year.ago %>
+  updated_at: <%= 1.year.ago %>
+
+primary_aroma:
+  trait_category: aroma_flavor
+  organization: ~
+  name: Primary Aroma
+  slug: primary-aroma
+  description: Dominant smell profile
+  data_type: select
+  min_value: ~
+  max_value: ~
+  scale_labels: {}
+  options:
+    - earthy
+    - citrus
+    - sweet
+    - diesel
+    - floral
+    - pine
+    - spicy
+    - cheese
+    - berry
+    - tropical
+    - skunky
+    - chemical
+    - fuel
+  applicable_stages:
+    - flowering
+    - curing
+    - testing
+  display_order: 2
+  system_default: true
+  created_at: <%= 1.year.ago %>
+  updated_at: <%= 1.year.ago %>
+
+bag_appeal:
+  trait_category: appearance
+  organization: ~
+  name: Bag Appeal
+  slug: bag-appeal
+  description: Overall visual attractiveness
+  data_type: scale
+  min_value: 1
+  max_value: 10
+  scale_labels:
+    "1": Poor
+    "5": Average
+    "10": Stunning
+  options: []
+  applicable_stages:
+    - harvest
+    - curing
+  display_order: 1
+  system_default: true
+  created_at: <%= 1.year.ago %>
+  updated_at: <%= 1.year.ago %>
+
+dry_weight:
+  trait_category: harvest_yield
+  organization: ~
+  name: Dry Weight
+  slug: dry-weight
+  description: Weight after drying
+  data_type: numeric
+  unit: g
+  min_value: 0
+  max_value: 5000
+  scale_labels: {}
+  options: []
+  applicable_stages:
+    - drying
+    - curing
+  display_order: 2
+  system_default: true
+  created_at: <%= 1.year.ago %>
+  updated_at: <%= 1.year.ago %>
+
+potency:
+  trait_category: effects
+  organization: ~
+  name: Potency
+  slug: potency
+  description: Overall strength of effects
+  data_type: scale
+  min_value: 1
+  max_value: 10
+  scale_labels:
+    "1": Very Mild
+    "5": Moderate
+    "10": Extremely Potent
+  options: []
+  applicable_stages:
+    - testing
+  display_order: 1
+  system_default: true
+  created_at: <%= 1.year.ago %>
+  updated_at: <%= 1.year.ago %>

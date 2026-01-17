@@ -1,0 +1,19 @@
+# Exotic Genetics Collective - Primary test organization
+exotic_genetics:
+  name: Exotic Genetics Collective
+  slug: exotic-genetics
+  settings:
+    timezone: America/Los_Angeles
+    default_flowering_schedule: 12/12
+    require_observation_photos: true
+  created_at: <%= 1.year.ago %>
+  updated_at: <%= 1.month.ago %>
+
+# Secondary org for multi-tenancy testing
+west_coast_seeds:
+  name: West Coast Seeds Co
+  slug: west-coast-seeds
+  settings:
+    timezone: America/Los_Angeles
+  created_at: <%= 6.months.ago %>
+  updated_at: <%= 1.week.ago %>

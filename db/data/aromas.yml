@@ -1,0 +1,91 @@
+# Standardized Cannabis Aroma/Flavor Categories
+# Used for strain data normalization and dropdown options
+
+categories:
+  earthy:
+    - earthy
+    - woody
+    - herbal
+    - mossy
+    - soil
+    - hash
+    - tea
+
+  citrus:
+    - lemon
+    - orange
+    - lime
+    - grapefruit
+    - citrus
+    - tangerine
+
+  sweet:
+    - sweet
+    - candy
+    - sugary
+    - honey
+    - vanilla
+    - caramel
+    - chocolate
+
+  fruity:
+    - berry
+    - grape
+    - tropical
+    - apple
+    - mango
+    - pineapple
+    - banana
+    - strawberry
+    - blueberry
+
+  floral:
+    - floral
+    - lavender
+    - rose
+    - jasmine
+
+  spicy:
+    - spicy
+    - pepper
+    - cinnamon
+    - clove
+
+  diesel:
+    - diesel
+    - fuel
+    - chemical
+    - gas
+    - ammonia
+
+  skunky:
+    - skunk
+    - pungent
+    - dank
+    - funky
+
+  pine:
+    - pine
+    - forest
+    - cedar
+    - minty
+    - menthol
+    - eucalyptus
+
+  cheese:
+    - cheese
+    - dairy
+    - funky
+    - blue_cheese
+
+  nutty:
+    - nutty
+    - almond
+    - coffee
+    - cocoa
+
+  savory:
+    - garlic
+    - onion
+    - meat
+    - umami

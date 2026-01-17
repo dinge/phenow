@@ -1,0 +1,230 @@
+# GMO x Zkittlez Hunt Plants
+# Covering all stages and statuses for comprehensive testing
+
+# Plant #1 - Keeper in testing phase
+plant_1:
+  project: gmo_zkittlez_hunt
+  strain: gmo_x_zkittlez
+  identifier: "#1"
+  name: Gassy Grape
+  source_type: seed
+  sex: female
+  current_stage: testing
+  status: keeper
+  germination_date: <%= 90.days.ago.to_date %>
+  flip_date: <%= 60.days.ago.to_date %>
+  harvest_date: <%= 14.days.ago.to_date %>
+  notes: >
+    Outstanding terpene expression - perfect balance of GMO gas
+    and Zkittlez fruit. Dense structure, heavy trichome coverage.
+    Selected as keeper mother.
+  metadata:
+    pheno_expression: zkittlez_leaning
+    trichome_density: very_high
+  created_at: <%= 90.days.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Plant #2 - Male, culled
+plant_2:
+  project: gmo_zkittlez_hunt
+  strain: gmo_x_zkittlez
+  identifier: "#2"
+  name: ~
+  source_type: seed
+  sex: male
+  current_stage: flowering
+  status: culled
+  germination_date: <%= 90.days.ago.to_date %>
+  flip_date: <%= 60.days.ago.to_date %>
+  harvest_date: ~
+  notes: Male identified at day 10 of flower. Culled to protect females.
+  metadata: {}
+  created_at: <%= 90.days.ago %>
+  updated_at: <%= 50.days.ago %>
+
+# Plant #3 - Active, week 6 flowering
+plant_3:
+  project: gmo_zkittlez_hunt
+  strain: gmo_x_zkittlez
+  identifier: "#3"
+  name: ~
+  source_type: seed
+  sex: female
+  current_stage: flowering
+  status: active
+  germination_date: <%= 90.days.ago.to_date %>
+  flip_date: <%= 42.days.ago.to_date %>
+  harvest_date: ~
+  notes: Week 6 of flower. Heavy frost, leaning GMO on structure.
+  metadata:
+    week_of_flower: 6
+  created_at: <%= 90.days.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Plant #4 - Keeper, curing
+plant_4:
+  project: gmo_zkittlez_hunt
+  strain: gmo_x_zkittlez
+  identifier: "#4"
+  name: Candy Gas
+  source_type: seed
+  sex: female
+  current_stage: curing
+  status: keeper
+  germination_date: <%= 90.days.ago.to_date %>
+  flip_date: <%= 65.days.ago.to_date %>
+  harvest_date: <%= 7.days.ago.to_date %>
+  notes: Exceptional yield, dense nugs. High THC potential. Breeding father candidate.
+  metadata:
+    dry_weight_g: 142
+  created_at: <%= 90.days.ago %>
+  updated_at: <%= 2.days.ago %>
+
+# Plant #5 - Culled early for weak vigor
+plant_5:
+  project: gmo_zkittlez_hunt
+  strain: gmo_x_zkittlez
+  identifier: "#5"
+  name: ~
+  source_type: seed
+  sex: female
+  current_stage: vegetative
+  status: culled
+  germination_date: <%= 90.days.ago.to_date %>
+  flip_date: ~
+  harvest_date: ~
+  notes: Weak vigor from seedling stage. Slow growth, yellowing. Culled week 3 veg.
+  metadata: {}
+  created_at: <%= 90.days.ago %>
+  updated_at: <%= 70.days.ago %>
+
+# Plant #6 - Active, flowering, GMO leaner
+plant_6:
+  project: gmo_zkittlez_hunt
+  strain: gmo_x_zkittlez
+  identifier: "#6"
+  name: ~
+  source_type: seed
+  sex: female
+  current_stage: flowering
+  status: active
+  germination_date: <%= 90.days.ago.to_date %>
+  flip_date: <%= 28.days.ago.to_date %>
+  harvest_date: ~
+  notes: Week 4 of flower. Heavy GMO leaner - garlic/onion nose developing.
+  metadata:
+    week_of_flower: 4
+    pheno_expression: gmo_leaning
+  created_at: <%= 90.days.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Plant #7 - Just harvested, drying
+plant_7:
+  project: gmo_zkittlez_hunt
+  strain: gmo_x_zkittlez
+  identifier: "#7"
+  name: ~
+  source_type: seed
+  sex: female
+  current_stage: drying
+  status: harvested
+  germination_date: <%= 90.days.ago.to_date %>
+  flip_date: <%= 63.days.ago.to_date %>
+  harvest_date: <%= 3.days.ago.to_date %>
+  notes: Harvested at 20% amber. Good structure, moderate terps.
+  metadata:
+    wet_weight_g: 380
+  created_at: <%= 90.days.ago %>
+  updated_at: <%= 3.days.ago %>
+
+# Plant #8 - Still in veg
+plant_8:
+  project: gmo_zkittlez_hunt
+  strain: gmo_x_zkittlez
+  identifier: "#8"
+  name: ~
+  source_type: seed
+  sex: unknown
+  current_stage: vegetative
+  status: active
+  germination_date: <%= 45.days.ago.to_date %>
+  flip_date: ~
+  harvest_date: ~
+  notes: Late start from second seed batch. Week 4 veg, healthy growth.
+  metadata: {}
+  created_at: <%= 45.days.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Plant #9 - Failed seedling, culled
+plant_9:
+  project: gmo_zkittlez_hunt
+  strain: gmo_x_zkittlez
+  identifier: "#9"
+  name: ~
+  source_type: seed
+  sex: unknown
+  current_stage: seedling
+  status: culled
+  germination_date: <%= 45.days.ago.to_date %>
+  flip_date: ~
+  harvest_date: ~
+  notes: Damped off during seedling stage. RIP.
+  metadata:
+    death_cause: damping_off
+  created_at: <%= 45.days.ago %>
+  updated_at: <%= 40.days.ago %>
+
+# Plant #10 - Just flipped, pre-flower
+plant_10:
+  project: gmo_zkittlez_hunt
+  strain: gmo_x_zkittlez
+  identifier: "#10"
+  name: ~
+  source_type: seed
+  sex: female
+  current_stage: pre_flower
+  status: active
+  germination_date: <%= 45.days.ago.to_date %>
+  flip_date: <%= 7.days.ago.to_date %>
+  harvest_date: ~
+  notes: Just flipped to flower. Sex confirmed female day 5.
+  metadata: {}
+  created_at: <%= 45.days.ago %>
+  updated_at: <%= 2.days.ago %>
+
+# Purple Punch Preservation Plants (completed project)
+pp_1:
+  project: purple_punch_preservation
+  strain: purple_punch
+  identifier: PP-1
+  name: Original Cut
+  source_type: clone
+  sex: female
+  current_stage: testing
+  status: archived
+  germination_date: <%= 200.days.ago.to_date %>
+  flip_date: <%= 160.days.ago.to_date %>
+  harvest_date: <%= 100.days.ago.to_date %>
+  notes: Original preserved phenotype. Used for all future clones.
+  metadata:
+    thc_test: 22.3
+    preserved: true
+  created_at: <%= 200.days.ago %>
+  updated_at: <%= 95.days.ago %>
+
+pp_2:
+  project: purple_punch_preservation
+  strain: purple_punch
+  identifier: PP-2
+  name: ~
+  source_type: clone
+  sex: female
+  current_stage: testing
+  status: archived
+  germination_date: <%= 200.days.ago.to_date %>
+  flip_date: <%= 160.days.ago.to_date %>
+  harvest_date: <%= 100.days.ago.to_date %>
+  notes: Backup clone, identical to PP-1.
+  metadata: {}
+  created_at: <%= 200.days.ago %>
+  updated_at: <%= 95.days.ago %>

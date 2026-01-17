@@ -1,0 +1,40 @@
+# Marcus - Head Breeder, owner role
+marcus:
+  email: marcus@exoticgenetics.com
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
+  name: Marcus Johnson
+  timezone: America/Los_Angeles
+  preferences: {}
+  created_at: <%= 1.year.ago %>
+  updated_at: <%= 1.week.ago %>
+
+# Sarah - Assistant Breeder, admin role
+sarah:
+  email: sarah@exoticgenetics.com
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
+  name: Sarah Chen
+  timezone: America/Los_Angeles
+  preferences: {}
+  created_at: <%= 10.months.ago %>
+  updated_at: <%= 1.week.ago %>
+
+# Jake - Tester, member role
+jake:
+  email: jake@exoticgenetics.com
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
+  name: Jake Williams
+  timezone: America/Denver
+  preferences:
+    notifications: email
+  created_at: <%= 8.months.ago %>
+  updated_at: <%= 1.week.ago %>
+
+# Emily - Documentation, viewer role
+emily:
+  email: emily@exoticgenetics.com
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
+  name: Emily Rodriguez
+  timezone: America/New_York
+  preferences: {}
+  created_at: <%= 6.months.ago %>
+  updated_at: <%= 1.week.ago %>

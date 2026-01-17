@@ -1,0 +1,39 @@
+# Marcus - Owner of Breeding Team
+marcus_breeding:
+  team: breeding_team
+  user: marcus
+  role: owner
+  created_at: <%= 1.year.ago %>
+  updated_at: <%= 1.year.ago %>
+
+# Sarah - Admin of Breeding Team
+sarah_breeding:
+  team: breeding_team
+  user: sarah
+  role: admin
+  created_at: <%= 10.months.ago %>
+  updated_at: <%= 10.months.ago %>
+
+# Jake - Member of Testing Team
+jake_testing:
+  team: testing_team
+  user: jake
+  role: member
+  created_at: <%= 8.months.ago %>
+  updated_at: <%= 8.months.ago %>
+
+# Jake also member of Breeding Team (cross-team)
+jake_breeding:
+  team: breeding_team
+  user: jake
+  role: member
+  created_at: <%= 6.months.ago %>
+  updated_at: <%= 6.months.ago %>
+
+# Emily - Viewer of Breeding Team
+emily_breeding:
+  team: breeding_team
+  user: emily
+  role: viewer
+  created_at: <%= 6.months.ago %>
+  updated_at: <%= 6.months.ago %>

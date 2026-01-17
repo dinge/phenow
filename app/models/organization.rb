@@ -18,6 +18,14 @@ class Organization < ApplicationRecord
   validates :name, presence: true
   validates :slug, presence: true, uniqueness: true
 
+  # Class methods
+  def self.default
+    find_or_create_by!(slug: "system") do |org|
+      org.name = "Phenow System"
+      org.settings = { system: true }
+    end
+  end
+
   # Callbacks
   before_validation :set_defaults
 

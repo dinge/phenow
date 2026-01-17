@@ -1,0 +1,98 @@
+# Lab test results for harvested plants
+
+plant_1_coa:
+  plant: plant_1
+  lab_name: SC Labs
+  test_date: <%= 5.days.ago.to_date %>
+  batch_id: SCL-2024-12345
+  status: completed
+  thc_total: 26.8
+  thca: 29.5
+  delta9_thc: 0.8
+  cbd_total: 0.3
+  cbda: 0.2
+  cbg: 0.9
+  cbn: 0.1
+  terpene_total: 3.8
+  terpene_profile:
+    caryophyllene: 1.2
+    limonene: 0.9
+    myrcene: 0.7
+    linalool: 0.4
+    pinene: 0.3
+    humulene: 0.3
+  moisture: 10.2
+  passed_microbial: true
+  passed_pesticides: true
+  passed_heavy_metals: true
+  passed_mycotoxins: true
+  passed_residual_solvents: true
+  notes: Excellent cannabinoid and terpene profile. All safety tests passed.
+  metadata:
+    report_url: "https://sclabs.com/reports/12345"
+  created_at: <%= 5.days.ago %>
+  updated_at: <%= 5.days.ago %>
+
+plant_4_coa:
+  plant: plant_4
+  lab_name: SC Labs
+  test_date: <%= 3.days.ago.to_date %>
+  batch_id: SCL-2024-12346
+  status: completed
+  thc_total: 24.2
+  thca: 26.8
+  delta9_thc: 0.7
+  cbd_total: 0.4
+  cbda: 0.3
+  cbg: 1.1
+  cbn: 0.05
+  terpene_total: 2.9
+  terpene_profile:
+    caryophyllene: 0.9
+    limonene: 0.7
+    myrcene: 0.6
+    linalool: 0.3
+    pinene: 0.2
+    humulene: 0.2
+  moisture: 11.1
+  passed_microbial: true
+  passed_pesticides: true
+  passed_heavy_metals: true
+  passed_mycotoxins: true
+  passed_residual_solvents: true
+  notes: Strong cannabinoid profile. Slightly lower terps than #1.
+  metadata: {}
+  created_at: <%= 3.days.ago %>
+  updated_at: <%= 3.days.ago %>
+
+pp_1_coa:
+  plant: pp_1
+  lab_name: Anresco
+  test_date: <%= 98.days.ago.to_date %>
+  batch_id: ANR-2024-98765
+  status: completed
+  thc_total: 22.3
+  thca: 24.6
+  delta9_thc: 0.6
+  cbd_total: 0.2
+  cbda: 0.1
+  cbg: 0.7
+  cbn: 0.1
+  terpene_total: 2.4
+  terpene_profile:
+    limonene: 0.8
+    caryophyllene: 0.6
+    linalool: 0.5
+    myrcene: 0.3
+    pinene: 0.2
+  moisture: 9.8
+  passed_microbial: true
+  passed_pesticides: true
+  passed_heavy_metals: true
+  passed_mycotoxins: true
+  passed_residual_solvents: true
+  notes: Original Purple Punch preserved cut. Reference sample.
+  metadata:
+    preserved_sample: true
+  created_at: <%= 98.days.ago %>
+  updated_at: <%= 98.days.ago %>

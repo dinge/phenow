@@ -1,0 +1,82 @@
+# System default trait categories (organization: nil means system-wide)
+# These mirror what's created in db/seeds.rb
+
+vigor_health:
+  organization: ~
+  name: Vigor & Health
+  slug: vigor-health
+  description: Overall plant health and growth characteristics
+  display_order: 1
+  icon: heart
+  created_at: <%= 1.year.ago %>
+  updated_at: <%= 1.year.ago %>
+
+structure:
+  organization: ~
+  name: Structure
+  slug: structure
+  description: Plant architecture and physical characteristics
+  display_order: 2
+  icon: tree
+  created_at: <%= 1.year.ago %>
+  updated_at: <%= 1.year.ago %>
+
+flowering:
+  organization: ~
+  name: Flowering
+  slug: flowering
+  description: Flower development characteristics
+  display_order: 3
+  icon: flower
+  created_at: <%= 1.year.ago %>
+  updated_at: <%= 1.year.ago %>
+
+resin_trichomes:
+  organization: ~
+  name: Resin & Trichomes
+  slug: resin-trichomes
+  description: Trichome production and resin characteristics
+  display_order: 4
+  icon: sparkles
+  created_at: <%= 1.year.ago %>
+  updated_at: <%= 1.year.ago %>
+
+aroma_flavor:
+  organization: ~
+  name: Aroma & Flavor
+  slug: aroma-flavor
+  description: Smell and taste characteristics
+  display_order: 5
+  icon: nose
+  created_at: <%= 1.year.ago %>
+  updated_at: <%= 1.year.ago %>
+
+appearance:
+  organization: ~
+  name: Appearance
+  slug: appearance
+  description: Visual appeal and coloration
+  display_order: 6
+  icon: eye
+  created_at: <%= 1.year.ago %>
+  updated_at: <%= 1.year.ago %>
+
+harvest_yield:
+  organization: ~
+  name: Harvest & Yield
+  slug: harvest-yield
+  description: Harvest metrics and yield data
+  display_order: 7
+  icon: scale
+  created_at: <%= 1.year.ago %>
+  updated_at: <%= 1.year.ago %>
+
+effects:
+  organization: ~
+  name: Effects
+  slug: effects
+  description: Subjective effects evaluation
+  display_order: 8
+  icon: brain
+  created_at: <%= 1.year.ago %>
+  updated_at: <%= 1.year.ago %>

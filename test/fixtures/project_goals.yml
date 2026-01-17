@@ -1,0 +1,46 @@
+# GMO x Zkittlez Hunt Goals
+gmo_z_thc_goal:
+  project: gmo_zkittlez_hunt
+  description: High THC content (25%+)
+  priority: 1
+  target_trait: thc
+  target_value: "25"
+  created_at: <%= 90.days.ago %>
+  updated_at: <%= 90.days.ago %>
+
+gmo_z_terp_goal:
+  project: gmo_zkittlez_hunt
+  description: Strong Zkittlez terpene expression (fruity/candy)
+  priority: 2
+  target_trait: aroma
+  target_value: fruit,candy
+  created_at: <%= 90.days.ago %>
+  updated_at: <%= 90.days.ago %>
+
+gmo_z_structure_goal:
+  project: gmo_zkittlez_hunt
+  description: Dense GMO-style bud structure
+  priority: 3
+  target_trait: bud_structure
+  target_value: dense
+  created_at: <%= 90.days.ago %>
+  updated_at: <%= 90.days.ago %>
+
+gmo_z_flower_time_goal:
+  project: gmo_zkittlez_hunt
+  description: Flowering time under 65 days
+  priority: 4
+  target_trait: flowering_time
+  target_value: "<65"
+  created_at: <%= 90.days.ago %>
+  updated_at: <%= 90.days.ago %>
+
+# Purple Punch Preservation Goals
+pp_preserve_goal:
+  project: purple_punch_preservation
+  description: Maintain original Purple Punch phenotype
+  priority: 1
+  target_trait: preservation
+  target_value: original
+  created_at: <%= 200.days.ago %>
+  updated_at: <%= 200.days.ago %>

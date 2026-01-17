@@ -1,0 +1,67 @@
+# Comments on various records (polymorphic)
+
+plant_1_comment_1:
+  commentable_type: Plant
+  commentable_id: <%= ActiveRecord::FixtureSet.identify(:plant_1) %>
+  user: sarah
+  body: >
+    This one is really standing out from the pack. The terp profile is incredible -
+    getting strong Zkittlez candy notes with that GMO funk underneath.
+  created_at: <%= 30.days.ago %>
+  updated_at: <%= 30.days.ago %>
+
+plant_1_comment_2:
+  commentable_type: Plant
+  commentable_id: <%= ActiveRecord::FixtureSet.identify(:plant_1) %>
+  user: marcus
+  body: Agreed! I think this is our winner. Let's get it tested ASAP once it's dried.
+  created_at: <%= 29.days.ago %>
+  updated_at: <%= 29.days.ago %>
+
+plant_1_comment_3:
+  commentable_type: Plant
+  commentable_id: <%= ActiveRecord::FixtureSet.identify(:plant_1) %>
+  user: jake
+  body: >
+    Just did the smoke test - WOW. Smooth inhale, complex exhale. Potent but
+    functional. This is definitely keeper material.
+  created_at: <%= 2.days.ago %>
+  updated_at: <%= 2.days.ago %>
+
+project_comment_1:
+  commentable_type: Project
+  commentable_id: <%= ActiveRecord::FixtureSet.identify(:gmo_zkittlez_hunt) %>
+  user: marcus
+  body: >
+    Second batch (plants 8-10) are catching up nicely. We might find another
+    keeper in there. #8 is showing great vigor.
+  created_at: <%= 10.days.ago %>
+  updated_at: <%= 10.days.ago %>
+
+project_comment_2:
+  commentable_type: Project
+  commentable_id: <%= ActiveRecord::FixtureSet.identify(:gmo_zkittlez_hunt) %>
+  user: emily
+  body: >
+    I've been documenting the phenotype expressions. So far we're seeing about
+    60% Zkittlez leaning, 30% GMO leaning, 10% balanced hybrids.
+  created_at: <%= 8.days.ago %>
+  updated_at: <%= 8.days.ago %>
+
+observation_comment:
+  commentable_type: Observation
+  commentable_id: <%= ActiveRecord::FixtureSet.identify(:plant_1_week_4_flower) %>
+  user: sarah
+  body: The terps really started expressing this week. Great observation notes Marcus!
+  created_at: <%= 31.days.ago %>
+  updated_at: <%= 31.days.ago %>
+
+strain_comment:
+  commentable_type: Strain
+  commentable_id: <%= ActiveRecord::FixtureSet.identify(:gmo_x_zkittlez) %>
+  user: marcus
+  body: >
+    Really happy with how this cross is turning out. The F1s are showing great
+    hybrid vigor and the pheno variation is interesting but manageable.
+  created_at: <%= 20.days.ago %>
+  updated_at: <%= 20.days.ago %>

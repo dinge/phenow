@@ -1,0 +1,68 @@
+# Photos are polymorphic - attached to plants, observations, etc.
+# Note: ActiveStorage attachments are handled separately
+
+plant_1_veg_photo:
+  photographable_type: Plant
+  photographable_id: <%= ActiveRecord::FixtureSet.identify(:plant_1) %>
+  stage: vegetative
+  caption: Week 3 vegetative - topped, showing Zkittlez leaf structure
+  taken_at: <%= 69.days.ago %>
+  metadata:
+    camera: iPhone 14 Pro
+    flash: false
+  created_at: <%= 69.days.ago %>
+  updated_at: <%= 69.days.ago %>
+
+plant_1_flower_photo:
+  photographable_type: Plant
+  photographable_id: <%= ActiveRecord::FixtureSet.identify(:plant_1) %>
+  stage: flowering
+  caption: Week 4 flower - incredible frost development
+  taken_at: <%= 32.days.ago %>
+  metadata:
+    camera: iPhone 14 Pro
+  created_at: <%= 32.days.ago %>
+  updated_at: <%= 32.days.ago %>
+
+plant_1_harvest_photo:
+  photographable_type: Plant
+  photographable_id: <%= ActiveRecord::FixtureSet.identify(:plant_1) %>
+  stage: harvest
+  caption: Harvest day - main cola, heavy trichomes
+  taken_at: <%= 14.days.ago %>
+  metadata:
+    camera: iPhone 14 Pro
+  created_at: <%= 14.days.ago %>
+  updated_at: <%= 14.days.ago %>
+
+plant_1_cured_photo:
+  photographable_type: Plant
+  photographable_id: <%= ActiveRecord::FixtureSet.identify(:plant_1) %>
+  stage: curing
+  caption: After 7 days cure - beautiful color and frost
+  taken_at: <%= 3.days.ago %>
+  metadata:
+    camera: iPhone 14 Pro
+    macro: true
+  created_at: <%= 3.days.ago %>
+  updated_at: <%= 3.days.ago %>
+
+plant_3_flower_photo:
+  photographable_type: Plant
+  photographable_id: <%= ActiveRecord::FixtureSet.identify(:plant_3) %>
+  stage: flowering
+  caption: Week 6 flower - dense bud development
+  taken_at: <%= 1.day.ago %>
+  metadata: {}
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+obs_plant_1_w4_photo:
+  photographable_type: Observation
+  photographable_id: <%= ActiveRecord::FixtureSet.identify(:plant_1_week_4_flower) %>
+  stage: flowering
+  caption: Observation photo - terp check
+  taken_at: <%= 32.days.ago %>
+  metadata: {}
+  created_at: <%= 32.days.ago %>
+  updated_at: <%= 32.days.ago %>

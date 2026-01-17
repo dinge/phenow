@@ -1,0 +1,51 @@
+# Standardized Cannabis Terpene Definitions
+# Used for trait definitions and strain data normalization
+
+primary_terpenes:
+  - name: myrcene
+    aroma: earthy, musky, herbal, clove
+    effects: sedating, relaxing, pain relief
+    found_in: mangoes, hops, lemongrass
+
+  - name: limonene
+    aroma: citrus, lemon, orange
+    effects: mood elevation, stress relief, energizing
+    found_in: citrus peels, juniper
+
+  - name: caryophyllene
+    aroma: spicy, peppery, woody
+    effects: anti-inflammatory, pain relief
+    found_in: black pepper, cloves, cinnamon
+    note: binds to CB2 receptors
+
+  - name: pinene
+    aroma: pine, earthy, fresh
+    effects: alertness, memory retention, anti-inflammatory
+    found_in: pine needles, rosemary, basil
+
+  - name: linalool
+    aroma: floral, lavender, sweet
+    effects: calming, anti-anxiety, sedating
+    found_in: lavender, coriander
+
+  - name: humulene
+    aroma: hoppy, earthy, woody
+    effects: appetite suppressant, anti-inflammatory
+    found_in: hops, sage, ginseng
+
+  - name: terpinolene
+    aroma: piney, floral, herbal, citrus
+    effects: uplifting, creative
+    found_in: nutmeg, cumin, apples
+
+secondary_terpenes:
+  - ocimene
+  - bisabolol
+  - valencene
+  - geraniol
+  - camphene
+  - borneol
+  - sabinene
+  - phytol
+  - eucalyptol
+  - nerolidol

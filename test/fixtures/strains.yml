@@ -1,0 +1,236 @@
+# Parent strains for crosses
+gmo:
+  organization: exotic_genetics
+  name: GMO
+  slug: gmo
+  breeder: Mamiko Seeds
+  strain_type: indica
+  description: Legendary garlic/mushroom/onion profile with extreme potency
+  lineage_text: Chemdawg x Girl Scout Cookies
+  genetics_type: regular
+  flowering_time_min: 70
+  flowering_time_max: 77
+  thc_min: 25.0
+  thc_max: 30.0
+  cbd_min: 0.0
+  cbd_max: 1.0
+  dominant_terpenes:
+    - caryophyllene
+    - myrcene
+    - limonene
+  effects:
+    - relaxing
+    - euphoric
+    - sedating
+  aromas:
+    - garlic
+    - mushroom
+    - diesel
+  public: true
+  verified: true
+  metadata:
+    awards: ["Highest THC 2018"]
+  created_at: <%= 1.year.ago %>
+  updated_at: <%= 1.month.ago %>
+
+zkittlez:
+  organization: exotic_genetics
+  name: Zkittlez
+  slug: zkittlez
+  breeder: 3rd Gen Family / Terp Hogz
+  strain_type: indica
+  description: Award-winning candy-flavored cultivar with incredible terpene expression
+  lineage_text: Grape Ape x Grapefruit
+  genetics_type: feminized
+  flowering_time_min: 55
+  flowering_time_max: 60
+  thc_min: 15.0
+  thc_max: 23.0
+  cbd_min: 0.0
+  cbd_max: 1.0
+  dominant_terpenes:
+    - limonene
+    - humulene
+    - pinene
+  effects:
+    - happy
+    - focused
+    - creative
+  aromas:
+    - berry
+    - tropical
+    - grape
+    - candy
+  public: true
+  verified: true
+  metadata:
+    awards: ["Emerald Cup 2016 1st Place"]
+  created_at: <%= 1.year.ago %>
+  updated_at: <%= 1.month.ago %>
+
+wedding_cake:
+  organization: exotic_genetics
+  name: Wedding Cake
+  slug: wedding-cake
+  breeder: Seed Junky Genetics
+  strain_type: indica
+  description: Sweet vanilla and tangy notes from Triangle Kush lineage
+  lineage_text: Triangle Kush x Animal Mints
+  genetics_type: feminized
+  flowering_time_min: 55
+  flowering_time_max: 60
+  thc_min: 22.0
+  thc_max: 27.0
+  cbd_min: 0.0
+  cbd_max: 1.0
+  dominant_terpenes:
+    - limonene
+    - caryophyllene
+    - myrcene
+  effects:
+    - relaxing
+    - euphoric
+  aromas:
+    - vanilla
+    - sweet
+    - tangy
+  public: true
+  verified: true
+  metadata: {}
+  created_at: <%= 10.months.ago %>
+  updated_at: <%= 1.month.ago %>
+
+runtz:
+  organization: exotic_genetics
+  name: Runtz
+  slug: runtz
+  breeder: Cookies / Runtz Crew
+  strain_type: hybrid
+  description: Perfect 50/50 hybrid with incredible bag appeal
+  lineage_text: Zkittlez x Gelato
+  genetics_type: feminized
+  flowering_time_min: 55
+  flowering_time_max: 65
+  thc_min: 19.0
+  thc_max: 29.0
+  cbd_min: 0.0
+  cbd_max: 1.0
+  dominant_terpenes:
+    - limonene
+    - caryophyllene
+    - linalool
+  effects:
+    - euphoric
+    - happy
+    - relaxing
+  aromas:
+    - candy
+    - tropical
+    - sweet
+  public: true
+  verified: true
+  metadata: {}
+  created_at: <%= 10.months.ago %>
+  updated_at: <%= 1.month.ago %>
+
+purple_punch:
+  organization: exotic_genetics
+  name: Purple Punch
+  slug: purple-punch
+  breeder: Supernova Gardens
+  strain_type: indica
+  description: Sedating indica with grape candy flavor
+  lineage_text: Larry OG x Granddaddy Purple
+  genetics_type: feminized
+  flowering_time_min: 50
+  flowering_time_max: 60
+  thc_min: 18.0
+  thc_max: 24.0
+  cbd_min: 0.0
+  cbd_max: 1.0
+  dominant_terpenes:
+    - caryophyllene
+    - limonene
+    - pinene
+  effects:
+    - relaxing
+    - sleepy
+    - happy
+  aromas:
+    - grape
+    - berry
+    - candy
+  public: true
+  verified: true
+  metadata: {}
+  created_at: <%= 8.months.ago %>
+  updated_at: <%= 1.month.ago %>
+
+# Custom crosses made by the team
+gmo_x_zkittlez:
+  organization: exotic_genetics
+  name: GMO x Zkittlez
+  slug: gmo-x-zkittlez
+  breeder: Exotic Genetics Collective
+  strain_type: hybrid
+  description: F1 cross combining GMO's potency with Zkittlez's terpene profile
+  lineage_text: GMO x Zkittlez
+  genetics_type: regular
+  flowering_time_min: 60
+  flowering_time_max: 70
+  thc_min: 20.0
+  thc_max: 28.0
+  cbd_min: 0.0
+  cbd_max: 1.0
+  dominant_terpenes:
+    - caryophyllene
+    - limonene
+    - myrcene
+  effects:
+    - relaxing
+    - euphoric
+    - creative
+  aromas:
+    - garlic
+    - fruit
+    - gas
+  public: false
+  verified: false
+  metadata:
+    cross_date: "2024-01-15"
+    seed_count: 100
+  created_at: <%= 4.months.ago %>
+  updated_at: <%= 1.month.ago %>
+
+runtz_x_wedding_cake:
+  organization: exotic_genetics
+  name: Runtz x Wedding Cake
+  slug: runtz-x-wedding-cake
+  breeder: Exotic Genetics Collective
+  strain_type: hybrid
+  description: Dessert cross with candy and vanilla notes
+  lineage_text: Runtz x Wedding Cake
+  genetics_type: feminized
+  flowering_time_min: 56
+  flowering_time_max: 63
+  thc_min: 22.0
+  thc_max: 28.0
+  cbd_min: 0.0
+  cbd_max: 1.0
+  dominant_terpenes:
+    - limonene
+    - caryophyllene
+    - linalool
+  effects:
+    - euphoric
+    - relaxing
+    - happy
+  aromas:
+    - candy
+    - vanilla
+    - sweet
+  public: false
+  verified: false
+  metadata: {}
+  created_at: <%= 3.months.ago %>
+  updated_at: <%= 1.month.ago %>

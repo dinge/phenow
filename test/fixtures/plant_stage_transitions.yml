@@ -1,0 +1,97 @@
+# Plant #1 (Keeper) Stage Transitions
+plant_1_germ:
+  plant: plant_1
+  from_stage: ~
+  to_stage: germination
+  transitioned_at: <%= 90.days.ago %>
+  notes: Seed cracked in 24hrs
+  created_at: <%= 90.days.ago %>
+
+plant_1_seedling:
+  plant: plant_1
+  from_stage: germination
+  to_stage: seedling
+  transitioned_at: <%= 87.days.ago %>
+  notes: Cotyledons emerged
+  created_at: <%= 87.days.ago %>
+
+plant_1_veg:
+  plant: plant_1
+  from_stage: seedling
+  to_stage: vegetative
+  transitioned_at: <%= 80.days.ago %>
+  notes: First true leaves
+  created_at: <%= 80.days.ago %>
+
+plant_1_preflower:
+  plant: plant_1
+  from_stage: vegetative
+  to_stage: pre_flower
+  transitioned_at: <%= 60.days.ago %>
+  notes: Flipped to 12/12
+  created_at: <%= 60.days.ago %>
+
+plant_1_flowering:
+  plant: plant_1
+  from_stage: pre_flower
+  to_stage: flowering
+  transitioned_at: <%= 55.days.ago %>
+  notes: Female confirmed, pistils visible
+  created_at: <%= 55.days.ago %>
+
+plant_1_harvest:
+  plant: plant_1
+  from_stage: flowering
+  to_stage: harvest
+  transitioned_at: <%= 14.days.ago %>
+  notes: Harvested at day 46, 15% amber trichomes
+  created_at: <%= 14.days.ago %>
+
+plant_1_drying:
+  plant: plant_1
+  from_stage: harvest
+  to_stage: drying
+  transitioned_at: <%= 14.days.ago %>
+  notes: Whole plant hang dry
+  created_at: <%= 14.days.ago %>
+
+plant_1_curing:
+  plant: plant_1
+  from_stage: drying
+  to_stage: curing
+  transitioned_at: <%= 7.days.ago %>
+  notes: Jarred at 62% RH
+  created_at: <%= 7.days.ago %>
+
+plant_1_testing:
+  plant: plant_1
+  from_stage: curing
+  to_stage: testing
+  transitioned_at: <%= 3.days.ago %>
+  notes: Sample sent for COA
+  created_at: <%= 3.days.ago %>
+
+# Plant #3 (Active Flowering) Transitions
+plant_3_germ:
+  plant: plant_3
+  from_stage: ~
+  to_stage: germination
+  transitioned_at: <%= 90.days.ago %>
+  notes: ~
+  created_at: <%= 90.days.ago %>
+
+plant_3_veg:
+  plant: plant_3
+  from_stage: germination
+  to_stage: vegetative
+  transitioned_at: <%= 80.days.ago %>
+  notes: ~
+  created_at: <%= 80.days.ago %>
+
+plant_3_flowering:
+  plant: plant_3
+  from_stage: vegetative
+  to_stage: flowering
+  transitioned_at: <%= 42.days.ago %>
+  notes: Flipped with second batch
+  created_at: <%= 42.days.ago %>

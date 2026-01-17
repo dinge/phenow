@@ -1,0 +1,50 @@
+# Active phenohunt project - main scenario
+gmo_zkittlez_hunt:
+  team: breeding_team
+  strain: gmo_x_zkittlez
+  name: GMO x Zkittlez F1 Hunt
+  slug: gmo-zkittlez-f1-hunt
+  description: >
+    Hunting for the perfect expression of GMO's potency and structure
+    combined with Zkittlez's legendary terpene profile.
+  status: active
+  started_at: <%= 90.days.ago %>
+  target_completion: <%= 30.days.from_now %>
+  plant_count: 10
+  settings:
+    observation_frequency: weekly
+    require_photos: true
+  created_at: <%= 90.days.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Completed project - for reference testing
+purple_punch_preservation:
+  team: breeding_team
+  strain: purple_punch
+  name: Purple Punch Preservation
+  slug: purple-punch-preservation
+  description: Preservation project to maintain original Purple Punch genetics
+  status: completed
+  started_at: <%= 200.days.ago %>
+  target_completion: <%= 100.days.ago %>
+  completed_at: <%= 95.days.ago %>
+  plant_count: 5
+  settings:
+    observation_frequency: biweekly
+  created_at: <%= 200.days.ago %>
+  updated_at: <%= 95.days.ago %>
+
+# New project for future testing
+runtz_wc_hunt:
+  team: breeding_team
+  strain: runtz_x_wedding_cake
+  name: Runtz x Wedding Cake Selection
+  slug: runtz-wc-selection
+  description: Selecting for extreme bag appeal and dessert terps
+  status: planning
+  started_at: ~
+  target_completion: ~
+  plant_count: 0
+  settings: {}
+  created_at: <%= 1.week.ago %>
+  updated_at: <%= 1.week.ago %>

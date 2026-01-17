@@ -58,7 +58,24 @@ bin/dev
 ### Running Tests
 
 ```bash
-bundle exec rspec
+# Run all tests
+rails test
+
+# Run specific test file
+rails test test/models/plant_test.rb
+
+# Run with verbose output
+rails test -v
+```
+
+### Importing Strain Data
+
+```bash
+# Import strains from Kushy dataset
+rails import:strains
+
+# View import statistics
+rails import:stats
 ```
 
 ## Documentation

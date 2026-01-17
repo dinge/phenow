@@ -1,0 +1,39 @@
+# Standardized Cannabis Effect Categories
+# Used for strain data normalization and dropdown options
+
+positive:
+  - relaxed
+  - happy
+  - euphoric
+  - uplifted
+  - creative
+  - focused
+  - energetic
+  - talkative
+  - giggly
+  - hungry
+  - sleepy
+  - tingly
+  - aroused
+
+medical:
+  - stress
+  - anxiety
+  - depression
+  - pain
+  - insomnia
+  - inflammation
+  - nausea
+  - appetite_loss
+  - muscle_spasms
+  - headaches
+  - ptsd
+  - cramps
+
+negative:
+  - dry_mouth
+  - dry_eyes
+  - paranoid
+  - dizzy
+  - anxious
+  - headache
