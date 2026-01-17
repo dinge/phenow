@@ -24,20 +24,140 @@
 
 ---
 
-## Data Sources for Realistic Fixtures
+## Data Sources - Comprehensive Analysis
 
-### Primary Sources
+### Tier 1: Bulk Import Sources (Production Data)
 
-| Source | Data | URL |
-|--------|------|-----|
-| **Kushy Dataset** | 2000+ strains, effects, flavors | [github.com/kushyapp/cannabis-dataset](https://github.com/kushyapp/cannabis-dataset) |
-| **Leafly** | Strain profiles, THC/CBD, lineage | [leafly.com/strains](https://www.leafly.com/strains) |
-| **SeedFinder** | Genetic lineage trees, breeder info | [seedfinder.eu](https://seedfinder.eu/en) |
-| **The Cannabis API** | Strain details, effects, flavors | [the-cannabis-api.vercel.app](https://the-cannabis-api.vercel.app/) |
+| Source | Strains | Breeders | License | Format | Status |
+|--------|---------|----------|---------|--------|--------|
+| **[Kushy Dataset](https://github.com/kushyapp/cannabis-dataset)** | 2,000+ | 500+ | MIT | CSV/SQL | **Active - Primary** |
+| **[SeedRadar](https://seedradar.net/)** | 11,883 | 1,783 | CC BY-NC-SA 4.0 | API | **Active - SeedFinder Archive** |
+| **[Mendeley Research](https://data.mendeley.com/datasets/6zwcgrttkp/1)** | 800+ | - | CC BY 4.0 | CSV | **Active - Research Quality** |
+| **[Kaggle Leafly](https://www.kaggle.com/datasets/kingburrito666/cannabis-strains)** | 2,000+ | - | Various | CSV/JSON | **Active** |
+| **[The Cannabis API](https://the-cannabis-api.vercel.app/)** | 2,000+ | - | Free | REST | **Active** |
 
-### Verified Strain Data (for fixtures)
+### Tier 2: Historical/Archive Sources
 
-#### GMO (Garlic Cookies)
+| Source | Data | Status | Notes |
+|--------|------|--------|-------|
+| **SeedFinder.eu** | 38,000+ strains, 2,000+ breeders, lineage trees | **API Shutdown July 2024** | Best lineage data ever compiled |
+| **[SeedRadar Archive Project](https://seedradar.net/)** | Preserving SeedFinder via Archive.org | **In Progress** | Mining Wayback Machine snapshots |
+| **[Wayback Machine](https://web.archive.org/)** | Historical SeedFinder pages | **Available** | Use waybackpack tool to extract |
+
+### Kushy Dataset - Primary Import Source
+
+**34 Columns Available:**
+```
+id, status, sort, name, slug, image, description, type, crosses, breeder,
+effects, ailment, flavor, location, terpenes, thc, thca, thcv, cbd, cbda,
+cbdv, cbn, cbg, cbgm, cbgv, cbc, cbcv, cbv, cbe, cbt, cbl
+```
+
+**Sample Records:**
+| Name | Type | Breeder | Effects | Ailments |
+|------|------|---------|---------|----------|
+| Acapulco Gold | Sativa | - | Happy, Euphoric, Uplifted | Depression, Stress, Pain |
+| Afghan Kush | Hybrid | White Label Co. | - | - |
+| Afghani | Indica | - | Relaxed, Sleepy, Euphoric | Stress, Insomnia, Pain |
+| GSC (Girl Scout Cookies) | Hybrid | Cookie Fam | Euphoric, Happy, Relaxed | Stress, Depression, Pain |
+
+### SeedRadar - SeedFinder Archive (Secondary Import)
+
+**Preservation Effort:**
+- Mining Archive.org for pre-July 2024 SeedFinder data
+- Rebuilding relational database with genetic lineages
+- Planning torrent distribution for community backup
+- CC BY-NC-SA 4.0 license
+
+**Current Database:**
+- 11,883 cannabis varieties
+- 11,542 strains from 1,783 breeders
+- 384 clone-only strains
+- Genetic lineage tracking
+
+### Wayback Machine Strategy for SeedFinder Data
+
+```bash
+# Install waybackpack
+pip install waybackpack
+
+# Download SeedFinder strain pages (pre-API shutdown)
+waybackpack seedfinder.eu/en/database/strains \
+  --from-date 2023 \
+  --to-date 202406 \
+  --output-dir ./seedfinder_archive
+
+# Download breeder pages
+waybackpack seedfinder.eu/en/database/breeder \
+  --from-date 2023 \
+  --to-date 202406 \
+  --output-dir ./seedfinder_breeders
+```
+
+---
+
+## Two-Tier Fixture Strategy
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                         TIER 1: PRODUCTION DATA                              │
+│                    (Bulk Import → Go-Live Ready)                             │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│  db/data/                                                                    │
+│  ├── kushy_strains.csv        # 2,000+ strains from Kushy                   │
+│  ├── seedradar_strains.csv    # 11,000+ strains from SeedRadar              │
+│  ├── breeders.csv             # Extracted/merged breeder data               │
+│  └── terpenes.yml             # Standardized terpene definitions            │
+│                                                                              │
+│  Imported via: rake import:strains import:breeders                          │
+│  Result: Production-ready strain library for go-live                        │
+│                                                                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                    │
+                                    ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                         TIER 2: SCENARIO DATA                                │
+│                    (Hand-Crafted Test Fixtures)                              │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│  test/fixtures/                                                              │
+│  ├── organizations.yml        # "Exotic Genetics Collective"                │
+│  ├── users.yml                # 4 users with different roles                │
+│  ├── teams.yml                # Breeding Team, Testing Team                 │
+│  ├── projects.yml             # Active phenohunt + completed project        │
+│  ├── plants.yml               # 15 plants across all stages/statuses        │
+│  ├── observations.yml         # Weekly observation history                  │
+│  ├── selections.yml           # Keep/cull decisions with reasoning          │
+│  └── ...                      # Full workflow coverage                      │
+│                                                                              │
+│  Purpose: Test all business logic, workflows, edge cases                    │
+│                                                                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+### What Gets Imported vs. Hand-Crafted
+
+| Data Type | Source | Method | Count | Purpose |
+|-----------|--------|--------|-------|---------|
+| **Strains** | Kushy + SeedRadar | Bulk import | 2,000-10,000 | Production strain library |
+| **Breeders** | Extract from imports | Bulk import | 500-1,500 | Searchable breeder database |
+| **Terpenes** | Static YAML | Manual | 17 | Standardized list |
+| **Effects** | Kushy + normalize | Import | 25 | Dropdown options |
+| **Aromas/Flavors** | Kushy + normalize | Import | 40 | Dropdown options |
+| **Organizations** | Fixtures | Hand-craft | 1-2 | Test multi-tenancy |
+| **Users** | Fixtures | Hand-craft | 4-6 | Test roles/permissions |
+| **Teams** | Fixtures | Hand-craft | 2-3 | Test team features |
+| **Projects** | Fixtures | Hand-craft | 2-3 | Test workflows |
+| **Plants** | Fixtures | Hand-craft | 15-20 | Test all stages/statuses |
+| **Observations** | Fixtures | Hand-craft | 50+ | Test trait recording |
+| **Selections** | Fixtures | Hand-craft | 10+ | Test decisions |
+
+---
+
+## Verified Strain Data (Hand-Crafted Fixtures)
+
+### GMO (Garlic Cookies)
 - **Breeder**: Mamiko Seeds (Spain)
 - **Lineage**: Chemdawg x Girl Scout Cookies
 - **Type**: Indica-dominant (90/10)
@@ -49,7 +169,7 @@
 - **Effects**: Heavy relaxation, euphoria, sedation
 - **Source**: [Leafly GMO Cookies](https://www.leafly.com/strains/gmo-cookies)
 
-#### Zkittlez (The Original Z)
+### Zkittlez (The Original Z)
 - **Breeder**: 3rd Gen Family / Terp Hogz
 - **Lineage**: Grape Ape x Grapefruit x Unknown
 - **Type**: Indica-dominant (60/40)
@@ -62,49 +182,150 @@
 - **Awards**: 2016 Emerald Cup 1st Place
 - **Source**: [Leafly Zkittlez](https://www.leafly.com/strains/zkittlez)
 
-#### Wedding Cake
+### Wedding Cake
 - **Breeder**: Seed Junky Genetics
 - **Lineage**: Triangle Kush x Animal Mints
 - **Type**: Indica-dominant (60/40)
 - **THC**: 22-27%
-- **CBD**: <1%
 - **Flowering**: 55-60 days
 - **Terpenes**: Limonene, Caryophyllene, Myrcene
 - **Aromas**: Vanilla, sweet, tangy, earthy
-- **Effects**: Relaxing, euphoric, uplifting
 
-#### Gelato #41
+### Gelato #41
 - **Breeder**: Cookie Fam / Sherbinskis
 - **Lineage**: Sunset Sherbet x Thin Mint GSC
 - **Type**: Hybrid (55/45 indica)
 - **THC**: 20-25%
-- **CBD**: <1%
 - **Flowering**: 56-63 days
 - **Terpenes**: Limonene, Caryophyllene, Humulene
-- **Aromas**: Sweet, citrus, berry, lavender
-- **Effects**: Euphoric, relaxed, creative
 
-#### Purple Punch
+### Purple Punch
 - **Breeder**: Supernova Gardens
 - **Lineage**: Larry OG x Granddaddy Purple
 - **Type**: Indica-dominant (80/20)
 - **THC**: 18-24%
-- **CBD**: <1%
 - **Flowering**: 50-60 days
-- **Terpenes**: Limonene, Caryophyllene, Pinene
-- **Aromas**: Grape, blueberry, vanilla, sweet
-- **Effects**: Sedating, relaxing, sleepy
 
-#### Runtz
+### Runtz
 - **Breeder**: Cookies / Runtz Crew
 - **Lineage**: Zkittlez x Gelato
 - **Type**: Hybrid (50/50)
 - **THC**: 19-29%
-- **CBD**: <1%
 - **Flowering**: 55-65 days
-- **Terpenes**: Caryophyllene, Limonene, Linalool
-- **Aromas**: Sweet candy, tropical fruit, creamy
-- **Effects**: Euphoric, uplifting, relaxing
+
+---
+
+## Standardized Reference Data
+
+### Terpene Definitions (db/data/terpenes.yml)
+
+```yaml
+primary_terpenes:
+  - name: myrcene
+    aroma: earthy, musky, herbal, clove
+    effects: sedating, relaxing, pain relief
+    found_in: mangoes, hops, lemongrass
+
+  - name: limonene
+    aroma: citrus, lemon, orange
+    effects: mood elevation, stress relief, energizing
+    found_in: citrus peels, juniper
+
+  - name: caryophyllene
+    aroma: spicy, peppery, woody
+    effects: anti-inflammatory, pain relief
+    found_in: black pepper, cloves, cinnamon
+    note: binds to CB2 receptors
+
+  - name: pinene
+    aroma: pine, earthy, fresh
+    effects: alertness, memory retention, anti-inflammatory
+    found_in: pine needles, rosemary, basil
+
+  - name: linalool
+    aroma: floral, lavender, sweet
+    effects: calming, anti-anxiety, sedating
+    found_in: lavender, coriander
+
+  - name: humulene
+    aroma: hoppy, earthy, woody
+    effects: appetite suppressant, anti-inflammatory
+    found_in: hops, sage, ginseng
+
+  - name: terpinolene
+    aroma: piney, floral, herbal, citrus
+    effects: uplifting, creative
+    found_in: nutmeg, cumin, apples
+
+secondary_terpenes:
+  - ocimene
+  - bisabolol
+  - valencene
+  - geraniol
+  - camphene
+  - borneol
+  - sabinene
+  - phytol
+  - eucalyptol
+  - nerolidol
+```
+
+### Effect Categories (Standardized)
+
+```yaml
+effects:
+  positive:
+    - relaxed
+    - happy
+    - euphoric
+    - uplifted
+    - creative
+    - focused
+    - energetic
+    - talkative
+    - giggly
+    - hungry
+    - sleepy
+    - tingly
+    - aroused
+
+  medical:
+    - stress
+    - anxiety
+    - depression
+    - pain
+    - insomnia
+    - inflammation
+    - nausea
+    - appetite_loss
+    - muscle_spasms
+    - headaches
+
+  negative:
+    - dry_mouth
+    - dry_eyes
+    - paranoid
+    - dizzy
+    - anxious
+    - headache
+```
+
+### Aroma/Flavor Categories (Standardized)
+
+```yaml
+aromas:
+  earthy: [earthy, woody, herbal, mossy, soil]
+  citrus: [lemon, orange, lime, grapefruit, citrus]
+  sweet: [sweet, candy, sugary, honey, vanilla]
+  fruity: [berry, grape, tropical, apple, mango]
+  floral: [floral, lavender, rose, jasmine]
+  spicy: [spicy, pepper, cinnamon, clove]
+  diesel: [diesel, fuel, chemical, gas]
+  skunky: [skunk, pungent, dank]
+  pine: [pine, forest, cedar, minty]
+  cheese: [cheese, dairy, funky]
+  nutty: [nutty, almond, coffee]
+```
 
 ---
 
@@ -126,15 +347,15 @@ Organization: Exotic Genetics Collective
 │   ├── Jake (Tester) - member of Testing Team
 │   └── Emily (Viewer) - viewer, documentation
 │
-├── Strains (6 real strains + 2 crosses)
-│   ├── GMO (parent)
-│   ├── Zkittlez (parent)
-│   ├── Wedding Cake
-│   ├── Gelato #41
-│   ├── Purple Punch
-│   ├── Runtz
-│   ├── GMO x Zkittlez (F1 cross - project strain)
-│   └── Runtz x Wedding Cake (another cross)
+├── Strains (references imported strains + custom crosses)
+│   ├── GMO (parent) - from import
+│   ├── Zkittlez (parent) - from import
+│   ├── Wedding Cake - from import
+│   ├── Gelato #41 - from import
+│   ├── Purple Punch - from import
+│   ├── Runtz - from import
+│   ├── GMO x Zkittlez (F1 cross - project strain) - fixture
+│   └── Runtz x Wedding Cake (another cross) - fixture
 │
 ├── Projects
 │   ├── "GMO x Zkittlez F1 Hunt" (active, main project)
@@ -171,6 +392,153 @@ Organization: Exotic Genetics Collective
 
 ---
 
+## Import Pipeline
+
+### Directory Structure
+
+```
+db/
+├── data/
+│   ├── kushy_strains.csv           # Downloaded from GitHub
+│   ├── seedradar_strains.csv       # Exported from SeedRadar (if API available)
+│   ├── breeders.csv                # Consolidated breeder list
+│   ├── terpenes.yml                # Standardized terpene definitions
+│   ├── effects.yml                 # Standardized effect list
+│   └── aromas.yml                  # Standardized aroma list
+├── migrate/
+└── seeds.rb
+```
+
+### Import Rake Tasks
+
+```ruby
+# lib/tasks/import.rake
+
+namespace :import do
+  desc "Import strains from Kushy CSV"
+  task strains: :environment do
+    require 'csv'
+
+    file = Rails.root.join('db/data/kushy_strains.csv')
+    imported = 0
+    skipped = 0
+
+    CSV.foreach(file, headers: true) do |row|
+      strain = Strain.find_or_initialize_by(
+        slug: row['slug'].presence || row['name'].to_s.parameterize,
+        organization: Organization.default
+      )
+
+      if strain.new_record?
+        strain.assign_attributes(
+          name: row['name'],
+          breeder: row['breeder'].presence,
+          strain_type: map_strain_type(row['type']),
+          description: row['description'],
+          lineage_text: row['crosses'],
+          thc_min: parse_cannabinoid(row['thc'])&.first,
+          thc_max: parse_cannabinoid(row['thc'])&.last,
+          cbd_min: parse_cannabinoid(row['cbd'])&.first,
+          cbd_max: parse_cannabinoid(row['cbd'])&.last,
+          dominant_terpenes: parse_array(row['terpenes']),
+          effects: parse_array(row['effects']),
+          aromas: parse_array(row['flavor']),
+          public: true,
+          verified: false
+        )
+
+        if strain.save
+          imported += 1
+        else
+          puts "Error importing #{row['name']}: #{strain.errors.full_messages.join(', ')}"
+          skipped += 1
+        end
+      else
+        skipped += 1
+      end
+    end
+
+    puts "Imported: #{imported}, Skipped: #{skipped}"
+    puts "Total strains: #{Strain.count}"
+  end
+
+  desc "Import breeders from CSV"
+  task breeders: :environment do
+    # Extract unique breeders from strains and create breeder records
+    # (if we add a Breeder model later)
+    breeders = Strain.where.not(breeder: [nil, '']).pluck(:breeder).uniq
+    puts "Found #{breeders.count} unique breeders"
+  end
+
+  desc "Import all data"
+  task all: [:strains, :breeders] do
+    puts "Import complete!"
+  end
+
+  private
+
+  def map_strain_type(type)
+    case type&.downcase
+    when 'sativa' then 'sativa'
+    when 'indica' then 'indica'
+    when 'hybrid' then 'hybrid'
+    else 'hybrid'
+    end
+  end
+
+  def parse_cannabinoid(value)
+    return nil if value.blank?
+    # Handle formats like "25%", "20-25%", "25"
+    numbers = value.to_s.scan(/[\d.]+/).map(&:to_f)
+    return nil if numbers.empty?
+    numbers.length == 1 ? [numbers.first, numbers.first] : [numbers.min, numbers.max]
+  end
+
+  def parse_array(value)
+    return [] if value.blank?
+    value.to_s.split(',').map(&:strip).map(&:downcase).reject(&:blank?)
+  end
+end
+```
+
+### SeedRadar Data Export Script
+
+```ruby
+# lib/tasks/seedradar.rake
+
+namespace :seedradar do
+  desc "Fetch strains from SeedRadar API (if available)"
+  task fetch: :environment do
+    require 'net/http'
+    require 'json'
+
+    # Note: SeedRadar API documentation not public
+    # This is a placeholder for when API becomes available
+
+    puts "SeedRadar API integration pending..."
+    puts "Current workaround: Export data manually from seedradar.net"
+    puts "Or use Wayback Machine to extract historical SeedFinder data"
+  end
+
+  desc "Parse Wayback Machine SeedFinder archive"
+  task parse_wayback: :environment do
+    archive_dir = Rails.root.join('db/data/seedfinder_archive')
+
+    unless Dir.exist?(archive_dir)
+      puts "Archive directory not found: #{archive_dir}"
+      puts "Run: waybackpack seedfinder.eu/en/database/strains --from-date 2023 --to-date 202406 --output-dir #{archive_dir}"
+      exit 1
+    end
+
+    # Parse archived HTML pages and extract strain data
+    # This would require Nokogiri HTML parsing
+    puts "Parsing archived SeedFinder pages..."
+  end
+end
+```
+
+---
+
 ## Fixture File Structure
 
 ```
@@ -180,7 +548,7 @@ test/
 │   ├── organizations.yml            # 1 organization
 │   ├── teams.yml                    # 2 teams
 │   ├── memberships.yml              # 5 memberships
-│   ├── strains.yml                  # 8 strains (6 real + 2 crosses)
+│   ├── strains.yml                  # 8 scenario strains (crosses)
 │   ├── strain_lineages.yml          # Parent relationships
 │   ├── projects.yml                 # 2 projects
 │   ├── project_goals.yml            # 4 goals
@@ -223,7 +591,7 @@ test/
 │   └── (integration tests when controllers exist)
 │
 └── system/
-    └── (system tests when UI exists)
+    └── (smoke tests when UI exists)
 ```
 
 ---
@@ -261,80 +629,10 @@ emily:
   preferences: {}
 ```
 
-### strains.yml
+### strains.yml (Scenario Crosses Only)
 ```yaml
-gmo:
-  organization: exotic_genetics
-  name: GMO
-  slug: gmo
-  breeder: Mamiko Seeds
-  strain_type: indica
-  description: >
-    Also known as Garlic Cookies. A potent indica-dominant hybrid
-    with pungent garlic, mushroom, and onion aromas. Known for
-    heavy relaxation and high THC content.
-  lineage_text: Chemdawg x Girl Scout Cookies
-  genetics_type: regular
-  flowering_time_min: 70
-  flowering_time_max: 77
-  thc_min: 25.0
-  thc_max: 30.0
-  cbd_min: 0.0
-  cbd_max: 1.0
-  dominant_terpenes:
-    - caryophyllene
-    - myrcene
-    - limonene
-  effects:
-    - relaxing
-    - euphoric
-    - sedating
-  aromas:
-    - garlic
-    - mushroom
-    - onion
-    - diesel
-    - earth
-  public: true
-  verified: true
-  metadata: {}
-
-zkittlez:
-  organization: exotic_genetics
-  name: Zkittlez
-  slug: zkittlez
-  breeder: 3rd Gen Family / Terp Hogz
-  strain_type: indica
-  description: >
-    Award-winning indica-dominant hybrid known for its candy-like
-    grape and tropical fruit flavors. 2016 Emerald Cup winner.
-  lineage_text: Grape Ape x Grapefruit x Unknown
-  genetics_type: feminized
-  flowering_time_min: 55
-  flowering_time_max: 60
-  thc_min: 15.0
-  thc_max: 23.0
-  cbd_min: 0.0
-  cbd_max: 1.0
-  dominant_terpenes:
-    - humulene
-    - limonene
-    - pinene
-    - myrcene
-  effects:
-    - calming
-    - focused
-    - happy
-    - creative
-  aromas:
-    - berry
-    - grape
-    - tropical
-    - candy
-    - sweet
-  public: true
-  verified: true
-  metadata: {}
+# Note: Base strains (GMO, Zkittlez, etc.) are imported from Kushy
+# These fixtures are for custom crosses created in the scenario
 
 gmo_x_zkittlez:
   organization: exotic_genetics
@@ -365,6 +663,40 @@ gmo_x_zkittlez:
     - garlic
     - fruit
     - gas
+  public: false
+  verified: false
+  metadata: {}
+
+runtz_x_wedding_cake:
+  organization: exotic_genetics
+  name: Runtz x Wedding Cake
+  slug: runtz-x-wedding-cake
+  breeder: Exotic Genetics Collective
+  strain_type: hybrid
+  description: >
+    Dessert cross combining Runtz candy sweetness with Wedding Cake's
+    vanilla notes. Expected: extreme bag appeal with balanced effects.
+  lineage_text: Runtz x Wedding Cake
+  genetics_type: feminized
+  flowering_time_min: 56
+  flowering_time_max: 63
+  thc_min: 22.0
+  thc_max: 28.0
+  cbd_min: 0.0
+  cbd_max: 1.0
+  dominant_terpenes:
+    - limonene
+    - caryophyllene
+    - linalool
+  effects:
+    - euphoric
+    - relaxing
+    - happy
+  aromas:
+    - candy
+    - vanilla
+    - sweet
+    - creamy
   public: false
   verified: false
   metadata: {}
@@ -424,80 +756,6 @@ plant_3:
     week_of_flower: 6
 ```
 
-### observations.yml
-```yaml
-plant_1_veg_week_2:
-  plant: plant_1
-  observed_by: marcus
-  observed_at: <%= 76.days.ago %>
-  stage: vegetative
-  week_number: 2
-  overall_score: 8.5
-  notes: >
-    Strong vigor, healthy green color. Broad leaves suggesting
-    Zkittlez influence. No deficiencies observed.
-
-plant_1_flower_week_4:
-  plant: plant_1
-  observed_by: marcus
-  observed_at: <%= 32.days.ago %>
-  stage: flowering
-  week_number: 4
-  overall_score: 9.0
-  notes: >
-    Exceptional frost development. Nose is coming through strong -
-    gassy grape with garlic undertones. Dense bud structure.
-    Definitely a keeper candidate.
-
-plant_1_harvest:
-  plant: plant_1
-  observed_by: sarah
-  observed_at: <%= 14.days.ago %>
-  stage: harvest
-  week_number: ~
-  overall_score: 9.5
-  notes: >
-    Harvested at day 63 of flower. Trichomes 80% cloudy, 20% amber.
-    Incredible nose - the whole room smells like grape candy and
-    garlic bread. Easy trim, excellent calyx-to-leaf ratio.
-```
-
-### selections.yml
-```yaml
-plant_1_selection:
-  plant: plant_1
-  selected_by: marcus
-  decision: keep
-  selected_at: <%= 10.days.ago %>
-  reasoning: >
-    Best phenotype expression of the entire hunt. Perfect balance of
-    both parents - GMO's structure and potency with Zkittlez's
-    terpene profile. Dense, frosty buds with excellent bag appeal.
-    Lab results pending but smoke test showed high potency with
-    clean, smooth flavor. This is our keeper mother.
-  score: 9.5
-  standout_traits:
-    - terpene_profile
-    - trichome_coverage
-    - bud_structure
-    - bag_appeal
-  concerns:
-    - slightly_longer_flowering_time
-
-plant_2_selection:
-  plant: plant_2
-  selected_by: marcus
-  decision: cull
-  selected_at: <%= 50.days.ago %>
-  reasoning: >
-    Male identified at day 10 of flower. Had to cull to protect
-    the female plants from pollination. No pollen was released.
-  score: ~
-  standout_traits: []
-  concerns:
-    - male
-```
-
 ---
 
 ## Test Coverage Plan
@@ -552,46 +810,12 @@ class PlantTest < ActiveSupport::TestCase
     assert_includes duplicate.errors[:identifier], "has already been taken"
   end
 
-  test "status must be valid" do
-    plant = plants(:plant_1)
-    plant.status = "invalid_status"
-    assert_not plant.valid?
-    assert_includes plant.errors[:status], "is not included in the list"
-  end
-
-  # === Associations ===
-
-  test "belongs to project" do
-    plant = plants(:plant_1)
-    assert_equal projects(:gmo_zkittlez_hunt), plant.project
-  end
-
-  test "has many observations" do
-    plant = plants(:plant_1)
-    assert plant.observations.count >= 3
-  end
-
-  test "has many selections" do
-    plant = plants(:plant_1)
-    assert plant.selections.any?
-  end
-
   # === Scopes ===
-
-  test "scope active returns active plants" do
-    active = Plant.active
-    assert active.all? { |p| p.status == "active" }
-  end
 
   test "scope keepers returns keeper plants" do
     keepers = Plant.keepers
     assert keepers.all? { |p| p.status == "keeper" }
     assert_includes keepers, plants(:plant_1)
-  end
-
-  test "scope in_stage filters by stage" do
-    flowering = Plant.in_stage("flowering")
-    assert flowering.all? { |p| p.current_stage == "flowering" }
   end
 
   # === Instance Methods ===
@@ -606,36 +830,6 @@ class PlantTest < ActiveSupport::TestCase
     expected = (Date.current - plant.flip_date).to_i
     assert_equal expected, plant.days_in_flower
   end
-
-  test "transition_to updates stage and creates transition" do
-    plant = plants(:plant_8)  # In vegetative
-    assert_equal "vegetative", plant.current_stage
-
-    plant.transition_to("pre_flower", users(:marcus))
-
-    assert_equal "pre_flower", plant.current_stage
-    assert plant.stage_transitions.exists?(to_stage: "pre_flower")
-  end
-
-  # === Callbacks ===
-
-  test "sets default status on create" do
-    plant = Plant.create!(
-      project: projects(:gmo_zkittlez_hunt),
-      identifier: "#99",
-      source_type: "seed"
-    )
-    assert_equal "active", plant.status
-  end
-
-  test "sets default stage on create" do
-    plant = Plant.create!(
-      project: projects(:gmo_zkittlez_hunt),
-      identifier: "#99",
-      source_type: "seed"
-    )
-    assert_equal "germination", plant.current_stage
-  end
 end
 ```
 
@@ -643,36 +837,42 @@ end
 
 ## Integration with Seeds
 
-The fixtures can be loaded as seed data for development:
+### db/seeds.rb (Production + Fixtures Strategy)
 
-### db/seeds.rb (updated approach)
 ```ruby
 # frozen_string_literal: true
 
-# Load fixtures as seed data for development
+puts "=== Phenow Database Seeding ==="
+
+# Step 1: Create default trait categories and definitions
+puts "\n[1/4] Creating trait categories and definitions..."
+load Rails.root.join('db/seeds/traits.rb')
+
+# Step 2: Import strain library from CSV
+puts "\n[2/4] Importing strain library..."
+if File.exist?(Rails.root.join('db/data/kushy_strains.csv'))
+  Rake::Task['import:strains'].invoke
+else
+  puts "  Skipping strain import (db/data/kushy_strains.csv not found)"
+  puts "  Download from: https://github.com/kushyapp/cannabis-dataset"
+end
+
+# Step 3: Load scenario fixtures for development
 if Rails.env.development? || Rails.env.staging?
+  puts "\n[3/4] Loading development fixtures..."
   require 'active_record/fixtures'
 
-  puts "Loading fixture data for development..."
-
-  # Load in dependency order
   fixture_files = %w[
-    users
     organizations
+    users
     teams
     memberships
-    trait_categories
-    trait_definitions
-    strains
-    strain_lineages
     projects
     project_goals
     plants
     plant_stage_transitions
     observations
     trait_values
-    photos
-    lab_tests
     selections
     comments
     tags
@@ -683,65 +883,89 @@ if Rails.env.development? || Rails.env.staging?
     Rails.root.join('test/fixtures'),
     fixture_files
   )
-
-  puts "Loaded #{User.count} users"
-  puts "Loaded #{Strain.count} strains"
-  puts "Loaded #{Project.count} projects"
-  puts "Loaded #{Plant.count} plants"
-  puts "Loaded #{Observation.count} observations"
-  puts "Done!"
 end
+
+# Step 4: Summary
+puts "\n[4/4] Seeding complete!"
+puts "  - Users: #{User.count}"
+puts "  - Organizations: #{Organization.count}"
+puts "  - Teams: #{Team.count}"
+puts "  - Strains: #{Strain.count}"
+puts "  - Trait Categories: #{TraitCategory.count}"
+puts "  - Trait Definitions: #{TraitDefinition.count}"
+puts "  - Projects: #{Project.count}"
+puts "  - Plants: #{Plant.count}"
+puts "\n=== Ready for go-live! ==="
 ```
 
 ---
 
-## Implementation Steps
+## Implementation Timeline (Go-Live Next Week)
 
-### Phase 1: Setup (Sonnet)
-1. Remove RSpec and FactoryBot from Gemfile
-2. Remove spec/ directory
-3. Configure Minitest in test_helper.rb
-4. Create test directory structure
+### Day 1-2: Data Preparation
+- [ ] Download Kushy CSV from GitHub
+- [ ] Create db/data/ directory structure
+- [ ] Write import rake tasks
+- [ ] Test strain import locally
 
-### Phase 2: Fixtures (Sonnet, guided by Opus)
-1. Create all 20 fixture files with realistic data
-2. Ensure referential integrity
-3. Use ERB for dynamic dates and computed values
+### Day 3: Minitest Setup
+- [ ] Remove RSpec/FactoryBot from Gemfile
+- [ ] Remove spec/ directory
+- [ ] Configure test_helper.rb for Minitest
+- [ ] Create test directory structure
 
-### Phase 3: Model Tests (Sonnet)
-1. Generate test files for all 18 models
-2. Test validations, associations, scopes
-3. Test business logic methods
-4. Aim for 100% model coverage
+### Day 4: Fixtures Creation
+- [ ] Create all 20 fixture files
+- [ ] Verify referential integrity
+- [ ] Test fixture loading
 
-### Phase 4: Integration (Sonnet)
-1. Update seeds.rb to load fixtures
-2. Verify `rails db:seed` works
-3. Manual testing with fixture data
+### Day 5: Model Tests
+- [ ] Generate all 18 model test files
+- [ ] Write validation tests
+- [ ] Write association tests
+- [ ] Write scope tests
 
-### Phase 5: CI Setup (Sonnet)
-1. Configure GitHub Actions for Minitest
-2. Add test coverage reporting
-3. Ensure all tests pass
+### Day 6: Integration
+- [ ] Update seeds.rb with import + fixtures
+- [ ] Run full `rails db:seed`
+- [ ] Verify all data loads correctly
+- [ ] Run `rails test` - all green
+
+### Day 7: Final Verification
+- [ ] Manual testing with real data
+- [ ] Document any issues
+- [ ] Ready for go-live!
 
 ---
 
 ## Success Criteria
 
+- [ ] 2,000+ strains imported from Kushy dataset
 - [ ] All RSpec/FactoryBot references removed
-- [ ] 20 fixture files with realistic data
+- [ ] 20 fixture files with realistic scenario data
 - [ ] 18 model test files with comprehensive coverage
 - [ ] All tests green (`rails test`)
-- [ ] `rails db:seed` loads fixture data
-- [ ] Development environment has realistic data to work with
+- [ ] `rails db:seed` loads production + development data
+- [ ] Development environment has real strain library
 - [ ] CI pipeline runs tests successfully
 
 ---
 
 ## Resources
 
-- [Kushy Cannabis Dataset](https://github.com/kushyapp/cannabis-dataset)
+### Data Sources
+- [Kushy Cannabis Dataset](https://github.com/kushyapp/cannabis-dataset) - Primary import
+- [SeedRadar](https://seedradar.net/) - SeedFinder archive project
+- [Mendeley Cannabis Research](https://data.mendeley.com/datasets/6zwcgrttkp/1) - Research data
+- [Kaggle Leafly Dataset](https://www.kaggle.com/datasets/kingburrito666/cannabis-strains)
+- [The Cannabis API](https://the-cannabis-api.vercel.app/)
 - [Leafly Strain Database](https://www.leafly.com/strains)
-- [SeedFinder Strain Database](https://seedfinder.eu/en)
+
+### Historical Archives
+- [Wayback Machine](https://web.archive.org/) - SeedFinder archives
+- [waybackpack](https://github.com/jsvine/waybackpack) - Wayback download tool
+
+### Rails Testing
 - [Rails Testing Guide](https://guides.rubyonrails.org/testing.html)
 - [Minitest Documentation](https://github.com/minitest/minitest)
+- [Fixtures Guide](https://guides.rubyonrails.org/testing.html#the-low-down-on-fixtures)
