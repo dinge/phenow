@@ -15,9 +15,11 @@ class Plant < ApplicationRecord
            dependent: :nullify, inverse_of: :source_plant
 
   has_many :observations, dependent: :destroy
+  has_many :trait_values, through: :observations
   has_many :lab_tests, dependent: :destroy
+  has_one :lab_test, -> { order(test_date: :desc) }, dependent: :destroy
   has_many :selections, dependent: :destroy
-  has_many :stage_transitions, class_name: "PlantStageTransition", dependent: :destroy
+  has_many :plant_stage_transitions, dependent: :destroy
 
   # Polymorphic
   has_many :photos, as: :photographable, dependent: :destroy
@@ -36,11 +38,16 @@ class Plant < ApplicationRecord
   validates :status, inclusion: { in: STATUSES }, allow_blank: true
 
   # Scopes
+  scope :search, ->(query) {
+    where("identifier ILIKE :q OR name ILIKE :q OR notes ILIKE :q", q: "%#{query}%")
+  }
   scope :active, -> { where(status: "active") }
   scope :keepers, -> { where(status: "keeper") }
   scope :culled, -> { where(status: "culled") }
   scope :females, -> { where(sex: "female") }
+  scope :female, -> { where(sex: "female") }
   scope :males, -> { where(sex: "male") }
+  scope :male, -> { where(sex: "male") }
   scope :in_stage, ->(stage) { where(current_stage: stage) }
 
   # Callbacks
@@ -104,7 +111,7 @@ class Plant < ApplicationRecord
     old_stage = current_stage
     update!(current_stage: new_stage)
 
-    stage_transitions.create!(
+    plant_stage_transitions.create!(
       from_stage: old_stage,
       to_stage: new_stage,
       transitioned_at: Time.current,
@@ -127,7 +134,7 @@ class Plant < ApplicationRecord
     return unless saved_change_to_current_stage?
 
     old_stage, new_stage = saved_change_to_current_stage
-    stage_transitions.create!(
+    plant_stage_transitions.create!(
       from_stage: old_stage,
       to_stage: new_stage,
       transitioned_at: Time.current

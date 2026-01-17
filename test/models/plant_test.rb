@@ -3,6 +3,8 @@
 require "test_helper"
 
 class PlantTest < ActiveSupport::TestCase
+  fixtures :all
+
   # === Validations ===
 
   test "valid plant" do

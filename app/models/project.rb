@@ -30,6 +30,7 @@ class Project < ApplicationRecord
   validates :status, presence: true, inclusion: { in: STATUSES }
 
   # Scopes
+  scope :search, ->(query) { where("name ILIKE :q OR description ILIKE :q", q: "%#{query}%") }
   scope :active, -> { where(status: "active") }
   scope :completed, -> { where(status: "completed") }
   scope :phenohunts, -> { where(project_type: "phenohunt") }
@@ -66,5 +67,10 @@ class Project < ApplicationRecord
     self.project_type ||= "phenohunt"
     self.status ||= "active"
     self.settings ||= {}
+  end
+
+  # Override FriendlyId to only generate slug when blank, not to resolve conflicts
+  def should_generate_new_friendly_id?
+    slug.blank?
   end
 end

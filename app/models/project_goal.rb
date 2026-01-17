@@ -5,11 +5,16 @@ class ProjectGoal < ApplicationRecord
   belongs_to :project
   belongs_to :target_trait, class_name: "TraitDefinition", optional: true
 
+  # Delegations
+  delegate :team, :organization, to: :project
+
   # Validations
   validates :title, presence: true
+  validates :description, presence: true
+  validates :priority, presence: true, numericality: { greater_than: 0 }
 
   # Scopes
-  scope :by_priority, -> { order(priority: :desc) }
+  scope :by_priority, -> { order(priority: :asc) }
   scope :achieved, -> { where(achieved: true) }
   scope :pending, -> { where(achieved: false) }
 
@@ -23,7 +28,6 @@ class ProjectGoal < ApplicationRecord
   private
 
   def set_defaults
-    self.priority ||= 0
     self.achieved ||= false
   end
 end

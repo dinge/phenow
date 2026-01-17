@@ -3,6 +3,8 @@
 require "test_helper"
 
 class TraitDefinitionTest < ActiveSupport::TestCase
+  fixtures :all
+
   # === Validations ===
 
   test "valid trait definition" do

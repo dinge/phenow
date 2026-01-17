@@ -13,8 +13,8 @@ gem "puma", ">= 6.0"
 
 # Asset pipeline
 gem "propshaft"
-gem "cssbundling-rails"
-gem "jsbundling-rails"
+gem "importmap-rails"
+gem "tailwindcss-rails"
 
 # Hotwire
 gem "turbo-rails"
@@ -66,4 +66,5 @@ end
 group :test do
   gem "capybara"
   gem "selenium-webdriver"
+  gem "rails-controller-testing"  # For assigns() in controller tests
 end

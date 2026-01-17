@@ -3,6 +3,8 @@
 require "test_helper"
 
 class ProjectTest < ActiveSupport::TestCase
+  fixtures :all
+
   # === Validations ===
 
   test "valid project" do
@@ -26,11 +28,12 @@ class ProjectTest < ActiveSupport::TestCase
   end
 
   test "requires unique slug within team" do
+    existing = projects(:gmo_zkittlez_hunt)
     duplicate = Project.new(
-      team: teams(:breeding_team),
+      team: existing.team,
       strain: strains(:gmo_x_zkittlez),
       name: "Different Name",
-      slug: projects(:gmo_zkittlez_hunt).slug
+      slug: existing.slug  # Explicitly set same slug
     )
     assert_invalid duplicate, :slug
   end

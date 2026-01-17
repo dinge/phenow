@@ -1,0 +1,121 @@
+# Observations for Plant #1 (Keeper)
+plant_1_week_1:
+  plant: plant_1
+  user: marcus
+  observed_at: <%= 83.days.ago %>
+  stage: vegetative
+  notes: Strong start, healthy green leaves. Good root development visible.
+  conditions:
+    temperature: 78
+    humidity: 55
+    light_hours: 18
+  created_at: <%= 83.days.ago %>
+  updated_at: <%= 83.days.ago %>
+
+plant_1_week_3:
+  plant: plant_1
+  user: marcus
+  observed_at: <%= 69.days.ago %>
+  stage: vegetative
+  notes: Vigorous growth, topped once. Zkittlez leaf structure showing.
+  conditions:
+    temperature: 76
+    humidity: 50
+  created_at: <%= 69.days.ago %>
+  updated_at: <%= 69.days.ago %>
+
+plant_1_flip:
+  plant: plant_1
+  user: marcus
+  observed_at: <%= 60.days.ago %>
+  stage: pre_flower
+  notes: Flipped to 12/12. Strong structure, ready for flower.
+  conditions:
+    temperature: 75
+    humidity: 45
+  created_at: <%= 60.days.ago %>
+  updated_at: <%= 60.days.ago %>
+
+plant_1_week_2_flower:
+  plant: plant_1
+  user: sarah
+  observed_at: <%= 46.days.ago %>
+  stage: flowering
+  notes: Confirmed female day 5. Stretch beginning, internodes lengthening.
+  conditions:
+    temperature: 77
+    humidity: 45
+  created_at: <%= 46.days.ago %>
+  updated_at: <%= 46.days.ago %>
+
+plant_1_week_4_flower:
+  plant: plant_1
+  user: marcus
+  observed_at: <%= 32.days.ago %>
+  stage: flowering
+  notes: Incredible terpene development! Zkittlez fruit + GMO gas. Frost building.
+  conditions:
+    temperature: 75
+    humidity: 40
+  created_at: <%= 32.days.ago %>
+  updated_at: <%= 32.days.ago %>
+
+plant_1_week_6_flower:
+  plant: plant_1
+  user: marcus
+  observed_at: <%= 18.days.ago %>
+  stage: flowering
+  notes: Buds fattening, heavy frost. Best terps in the room. Potential keeper.
+  conditions:
+    temperature: 74
+    humidity: 40
+  created_at: <%= 18.days.ago %>
+  updated_at: <%= 18.days.ago %>
+
+plant_1_harvest:
+  plant: plant_1
+  user: marcus
+  observed_at: <%= 14.days.ago %>
+  stage: harvest
+  notes: Harvested at 15-20% amber. Dense, frosty colas. Outstanding.
+  conditions: {}
+  created_at: <%= 14.days.ago %>
+  updated_at: <%= 14.days.ago %>
+
+# Observations for Plant #3 (Active)
+plant_3_week_4_flower:
+  plant: plant_3
+  user: sarah
+  observed_at: <%= 14.days.ago %>
+  stage: flowering
+  notes: Week 4 flower. Heavy frost developing. GMO structure, mixed terps.
+  conditions:
+    temperature: 76
+    humidity: 42
+  created_at: <%= 14.days.ago %>
+  updated_at: <%= 14.days.ago %>
+
+plant_3_week_6_flower:
+  plant: plant_3
+  user: marcus
+  observed_at: <%= 1.day.ago %>
+  stage: flowering
+  notes: Week 6 flower. Looking excellent. Dense buds forming nicely.
+  conditions:
+    temperature: 75
+    humidity: 40
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Testing observations by Jake
+plant_1_smoke_test:
+  plant: plant_1
+  user: jake
+  observed_at: <%= 2.days.ago %>
+  stage: testing
+  notes: >
+    Initial smoke test after 3 days cure. Smooth inhale, fruity/gassy exhale.
+    Strong euphoric onset, settles into deep relaxation. Excellent potency.
+  conditions: {}
+  created_at: <%= 2.days.ago %>
+  updated_at: <%= 2.days.ago %>

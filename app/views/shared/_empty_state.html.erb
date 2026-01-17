@@ -1,0 +1,18 @@
+<%
+# Locals:
+#   title: string - The title to display
+#   description: string - The description text
+#   action_path: string (optional) - URL for the action button
+#   action_text: string (optional) - Text for the action button
+%>
+
+<div class="empty-state">
+  <h2 class="empty-state-title"><%= title %></h2>
+  <p class="empty-state-description"><%= description %></p>
+
+  <% if local_assigns[:action_path].present? %>
+    <div class="mt-6">
+      <%= link_to action_text || "Get Started", action_path, class: "btn-primary" %>
+    </div>
+  <% end %>
+</div>

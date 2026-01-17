@@ -1,0 +1,24 @@
+<tr id="<%= dom_id(selection) %>">
+  <td><%= decision_badge(selection.decision) %></td>
+  <td class="cell-truncate">
+    <%= truncate(selection.reasoning, length: 100) %>
+  </td>
+  <td>
+    <% if selection.score %>
+      <strong><%= number_with_precision(selection.score, precision: 1) %></strong>
+    <% else %>
+      <span class="text-muted">-</span>
+    <% end %>
+  </td>
+  <td><%= selection.selected_by.name %></td>
+  <td><%= l(selection.selected_at, format: :short) %></td>
+  <td class="cell-actions">
+    <%= link_to "Edit", edit_selection_path(selection),
+        class: "btn-ghost btn-sm",
+        data: { turbo_frame: "modal" } %>
+    <%= button_to "Delete", selection_path(selection),
+        method: :delete,
+        class: "btn-ghost btn-sm btn-danger",
+        form: { data: { turbo_confirm: "Delete this selection?" } } %>
+  </td>
+</tr>

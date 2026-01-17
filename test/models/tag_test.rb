@@ -3,6 +3,8 @@
 require "test_helper"
 
 class TagTest < ActiveSupport::TestCase
+  fixtures :all
+
   # === Validations ===
 
   test "valid tag" do
@@ -20,10 +22,11 @@ class TagTest < ActiveSupport::TestCase
   end
 
   test "requires unique slug within organization" do
+    existing = tags(:keeper_tag)
     duplicate = Tag.new(
-      organization: organizations(:exotic_genetics),
+      organization: existing.organization,
       name: "Different Name",
-      slug: tags(:keeper_tag).slug
+      slug: existing.slug  # Explicitly set same slug
     )
     assert_invalid duplicate, :slug
   end

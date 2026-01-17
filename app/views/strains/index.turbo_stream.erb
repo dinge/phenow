@@ -1,0 +1,9 @@
+<%= turbo_stream.replace "strains-list" do %>
+  <div id="strains-list">
+    <% @collection.each do |strain| %>
+      <div class="strain-item">
+        <%= link_to strain.name, edit_strain_path(strain) %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

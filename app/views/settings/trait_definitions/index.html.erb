@@ -1,0 +1,37 @@
+<div class="page-header">
+  <h1 class="page-title">Trait Definitions</h1>
+  <div class="page-actions">
+    <%= link_to "New Trait Definition", new_settings_trait_category_trait_definition_path(trait_categories(:vigor_health)), class: "btn-primary" if defined?(trait_categories) %>
+  </div>
+</div>
+
+<div class="card">
+  <% if collection.any? %>
+    <div class="overflow-x-auto">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Data Type</th>
+            <th>Unit</th>
+            <th>Range</th>
+            <th>Stages</th>
+            <th>Type</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% collection.each do |trait_definition| %>
+            <%= render "row", trait_definition: trait_definition %>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <%= render "shared/pagination", pagy: @pagy %>
+  <% else %>
+    <%= render "shared/empty_state",
+        title: "No trait definitions found",
+        description: "Get started by creating your first trait definition." %>
+  <% end %>
+</div>

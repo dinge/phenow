@@ -1,0 +1,101 @@
+<%= form_with model: photo,
+    url: photo.new_record? ? team_project_plant_photos_path(@team, @project, @plant) : photo_path(photo),
+    class: "form" do |f| %>
+
+  <% if photo.errors.any? %>
+    <div class="flash-alert">
+      <h3 class="form-errors-title">Please fix the following errors:</h3>
+      <ul class="form-errors-list">
+        <% photo.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%# Show existing image if editing %>
+  <% if photo.persisted? && photo.image.attached? %>
+    <div class="form-group">
+      <label class="form-label">Current Photo</label>
+      <div class="photo-preview">
+        <%= image_tag photo.image.variant(resize_to_limit: [400, 400]),
+            alt: photo.caption || "Photo preview",
+            class: "photo-preview-image" %>
+      </div>
+    </div>
+  <% end %>
+
+  <%# File upload %>
+  <div class="form-group">
+    <%= f.label :image, class: "form-label" %>
+    <%= f.file_field :image,
+        accept: "image/*",
+        class: form_input_class(photo, :image),
+        required: photo.new_record? %>
+    <%= error_for photo, :image %>
+    <p class="form-hint">JPG, PNG, or HEIC. Max 10MB. For best results, use high-resolution photos.</p>
+  </div>
+
+  <%# Caption %>
+  <div class="form-group">
+    <%= f.label :caption, class: "form-label" %>
+    <%= f.text_area :caption,
+        rows: 3,
+        class: form_input_class(photo, :caption),
+        placeholder: "Describe what's notable about this photo..." %>
+    <%= error_for photo, :caption %>
+  </div>
+
+  <%# Metadata row %>
+  <div class="form-row">
+    <div class="form-group">
+      <%= f.label :taken_at, "Date & Time Taken", class: "form-label" %>
+      <%= f.datetime_local_field :taken_at,
+          class: form_input_class(photo, :taken_at),
+          value: (photo.taken_at || Time.current).strftime("%Y-%m-%dT%H:%M") %>
+      <%= error_for photo, :taken_at %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :photo_type, "Photo Type", class: "form-label" %>
+      <%= f.select :photo_type,
+          options_for_select(
+            [["Select type...", ""]] + Photo::PHOTO_TYPES.map { |t| [t.titleize, t] },
+            photo.photo_type
+          ),
+          {},
+          class: form_input_class(photo, :photo_type) %>
+      <%= error_for photo, :photo_type %>
+      <p class="form-hint">What does this photo show?</p>
+    </div>
+  </div>
+
+  <%# Stage and primary toggle %>
+  <div class="form-row">
+    <div class="form-group">
+      <%= f.label :stage, "Growth Stage", class: "form-label" %>
+      <%= f.select :stage,
+          options_for_select(
+            [["Select stage...", ""]] + Plant::STAGES.map { |s| [s.titleize.gsub("_", " "), s] },
+            photo.stage || @plant&.current_stage
+          ),
+          {},
+          class: form_input_class(photo, :stage) %>
+      <%= error_for photo, :stage %>
+    </div>
+
+    <div class="form-group">
+      <label class="form-checkbox-label">
+        <%= f.check_box :is_primary, class: "form-checkbox" %>
+        Set as primary photo for this plant
+      </label>
+      <p class="form-hint">Primary photo shows in plant listings</p>
+    </div>
+  </div>
+
+  <%# Actions %>
+  <div class="form-actions">
+    <%= link_to "Cancel", team_project_plant_photos_path(@team, @project, @plant), class: "btn-secondary" %>
+    <%= f.submit photo.new_record? ? "Upload Photo" : "Update Photo", class: "btn-primary" %>
+  </div>
+<% end %>

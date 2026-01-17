@@ -1,144 +1,22 @@
-# Trait values for Plant #1 observations
+# Trait values for testing
 
-# Week 1 veg
+obs_1_seedling_vigor:
+  observation: obs_1_seedling
+  trait_definition: overall_vigor
+  numeric_value: 7
+  created_at: <%= 85.days.ago %>
+  updated_at: <%= 85.days.ago %>
+
 plant_1_w1_vigor:
   observation: plant_1_week_1
   trait_definition: overall_vigor
   numeric_value: 8
-  text_value: ~
   created_at: <%= 83.days.ago %>
   updated_at: <%= 83.days.ago %>
-
-plant_1_w1_height:
-  observation: plant_1_week_1
-  trait_definition: height
-  numeric_value: 15
-  text_value: ~
-  created_at: <%= 83.days.ago %>
-  updated_at: <%= 83.days.ago %>
-
-# Week 3 veg
-plant_1_w3_vigor:
-  observation: plant_1_week_3
-  trait_definition: overall_vigor
-  numeric_value: 9
-  text_value: ~
-  created_at: <%= 69.days.ago %>
-  updated_at: <%= 69.days.ago %>
-
-plant_1_w3_height:
-  observation: plant_1_week_3
-  trait_definition: height
-  numeric_value: 45
-  text_value: ~
-  created_at: <%= 69.days.ago %>
-  updated_at: <%= 69.days.ago %>
-
-# Week 4 flower
-plant_1_w4f_trichome:
-  observation: plant_1_week_4_flower
-  trait_definition: trichome_coverage
-  numeric_value: 8
-  text_value: ~
-  created_at: <%= 32.days.ago %>
-  updated_at: <%= 32.days.ago %>
-
-plant_1_w4f_aroma:
-  observation: plant_1_week_4_flower
-  trait_definition: aroma_intensity
-  numeric_value: 9
-  text_value: ~
-  created_at: <%= 32.days.ago %>
-  updated_at: <%= 32.days.ago %>
 
 plant_1_w4f_primary_aroma:
   observation: plant_1_week_4_flower
   trait_definition: primary_aroma
-  numeric_value: ~
-  text_value: tropical
+  text_value: "tropical"
   created_at: <%= 32.days.ago %>
   updated_at: <%= 32.days.ago %>
-
-# Week 6 flower
-plant_1_w6f_trichome:
-  observation: plant_1_week_6_flower
-  trait_definition: trichome_coverage
-  numeric_value: 10
-  text_value: ~
-  created_at: <%= 18.days.ago %>
-  updated_at: <%= 18.days.ago %>
-
-plant_1_w6f_aroma:
-  observation: plant_1_week_6_flower
-  trait_definition: aroma_intensity
-  numeric_value: 10
-  text_value: ~
-  created_at: <%= 18.days.ago %>
-  updated_at: <%= 18.days.ago %>
-
-plant_1_w6f_bud_structure:
-  observation: plant_1_week_6_flower
-  trait_definition: bud_structure
-  numeric_value: ~
-  text_value: dense
-  created_at: <%= 18.days.ago %>
-  updated_at: <%= 18.days.ago %>
-
-# Harvest values
-plant_1_harvest_bag_appeal:
-  observation: plant_1_harvest
-  trait_definition: bag_appeal
-  numeric_value: 10
-  text_value: ~
-  created_at: <%= 14.days.ago %>
-  updated_at: <%= 14.days.ago %>
-
-plant_1_harvest_dry_weight:
-  observation: plant_1_harvest
-  trait_definition: dry_weight
-  numeric_value: 127
-  text_value: ~
-  created_at: <%= 14.days.ago %>
-  updated_at: <%= 14.days.ago %>
-
-# Smoke test values
-plant_1_test_potency:
-  observation: plant_1_smoke_test
-  trait_definition: potency
-  numeric_value: 9
-  text_value: ~
-  created_at: <%= 2.days.ago %>
-  updated_at: <%= 2.days.ago %>
-
-# Plant #3 values
-plant_3_w4_trichome:
-  observation: plant_3_week_4_flower
-  trait_definition: trichome_coverage
-  numeric_value: 7
-  text_value: ~
-  created_at: <%= 14.days.ago %>
-  updated_at: <%= 14.days.ago %>
-
-plant_3_w4_aroma:
-  observation: plant_3_week_4_flower
-  trait_definition: aroma_intensity
-  numeric_value: 7
-  text_value: ~
-  created_at: <%= 14.days.ago %>
-  updated_at: <%= 14.days.ago %>
-
-plant_3_w6_trichome:
-  observation: plant_3_week_6_flower
-  trait_definition: trichome_coverage
-  numeric_value: 8
-  text_value: ~
-  created_at: <%= 1.day.ago %>
-  updated_at: <%= 1.day.ago %>
-
-plant_3_w6_bud_structure:
-  observation: plant_3_week_6_flower
-  trait_definition: bud_structure
-  numeric_value: ~
-  text_value: dense
-  created_at: <%= 1.day.ago %>
-  updated_at: <%= 1.day.ago %>

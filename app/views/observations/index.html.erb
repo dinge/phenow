@@ -1,0 +1,60 @@
+<div class="page-header">
+  <h1 class="page-title">Observations - <%= @plant.display_name %></h1>
+  <div class="page-actions">
+    <%= link_to "New Observation", new_team_project_plant_observation_path(@team, @project, @plant),
+        class: "btn-primary",
+        data: { turbo_frame: "modal" } %>
+  </div>
+</div>
+
+<%# Filters %>
+<div class="filters">
+  <%= form_with url: team_project_plant_observations_path(@team, @project, @plant), method: :get, data: { turbo_frame: "content" } do |f| %>
+    <div class="filter-group">
+      <%= render "shared/search_field", placeholder: "Search observations...", value: params[:q] %>
+
+      <%= f.select :stage,
+          options_for_select(
+            [["All Stages", ""]] + Plant::STAGES.map { |s| [s.titleize.gsub("_", " "), s] },
+            params[:stage]
+          ),
+          {},
+          class: "form-select",
+          onchange: "this.form.requestSubmit()" %>
+    </div>
+  <% end %>
+</div>
+
+<%# Table %>
+<%= turbo_frame_tag "content" do %>
+  <div class="card">
+    <% if collection.any? %>
+      <div class="overflow-x-auto">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Stage</th>
+              <th>Score</th>
+              <th>Notes</th>
+              <th>Observed By</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% collection.each do |observation| %>
+              <%= render "row", observation: observation %>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+      <%= render "shared/pagination", pagy: @pagy %>
+    <% else %>
+      <%= render "shared/empty_state",
+          title: "No observations yet",
+          description: "Start tracking this plant's progress by adding your first observation.",
+          action_path: new_team_project_plant_observation_path(@team, @project, @plant),
+          action_text: "Add Observation" %>
+    <% end %>
+  </div>
+<% end %>

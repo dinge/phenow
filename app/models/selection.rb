@@ -20,6 +20,9 @@ class Selection < ApplicationRecord
   validates :score, numericality: { greater_than_or_equal_to: 1, less_than_or_equal_to: 10 }, allow_nil: true
 
   # Scopes
+  scope :search, ->(query) {
+    where("reasoning ILIKE :q", q: "%#{query}%")
+  }
   scope :chronological, -> { order(selected_at: :asc) }
   scope :reverse_chronological, -> { order(selected_at: :desc) }
   scope :keepers, -> { where(decision: "keep") }

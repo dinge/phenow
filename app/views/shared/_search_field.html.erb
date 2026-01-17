@@ -1,0 +1,15 @@
+<%
+# Locals:
+#   name: string - Name attribute for the input field (default: 'q')
+#   placeholder: string - Placeholder text (default: 'Search...')
+#   value: string - Current value (optional)
+%>
+
+<%= form_with url: request.path, method: :get, data: { controller: "filters", turbo_frame: "content" } do |f| %>
+  <%= f.text_field local_assigns[:name] || :q,
+                   value: local_assigns[:value],
+                   placeholder: local_assigns[:placeholder] || "Search...",
+                   class: "form-input",
+                   data: { action: "input->filters#submit" },
+                   autocomplete: "off" %>
+<% end %>

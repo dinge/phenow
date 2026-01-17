@@ -3,6 +3,8 @@
 require "test_helper"
 
 class TraitValueTest < ActiveSupport::TestCase
+  fixtures :all
+
   # === Validations ===
 
   test "valid trait value" do

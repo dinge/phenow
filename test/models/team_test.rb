@@ -3,6 +3,8 @@
 require "test_helper"
 
 class TeamTest < ActiveSupport::TestCase
+  fixtures :all
+
   # === Validations ===
 
   test "valid team" do
@@ -20,21 +22,22 @@ class TeamTest < ActiveSupport::TestCase
   end
 
   test "requires unique slug within organization" do
+    existing = teams(:breeding_team)
     duplicate = Team.new(
-      organization: organizations(:exotic_genetics),
+      organization: existing.organization,
       name: "Different Name",
-      slug: teams(:breeding_team).slug
+      slug: existing.slug  # Explicitly set same slug
     )
     assert_invalid duplicate, :slug
   end
 
-  test "allows same slug in different organizations" do
+  test "requires globally unique slug" do
     team = Team.new(
       organization: organizations(:west_coast_seeds),
-      name: "Breeding Team",
-      slug: "breeding-team"
+      name: "Different Name",
+      slug: teams(:breeding_team).slug  # Same slug as existing team
     )
-    assert_valid team
+    assert_invalid team, :slug
   end
 
   # === Associations ===

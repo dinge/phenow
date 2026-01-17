@@ -1,0 +1,85 @@
+<%= form_with model: project, url: project.persisted? ? team_project_path(@team, project) : team_projects_path(@team),
+    class: "space-y-4" do |f| %>
+  <% if project.errors.any? %>
+    <div class="flash-alert">
+      <h3 class="font-medium">Please fix the following errors:</h3>
+      <ul class="mt-2 list-disc list-inside">
+        <% project.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :name, class: "form-label" %>
+    <%= f.text_field :name, class: form_input_class(project, :name), required: true %>
+    <%= error_for project, :name %>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <div class="form-group">
+      <%= f.label :project_type, class: "form-label" %>
+      <%= f.select :project_type,
+          Project::PROJECT_TYPES.map { |t| [t.humanize, t] },
+          { include_blank: "Select type..." },
+          class: form_input_class(project, :project_type),
+          required: true %>
+      <%= error_for project, :project_type %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :status, class: "form-label" %>
+      <%= f.select :status,
+          Project::STATUSES.map { |s| [s.humanize, s] },
+          { include_blank: "Select status..." },
+          class: form_input_class(project, :status),
+          required: true %>
+      <%= error_for project, :status %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :strain_id, "Strain (optional)", class: "form-label" %>
+    <%= f.select :strain_id,
+        @team.organization.strains.order(:name).pluck(:name, :id),
+        { include_blank: "Select strain..." },
+        class: form_input_class(project, :strain_id) %>
+    <%= error_for project, :strain_id %>
+    <p class="form-hint">Select the primary strain for this project</p>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :description, class: "form-label" %>
+    <%= f.text_area :description, rows: 4,
+        class: form_input_class(project, :description),
+        placeholder: "Describe the goals and focus of this project..." %>
+    <%= error_for project, :description %>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <div class="form-group">
+      <%= f.label :start_date, class: "form-label" %>
+      <%= f.date_field :start_date, class: form_input_class(project, :start_date) %>
+      <%= error_for project, :start_date %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :target_end_date, class: "form-label" %>
+      <%= f.date_field :target_end_date, class: form_input_class(project, :target_end_date) %>
+      <%= error_for project, :target_end_date %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :seed_count, "Expected seed/clone count", class: "form-label" %>
+    <%= f.number_field :seed_count, class: form_input_class(project, :seed_count), min: 0 %>
+    <%= error_for project, :seed_count %>
+    <p class="form-hint">How many seeds or clones do you plan to pop/run?</p>
+  </div>
+
+  <div class="flex justify-end gap-3 pt-4 border-t border-gray-200">
+    <%= link_to "Cancel", team_projects_path(@team), class: "btn-secondary" %>
+    <%= f.submit class: "btn-primary" %>
+  </div>
+<% end %>

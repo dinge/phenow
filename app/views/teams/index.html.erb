@@ -1,0 +1,55 @@
+<div class="page-header">
+  <h1 class="page-title">Teams</h1>
+  <div class="page-actions">
+    <%= link_to "New Team", new_team_path, class: "btn-primary",
+        data: { turbo_frame: "modal" } %>
+  </div>
+</div>
+
+<%# Search %>
+<%= form_with url: teams_path, method: :get, class: "filter-bar",
+    data: { controller: "filters", turbo_frame: "_top" } do |f| %>
+  <div class="filter-grid">
+    <div class="form-group">
+      <%= f.label :q, "Search", class: "form-label" %>
+      <%= f.text_field :q, value: params[:q], class: "form-input",
+          placeholder: "Search teams...",
+          data: { action: "input->filters#submit" } %>
+    </div>
+  </div>
+
+  <div class="filter-actions">
+    <%= link_to "Clear", teams_path, class: "btn-secondary" %>
+  </div>
+<% end %>
+
+<%# Table %>
+<div class="card">
+  <% if collection.any? %>
+    <div class="overflow-x-auto">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Members</th>
+            <th>Projects</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% collection.each do |team| %>
+            <%= render "row", team: team %>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <%= render "shared/pagination", pagy: @pagy %>
+  <% else %>
+    <%= render "shared/empty_state",
+        title: "No teams found",
+        description: params[:q].present? ? "Try adjusting your search." : "Get started by creating your first team.",
+        action_path: new_team_path,
+        action_text: "New Team" %>
+  <% end %>
+</div>

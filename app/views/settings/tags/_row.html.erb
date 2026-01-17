@@ -1,0 +1,16 @@
+<tr id="<%= dom_id(tag) %>">
+  <td>
+    <strong><%= tag.name %></strong>
+  </td>
+  <td>
+    <span class="tag-preview" style="background-color: <%= tag.color %>; display: inline-block; width: 40px; height: 20px; border-radius: 4px;"></span>
+    <code class="tag-color-code"><%= tag.color %></code>
+  </td>
+  <td><%= tag.tagged_count %></td>
+  <td class="table-actions">
+    <%= link_to "Edit", edit_settings_tag_path(tag), class: "btn-ghost btn-sm" %>
+    <%= button_to "Delete", settings_tag_path(tag), method: :delete,
+        class: "btn-ghost btn-sm btn-danger-ghost",
+        form: { data: { turbo_confirm: "Delete this tag? It will be removed from all tagged items." } } %>
+  </td>
+</tr>

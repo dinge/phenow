@@ -3,6 +3,8 @@
 require "test_helper"
 
 class MembershipTest < ActiveSupport::TestCase
+  fixtures :all
+
   # === Validations ===
 
   test "valid membership" do

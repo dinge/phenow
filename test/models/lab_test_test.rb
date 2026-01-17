@@ -3,6 +3,8 @@
 require "test_helper"
 
 class LabTestTest < ActiveSupport::TestCase
+  fixtures :all
+
   # === Validations ===
 
   test "valid lab test" do

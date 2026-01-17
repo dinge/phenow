@@ -3,6 +3,8 @@
 require "test_helper"
 
 class UserTest < ActiveSupport::TestCase
+  fixtures :all
+
   # === Validations ===
 
   test "valid user" do

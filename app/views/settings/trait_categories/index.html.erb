@@ -1,0 +1,38 @@
+<div class="page-header">
+  <h1 class="page-title">Trait Categories</h1>
+  <div class="page-actions">
+    <%= link_to "New Category", new_settings_trait_category_path, class: "btn-primary" %>
+  </div>
+</div>
+
+<div class="card">
+  <% if collection.any? %>
+    <div class="overflow-x-auto">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Icon</th>
+            <th>Order</th>
+            <th>Traits</th>
+            <th>Type</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% collection.each do |trait_category| %>
+            <%= render "row", trait_category: trait_category %>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <%= render "shared/pagination", pagy: @pagy %>
+  <% else %>
+    <%= render "shared/empty_state",
+        title: "No trait categories found",
+        description: "Get started by creating your first trait category.",
+        action_path: new_settings_trait_category_path,
+        action_text: "New Category" %>
+  <% end %>
+</div>

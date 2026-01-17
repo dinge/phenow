@@ -1,0 +1,36 @@
+<tr id="<%= dom_id(project) %>">
+  <td>
+    <%= link_to project.name, edit_team_project_path(@team, project),
+        class: "text-green-600 hover:text-green-800 font-medium" %>
+  </td>
+  <td>
+    <span class="badge-info"><%= project.project_type.humanize %></span>
+  </td>
+  <td>
+    <span class="badge-<%= project.status %>"><%= project.status.humanize %></span>
+  </td>
+  <td>
+    <% if project.strain %>
+      <%= project.strain.name %>
+    <% else %>
+      <span class="text-gray-400">—</span>
+    <% end %>
+  </td>
+  <td>
+    <%= project.plants.count %>
+  </td>
+  <td>
+    <div class="flex items-center gap-2">
+      <div class="w-24 bg-gray-200 rounded-full h-2">
+        <div class="bg-green-600 h-2 rounded-full" style="width: <%= project.completion_percentage %>%"></div>
+      </div>
+      <span class="text-sm text-gray-600"><%= project.completion_percentage %>%</span>
+    </div>
+  </td>
+  <td class="text-right">
+    <%= link_to "Edit", edit_team_project_path(@team, project), class: "btn-ghost btn-sm" %>
+    <%= button_to "Delete", team_project_path(@team, project), method: :delete,
+        class: "btn-ghost btn-sm text-red-600",
+        form: { data: { turbo_confirm: "Delete this project? This will also delete all plants and observations." } } %>
+  </td>
+</tr>

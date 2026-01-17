@@ -1,0 +1,66 @@
+<%
+# Locals:
+#   photo: Photo - The photo to display
+%>
+
+<div class="photo-card" id="<%= dom_id(photo) %>">
+  <div class="photo-card-image">
+    <% if photo.image.attached? %>
+      <%= link_to photo_path(photo), data: { turbo_frame: "modal" } do %>
+        <%= image_tag photo.image.variant(resize_to_limit: [400, 400]),
+            alt: photo.caption || "Plant photo",
+            class: "photo-thumbnail",
+            loading: "lazy" %>
+      <% end %>
+
+      <% if photo.is_primary %>
+        <span class="photo-badge photo-badge-primary">Primary</span>
+      <% end %>
+
+      <% if photo.photo_type.present? %>
+        <span class="photo-badge photo-badge-type"><%= photo.photo_type.titleize %></span>
+      <% end %>
+    <% else %>
+      <div class="photo-placeholder">
+        <span>No image</span>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="photo-card-content">
+    <% if photo.caption.present? %>
+      <p class="photo-caption"><%= photo.caption %></p>
+    <% end %>
+
+    <div class="photo-meta">
+      <% if photo.stage.present? %>
+        <span class="photo-meta-item">
+          <span class="photo-meta-label">Stage:</span>
+          <span class="badge badge-<%= photo.stage %>"><%= photo.stage.titleize.gsub("_", " ") %></span>
+        </span>
+      <% end %>
+
+      <% if photo.taken_at.present? %>
+        <span class="photo-meta-item">
+          <span class="photo-meta-label">Taken:</span>
+          <time datetime="<%= photo.taken_at.iso8601 %>">
+            <%= photo.taken_at.strftime("%b %d, %Y") %>
+          </time>
+        </span>
+      <% end %>
+    </div>
+
+    <div class="photo-actions">
+      <%= link_to "Edit", edit_photo_path(photo),
+          class: "btn-text",
+          data: { turbo_frame: "modal" } %>
+      <%= link_to "Delete", photo_path(photo),
+          method: :delete,
+          data: {
+            turbo_method: :delete,
+            turbo_confirm: "Are you sure you want to delete this photo? This cannot be undone."
+          },
+          class: "btn-text btn-text-danger" %>
+    </div>
+  </div>
+</div>

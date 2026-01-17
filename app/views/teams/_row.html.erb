@@ -1,0 +1,16 @@
+<tr id="<%= dom_id(team) %>">
+  <td>
+    <%= link_to team.name, edit_team_path(team),
+        class: "text-green-600 hover:text-green-800 font-medium" %>
+  </td>
+  <td><%= truncate(team.description, length: 80) %></td>
+  <td><%= team.memberships.count %></td>
+  <td><%= team.projects.count %></td>
+  <td class="text-right">
+    <%= link_to "Edit", edit_team_path(team), class: "btn-ghost btn-sm",
+        data: { turbo_frame: "modal" } %>
+    <%= button_to "Delete", team_path(team), method: :delete,
+        class: "btn-ghost btn-sm text-red-600",
+        form: { data: { turbo_confirm: "Delete this team? All projects and data will also be deleted." } } %>
+  </td>
+</tr>

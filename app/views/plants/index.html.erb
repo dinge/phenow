@@ -1,0 +1,47 @@
+<div class="page-header">
+  <h1 class="page-title">Plants - <%= @project.name %></h1>
+  <div class="page-actions">
+    <%= link_to "New Plant", new_team_project_plant_path(@team, @project),
+        class: "btn-primary",
+        data: { turbo_frame: "modal" } %>
+  </div>
+</div>
+
+<%# Filters %>
+<%= render "filters" %>
+
+<%# Table %>
+<div class="card">
+  <% if collection.any? %>
+    <div class="overflow-x-auto">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Identifier</th>
+            <th>Name</th>
+            <th>Strain</th>
+            <th>Source</th>
+            <th>Sex</th>
+            <th>Stage</th>
+            <th>Status</th>
+            <th>Days in Veg</th>
+            <th>Days in Flower</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% collection.each do |plant| %>
+            <%= render "row", plant: plant %>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <%= render "shared/pagination", pagy: @pagy %>
+  <% else %>
+    <%= render "shared/empty_state",
+        title: "No plants yet",
+        description: "Get started by adding your first plant to this project.",
+        action_path: new_team_project_plant_path(@team, @project),
+        action_text: "Add Plant" %>
+  <% end %>
+</div>

@@ -5,7 +5,7 @@ class CreateProjectGoals < ActiveRecord::Migration[8.1]
       t.string :title, null: false
       t.text :description
       t.integer :priority, default: 0
-      t.references :target_trait, foreign_key: { to_table: :trait_definitions }
+      t.bigint :target_trait_id
       t.string :target_value
       t.boolean :achieved, default: false
 

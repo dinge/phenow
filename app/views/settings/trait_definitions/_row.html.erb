@@ -1,0 +1,37 @@
+<tr id="<%= dom_id(trait_definition) %>">
+  <td>
+    <strong><%= trait_definition.name %></strong>
+  </td>
+  <td><%= trait_definition.trait_category.name %></td>
+  <td>
+    <span class="badge-info"><%= trait_definition.data_type.titleize %></span>
+  </td>
+  <td><%= trait_definition.unit %></td>
+  <td>
+    <% if trait_definition.min_value || trait_definition.max_value %>
+      <%= trait_definition.min_value %>-<%= trait_definition.max_value %>
+    <% end %>
+  </td>
+  <td>
+    <% if trait_definition.applicable_stages.any? %>
+      <%= trait_definition.applicable_stages.count %> stages
+    <% else %>
+      All stages
+    <% end %>
+  </td>
+  <td>
+    <% if trait_definition.system_default? %>
+      <span class="badge-info">System</span>
+    <% else %>
+      <span class="badge-success">Custom</span>
+    <% end %>
+  </td>
+  <td class="table-actions">
+    <% unless trait_definition.system_default? %>
+      <%= link_to "Edit", edit_settings_trait_definition_path(trait_definition), class: "btn-ghost btn-sm" %>
+      <%= button_to "Delete", settings_trait_definition_path(trait_definition), method: :delete,
+          class: "btn-ghost btn-sm btn-danger-ghost",
+          form: { data: { turbo_confirm: "Delete this trait definition?" } } %>
+    <% end %>
+  </td>
+</tr>

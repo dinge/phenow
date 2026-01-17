@@ -4,13 +4,14 @@ gmo_zkittlez_hunt:
   strain: gmo_x_zkittlez
   name: GMO x Zkittlez F1 Hunt
   slug: gmo-zkittlez-f1-hunt
+  project_type: phenohunt
   description: >
     Hunting for the perfect expression of GMO's potency and structure
     combined with Zkittlez's legendary terpene profile.
   status: active
-  started_at: <%= 90.days.ago %>
-  target_completion: <%= 30.days.from_now %>
-  plant_count: 10
+  start_date: <%= 90.days.ago.to_date %>
+  target_end_date: <%= 30.days.from_now.to_date %>
+  seed_count: 10
   settings:
     observation_frequency: weekly
     require_photos: true
@@ -23,12 +24,13 @@ purple_punch_preservation:
   strain: purple_punch
   name: Purple Punch Preservation
   slug: purple-punch-preservation
+  project_type: preservation
   description: Preservation project to maintain original Purple Punch genetics
   status: completed
-  started_at: <%= 200.days.ago %>
-  target_completion: <%= 100.days.ago %>
-  completed_at: <%= 95.days.ago %>
-  plant_count: 5
+  start_date: <%= 200.days.ago.to_date %>
+  target_end_date: <%= 100.days.ago.to_date %>
+  actual_end_date: <%= 95.days.ago.to_date %>
+  seed_count: 5
   settings:
     observation_frequency: biweekly
   created_at: <%= 200.days.ago %>
@@ -40,11 +42,12 @@ runtz_wc_hunt:
   strain: runtz_x_wedding_cake
   name: Runtz x Wedding Cake Selection
   slug: runtz-wc-selection
+  project_type: phenohunt
   description: Selecting for extreme bag appeal and dessert terps
   status: planning
-  started_at: ~
-  target_completion: ~
-  plant_count: 0
+  start_date: ~
+  target_end_date: ~
+  seed_count: 0
   settings: {}
   created_at: <%= 1.week.ago %>
   updated_at: <%= 1.week.ago %>
