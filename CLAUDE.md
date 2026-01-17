@@ -107,10 +107,12 @@ bin/rubocop
 - Keep views simple, use partials
 
 ### Testing
-- RSpec with FactoryBot
-- Model specs for validations and business logic
-- Request specs for API endpoints
-- System specs for critical workflows
+- **Minitest with Fixtures** (not RSpec/FactoryBot)
+- Fixtures contain realistic data that doubles as dev seeds
+- Model tests for validations, associations, scopes, business logic
+- Integration tests for controllers/API
+- System tests for critical UI workflows
+- See `docs/TDD_FIXTURES_PLAN.md` for comprehensive testing strategy
 
 ## API Design
 
