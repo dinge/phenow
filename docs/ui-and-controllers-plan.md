@@ -1,83 +1,423 @@
 # UI & Controllers Implementation Plan
 
-> A comprehensive plan for building Phenow's UI layer with minimal code, maximal reuse.
+> Simple, modern Rails 8 approach - minimal gems, semantic CSS, importmaps.
 
 ## Table of Contents
-1. [Architecture Overview](#architecture-overview)
-2. [Gems & Dependencies](#gems--dependencies)
-3. [Controller Abstraction](#controller-abstraction)
-4. [Shared View System](#shared-view-system)
-5. [Navigation & Layout](#navigation--layout)
-6. [List Views with Datagrid](#list-views-with-datagrid)
-7. [Form System](#form-system)
-8. [Turbo & Stimulus Patterns](#turbo--stimulus-patterns)
+1. [Philosophy](#philosophy)
+2. [Rails Setup (Modern)](#rails-setup-modern)
+3. [Semantic CSS Components](#semantic-css-components)
+4. [Controller Abstraction](#controller-abstraction)
+5. [View System](#view-system)
+6. [Filtering & Search](#filtering--search)
+7. [Forms](#forms)
+8. [Turbo & Stimulus](#turbo--stimulus)
 9. [Implementation Phases](#implementation-phases)
-10. [File Structure](#file-structure)
 
 ---
 
-## Architecture Overview
+## Philosophy
 
-### Core Principles
-- **DRY Controllers**: One concern handles 80% of CRUD logic
-- **Data-Driven Views**: Shared partials configured via model metadata
-- **Mobile-First**: Tailwind responsive design, touch-friendly
-- **Turbo by Default**: Frame-based navigation, stream updates
-- **Joy of Use**: Fast, intuitive, works in grow room conditions
+### Keep It Simple
+- **No gem for simple stuff** - build small helpers in-house
+- **Convention over configuration** - Rails already knows what to do
+- **Semantic HTML + CSS** - no utility class soup in views
+- **Importmaps** - no Node.js, no npm, no bundlers
+- **Tailwind standalone** - CSS only, compiled by CLI
 
-### Key Patterns
+### What We Use
+| Need | Solution |
+|------|----------|
+| JS modules | Importmaps (Rails 8 default) |
+| CSS | Tailwind standalone CLI via `tailwindcss-rails` |
+| Pagination | `pagy` (already in Gemfile) |
+| Auth | `devise` + `pundit` (already in Gemfile) |
+| Forms | Rails form helpers (no simple_form needed) |
+| Tables | Simple partials (no datagrid gem) |
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                      CONTROLLER LAYER                            │
-├─────────────────────────────────────────────────────────────────┤
-│  ApplicationController                                           │
-│    └── Concerns::CrudController (index, show, new, create, etc) │
-│          └── TeamsController (inherits, overrides as needed)    │
-│          └── ProjectsController                                  │
-│          └── PlantsController                                    │
-│          └── etc...                                              │
-└─────────────────────────────────────────────────────────────────┘
-
-┌─────────────────────────────────────────────────────────────────┐
-│                        VIEW LAYER                                │
-├─────────────────────────────────────────────────────────────────┤
-│  app/views/application/                                          │
-│    ├── _index.html.erb      (shared list view template)         │
-│    ├── _form.html.erb       (shared form template)              │
-│    ├── _card.html.erb       (shared card component)             │
-│    └── _filters.html.erb    (shared search/filter bar)          │
-│                                                                  │
-│  app/views/teams/                                                │
-│    └── (only overrides if needed)                               │
-└─────────────────────────────────────────────────────────────────┘
-```
+### What We Don't Need
+- ~~simple_form~~ - Rails form helpers are fine
+- ~~datagrid~~ - simple scopes + partials
+- ~~view_component~~ - partials are enough
+- ~~jsbundling-rails~~ - importmaps instead
+- ~~cssbundling-rails~~ - tailwindcss-rails standalone
 
 ---
 
-## Gems & Dependencies
+## Rails Setup (Modern)
 
-### Required Gems (add to Gemfile)
+### Switch to Importmaps
 
 ```ruby
-# UI & Forms
-gem "simple_form"           # Cleaner form DSL
-gem "pagy"                  # Fast pagination
-gem "datagrid"              # Filterable/sortable tables
+# Gemfile - REMOVE these:
+# gem "cssbundling-rails"
+# gem "jsbundling-rails"
 
-# Authorization
-gem "pundit"                # Policy-based auth
-
-# View helpers
-gem "view_component"        # Optional: for complex UI components
+# ADD these:
+gem "importmap-rails"
+gem "tailwindcss-rails"  # Standalone CLI, no Node
 ```
 
-### Already Included
-- `devise` - Authentication
-- `friendly_id` - Slugs
-- `turbo-rails` - Hotwire Turbo
-- `stimulus-rails` - Hotwire Stimulus
-- `tailwindcss-rails` - Styling
+### Setup Commands
+
+```bash
+# Remove old bundling
+rm -rf node_modules package.json yarn.lock
+
+# Install importmaps
+rails importmap:install
+
+# Install Tailwind standalone
+rails tailwindcss:install
+
+# Pin Stimulus (if not already)
+bin/importmap pin @hotwired/stimulus @hotwired/turbo-rails
+```
+
+### Config Files
+
+```ruby
+# config/importmap.rb
+pin "application"
+pin "@hotwired/turbo-rails", to: "turbo.min.js"
+pin "@hotwired/stimulus", to: "stimulus.min.js"
+pin "@hotwired/stimulus-loading", to: "stimulus-loading.js"
+pin_all_from "app/javascript/controllers", under: "controllers"
+```
+
+```javascript
+// app/javascript/application.js
+import "@hotwired/turbo-rails"
+import "controllers"
+```
+
+---
+
+## Semantic CSS Components
+
+### Design Principle
+
+Views use **semantic class names**. All Tailwind utilities are hidden inside CSS components.
+
+```erb
+<%# GOOD - semantic %>
+<button class="btn-primary">Save</button>
+<span class="badge-stage">Flowering</span>
+<div class="card">...</div>
+
+<%# BAD - utility soup %>
+<button class="px-4 py-2 bg-green-600 text-white rounded-lg...">Save</button>
+```
+
+### Component Library
+
+```css
+/* app/assets/stylesheets/application.tailwind.css */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================
+   BUTTONS
+   ============================================ */
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center
+           px-4 py-2 rounded-lg font-medium
+           transition-colors duration-150
+           focus:outline-none focus:ring-2 focus:ring-offset-2
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-primary {
+    @apply btn bg-green-600 text-white
+           hover:bg-green-700 focus:ring-green-500;
+  }
+
+  .btn-secondary {
+    @apply btn bg-white text-gray-700 border border-gray-300
+           hover:bg-gray-50 focus:ring-green-500;
+  }
+
+  .btn-danger {
+    @apply btn bg-red-600 text-white
+           hover:bg-red-700 focus:ring-red-500;
+  }
+
+  .btn-ghost {
+    @apply btn bg-transparent text-gray-600
+           hover:bg-gray-100 focus:ring-gray-500;
+  }
+
+  .btn-sm { @apply text-sm px-3 py-1.5; }
+  .btn-lg { @apply text-lg px-6 py-3; }
+}
+
+/* ============================================
+   FORMS
+   ============================================ */
+@layer components {
+  .form-group {
+    @apply mb-4;
+  }
+
+  .form-label {
+    @apply block text-sm font-medium text-gray-700 mb-1;
+  }
+
+  .form-input {
+    @apply block w-full rounded-lg border-gray-300 shadow-sm
+           focus:border-green-500 focus:ring-green-500
+           disabled:bg-gray-100 disabled:cursor-not-allowed;
+  }
+
+  .form-input-error {
+    @apply form-input border-red-500
+           focus:border-red-500 focus:ring-red-500;
+  }
+
+  .form-select {
+    @apply form-input;
+  }
+
+  .form-textarea {
+    @apply form-input resize-y;
+  }
+
+  .form-checkbox {
+    @apply rounded border-gray-300 text-green-600
+           focus:ring-green-500;
+  }
+
+  .form-hint {
+    @apply mt-1 text-sm text-gray-500;
+  }
+
+  .form-error {
+    @apply mt-1 text-sm text-red-600;
+  }
+}
+
+/* ============================================
+   BADGES (status, stage, etc.)
+   ============================================ */
+@layer components {
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5
+           rounded-full text-xs font-medium;
+  }
+
+  /* Status badges */
+  .badge-active   { @apply badge bg-green-100 text-green-800; }
+  .badge-keeper   { @apply badge bg-emerald-100 text-emerald-800; }
+  .badge-culled   { @apply badge bg-red-100 text-red-800; }
+  .badge-archived { @apply badge bg-gray-100 text-gray-800; }
+
+  /* Stage badges */
+  .badge-stage {
+    @apply badge bg-blue-100 text-blue-800;
+  }
+
+  /* Generic */
+  .badge-info    { @apply badge bg-blue-100 text-blue-800; }
+  .badge-success { @apply badge bg-green-100 text-green-800; }
+  .badge-warning { @apply badge bg-yellow-100 text-yellow-800; }
+  .badge-error   { @apply badge bg-red-100 text-red-800; }
+}
+
+/* ============================================
+   CARDS
+   ============================================ */
+@layer components {
+  .card {
+    @apply bg-white rounded-lg shadow-sm border border-gray-200;
+  }
+
+  .card-header {
+    @apply px-4 py-3 border-b border-gray-200;
+  }
+
+  .card-body {
+    @apply p-4;
+  }
+
+  .card-footer {
+    @apply px-4 py-3 border-t border-gray-200 bg-gray-50;
+  }
+}
+
+/* ============================================
+   TABLES
+   ============================================ */
+@layer components {
+  .data-table {
+    @apply min-w-full divide-y divide-gray-200;
+  }
+
+  .data-table thead {
+    @apply bg-gray-50;
+  }
+
+  .data-table th {
+    @apply px-4 py-3 text-left text-xs font-medium
+           text-gray-500 uppercase tracking-wider;
+  }
+
+  .data-table td {
+    @apply px-4 py-3 text-sm text-gray-900;
+  }
+
+  .data-table tbody tr {
+    @apply hover:bg-gray-50 transition-colors;
+  }
+
+  .data-table tbody tr:nth-child(even) {
+    @apply bg-gray-25;
+  }
+}
+
+/* ============================================
+   NAVIGATION
+   ============================================ */
+@layer components {
+  .navbar {
+    @apply bg-green-700 text-white shadow-md;
+  }
+
+  .navbar-brand {
+    @apply text-xl font-bold;
+  }
+
+  .nav-link {
+    @apply px-3 py-2 rounded-md text-sm font-medium
+           text-green-100 hover:bg-green-600 hover:text-white
+           transition-colors;
+  }
+
+  .nav-link-active {
+    @apply nav-link bg-green-800 text-white;
+  }
+
+  .sidebar {
+    @apply w-64 bg-white shadow-sm border-r border-gray-200;
+  }
+
+  .sidebar-link {
+    @apply flex items-center px-4 py-2 text-sm text-gray-700
+           hover:bg-gray-100 rounded-md transition-colors;
+  }
+
+  .sidebar-link-active {
+    @apply sidebar-link bg-green-50 text-green-700;
+  }
+}
+
+/* ============================================
+   MODALS
+   ============================================ */
+@layer components {
+  .modal-backdrop {
+    @apply fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50;
+  }
+
+  .modal {
+    @apply bg-white rounded-lg shadow-xl max-w-2xl w-full
+           max-h-[90vh] overflow-hidden;
+  }
+
+  .modal-header {
+    @apply flex justify-between items-center p-4 border-b border-gray-200;
+  }
+
+  .modal-title {
+    @apply text-xl font-semibold text-gray-900;
+  }
+
+  .modal-body {
+    @apply p-4 overflow-y-auto;
+  }
+
+  .modal-footer {
+    @apply flex justify-end gap-3 p-4 border-t border-gray-200 bg-gray-50;
+  }
+}
+
+/* ============================================
+   LAYOUT
+   ============================================ */
+@layer components {
+  .page-header {
+    @apply flex flex-col sm:flex-row sm:items-center sm:justify-between
+           gap-4 mb-6;
+  }
+
+  .page-title {
+    @apply text-2xl font-bold text-gray-900;
+  }
+
+  .page-actions {
+    @apply flex items-center gap-2;
+  }
+
+  .content-section {
+    @apply mb-8;
+  }
+
+  .empty-state {
+    @apply text-center py-12;
+  }
+
+  .empty-state-icon {
+    @apply mx-auto h-12 w-12 text-gray-400;
+  }
+
+  .empty-state-title {
+    @apply mt-2 text-sm font-medium text-gray-900;
+  }
+
+  .empty-state-description {
+    @apply mt-1 text-sm text-gray-500;
+  }
+}
+
+/* ============================================
+   FILTERS
+   ============================================ */
+@layer components {
+  .filter-bar {
+    @apply bg-white p-4 rounded-lg shadow-sm border border-gray-200 mb-4;
+  }
+
+  .filter-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4;
+  }
+
+  .filter-actions {
+    @apply flex justify-end gap-2 mt-4 pt-4 border-t border-gray-200;
+  }
+}
+
+/* ============================================
+   FLASH MESSAGES
+   ============================================ */
+@layer components {
+  .flash {
+    @apply p-4 rounded-lg mb-4;
+  }
+
+  .flash-notice {
+    @apply flash bg-green-50 text-green-800 border border-green-200;
+  }
+
+  .flash-alert {
+    @apply flash bg-red-50 text-red-800 border border-red-200;
+  }
+
+  .flash-warning {
+    @apply flash bg-yellow-50 text-yellow-800 border border-yellow-200;
+  }
+}
+```
 
 ---
 
@@ -85,20 +425,21 @@ gem "view_component"        # Optional: for complex UI components
 
 ### CrudController Concern
 
-The heart of code reuse. Controllers include this concern and only override what's different.
+Handles 80% of CRUD logic. Controllers only define what's different.
 
 ```ruby
 # app/controllers/concerns/crud_controller.rb
+# frozen_string_literal: true
+
 module CrudController
   extend ActiveSupport::Concern
 
   included do
-    before_action :set_resource, only: [:show, :edit, :update, :destroy]
-    before_action :set_collection, only: [:index]
+    before_action :set_resource, only: %i[show edit update destroy]
+    before_action :set_collection, only: :index
     helper_method :resource, :collection, :resource_class, :resource_name
   end
 
-  # GET /resources
   def index
     respond_to do |format|
       format.html
@@ -106,78 +447,54 @@ module CrudController
     end
   end
 
-  # GET /resources/:id
   def show
-    redirect_to edit_resource_path(resource)  # No separate show view!
+    # Redirect to edit - no separate show view
+    redirect_to edit_resource_path
   end
 
-  # GET /resources/new
   def new
     @resource = build_resource
   end
 
-  # POST /resources
   def create
     @resource = build_resource(resource_params)
     if @resource.save
-      respond_to do |format|
-        format.html { redirect_to after_create_path, notice: "#{resource_name.humanize} created." }
-        format.turbo_stream
-      end
+      redirect_to after_save_path, notice: t(".success", default: "Created successfully.")
     else
       render :new, status: :unprocessable_entity
     end
   end
 
-  # GET /resources/:id/edit
   def edit; end
 
-  # PATCH /resources/:id
   def update
     if @resource.update(resource_params)
-      respond_to do |format|
-        format.html { redirect_to after_update_path, notice: "#{resource_name.humanize} updated." }
-        format.turbo_stream
-      end
+      redirect_to after_save_path, notice: t(".success", default: "Updated successfully.")
     else
       render :edit, status: :unprocessable_entity
     end
   end
 
-  # DELETE /resources/:id
   def destroy
     @resource.destroy
-    respond_to do |format|
-      format.html { redirect_to after_destroy_path, notice: "#{resource_name.humanize} deleted." }
-      format.turbo_stream
-    end
+    redirect_to after_destroy_path, notice: t(".success", default: "Deleted successfully.")
   end
 
   private
 
-  # Override in subclasses
-  def resource_class
-    controller_name.classify.constantize
-  end
-
-  def resource_name
-    resource_class.model_name.singular
-  end
-
-  def collection_name
-    resource_class.model_name.plural
-  end
-
-  def resource
-    @resource
-  end
-
-  def collection
-    @collection
-  end
+  # Override these in subclasses
+  def resource_class     = controller_name.classify.constantize
+  def resource_name      = resource_class.model_name.singular
+  def collection_name    = resource_class.model_name.plural
+  def resource           = @resource
+  def collection         = @collection
+  def resource_scope     = resource_class.all
+  def after_save_path    = url_for(action: :index)
+  def after_destroy_path = url_for(action: :index)
 
   def set_resource
     @resource = find_resource
+    authorize @resource if respond_to?(:authorize, true)
   end
 
   def find_resource
@@ -186,32 +503,35 @@ module CrudController
     resource_scope.find(params[:id])
   end
 
-  def resource_scope
-    resource_class.all
-  end
-
   def build_resource(attrs = {})
     resource_scope.new(attrs)
   end
 
   def set_collection
-    @collection = filter_collection(resource_scope)
-    @pagy, @collection = pagy(@collection)
+    scope = resource_scope
+    scope = apply_filters(scope)
+    scope = apply_search(scope)
+    scope = apply_sorting(scope)
+    @pagy, @collection = pagy(scope)
   end
 
-  def filter_collection(scope)
-    # Datagrid filtering handled here
-    if datagrid_class
-      @grid = datagrid_class.new(params.fetch(:grid, {}).permit!)
-      @grid.scope { scope }
-      @grid.assets
-    else
-      scope
-    end
+  def apply_filters(scope)
+    scope  # Override in subclass
   end
 
-  def datagrid_class
-    "#{resource_class}Grid".safe_constantize
+  def apply_search(scope)
+    return scope unless params[:q].present?
+    scope.search(params[:q])  # Requires .search scope on model
+  end
+
+  def apply_sorting(scope)
+    return scope unless params[:sort].present?
+    direction = params[:dir] == "desc" ? :desc : :asc
+    scope.order(params[:sort] => direction)
+  end
+
+  def edit_resource_path
+    url_for(action: :edit, id: @resource)
   end
 
   def resource_params
@@ -219,35 +539,17 @@ module CrudController
   end
 
   def permitted_attributes
-    raise NotImplementedError, "Define permitted_attributes in #{self.class}"
-  end
-
-  def after_create_path
-    collection_path
-  end
-
-  def after_update_path
-    collection_path
-  end
-
-  def after_destroy_path
-    collection_path
-  end
-
-  def collection_path
-    url_for(action: :index)
-  end
-
-  def edit_resource_path(res)
-    url_for(action: :edit, id: res)
+    raise NotImplementedError, "Define #permitted_attributes in #{self.class}"
   end
 end
 ```
 
-### Example Controller (Minimal)
+### Example Controller
 
 ```ruby
 # app/controllers/strains_controller.rb
+# frozen_string_literal: true
+
 class StrainsController < ApplicationController
   include CrudController
 
@@ -258,17 +560,24 @@ class StrainsController < ApplicationController
   end
 
   def permitted_attributes
-    [:name, :breeder, :strain_type, :description, :lineage_text,
-     :genetics_type, :flowering_time_min, :flowering_time_max,
-     :thc_min, :thc_max, dominant_terpenes: [], effects: [], aromas: []]
+    %i[name breeder strain_type description genetics_type
+       flowering_time_min flowering_time_max thc_min thc_max]
+  end
+
+  def apply_filters(scope)
+    scope = scope.where(strain_type: params[:strain_type]) if params[:strain_type].present?
+    scope = scope.where(genetics_type: params[:genetics_type]) if params[:genetics_type].present?
+    scope
   end
 end
 ```
 
-### Nested Resource Controllers
+### Nested Resource Controller
 
 ```ruby
 # app/controllers/plants_controller.rb
+# frozen_string_literal: true
+
 class PlantsController < ApplicationController
   include CrudController
 
@@ -281,440 +590,346 @@ class PlantsController < ApplicationController
   end
 
   def resource_scope
-    @project.plants
+    @project.plants.includes(:strain)
   end
 
   def permitted_attributes
-    [:identifier, :name, :strain_id, :source_type, :sex,
-     :current_stage, :status, :germination_date, :flip_date,
-     :harvest_date, :notes]
+    %i[identifier name strain_id source_type sex
+       current_stage status germination_date flip_date harvest_date notes]
   end
 
-  def after_create_path
-    team_project_plants_path(current_team, @project)
+  def apply_filters(scope)
+    scope = scope.where(status: params[:status]) if params[:status].present?
+    scope = scope.where(current_stage: params[:stage]) if params[:stage].present?
+    scope = scope.where(strain_id: params[:strain_id]) if params[:strain_id].present?
+    scope
+  end
+
+  def after_save_path
+    team_project_plants_path(@team, @project)
   end
 end
 ```
 
 ---
 
-## Shared View System
+## View System
 
 ### Directory Structure
 
 ```
 app/views/
-├── application/
-│   ├── _index.html.erb         # Shared list view
-│   ├── _form.html.erb          # Shared form wrapper
-│   ├── _filters.html.erb       # Search/filter bar
-│   ├── _pagination.html.erb    # Pagy pagination
-│   ├── _card.html.erb          # Card component
-│   ├── _empty_state.html.erb   # No results
-│   ├── _flash.html.erb         # Flash messages
-│   └── _modal.html.erb         # Modal wrapper
 ├── layouts/
-│   ├── application.html.erb    # Main layout
-│   └── _navbar.html.erb        # Navigation
-└── [resource]/
-    └── (only custom views)
+│   ├── application.html.erb
+│   ├── _navbar.html.erb
+│   ├── _sidebar.html.erb
+│   ├── _flash.html.erb
+│   └── _user_menu.html.erb
+│
+├── shared/
+│   ├── _pagination.html.erb
+│   ├── _empty_state.html.erb
+│   ├── _modal.html.erb
+│   └── _search_field.html.erb
+│
+├── strains/
+│   ├── index.html.erb
+│   ├── new.html.erb
+│   ├── edit.html.erb
+│   ├── _form.html.erb
+│   ├── _row.html.erb
+│   └── _filters.html.erb
+│
+└── plants/
+    ├── index.html.erb
+    ├── ...
 ```
 
-### Model Metadata for Views
-
-Each model defines its view configuration:
-
-```ruby
-# app/models/concerns/viewable.rb
-module Viewable
-  extend ActiveSupport::Concern
-
-  class_methods do
-    # Define columns for list view
-    def list_columns
-      [:id, :name, :created_at]  # Override in model
-    end
-
-    # Define form fields
-    def form_fields
-      []  # Override in model
-    end
-
-    # Search configuration
-    def searchable_fields
-      [:name]
-    end
-  end
-end
-
-# app/models/plant.rb
-class Plant < ApplicationRecord
-  include Viewable
-
-  def self.list_columns
-    [
-      { field: :identifier, label: "ID", sortable: true },
-      { field: :display_name, label: "Name" },
-      { field: :strain, label: "Strain", association: true },
-      { field: :current_stage, label: "Stage", badge: true },
-      { field: :status, label: "Status", badge: true },
-      { field: :days_in_flower, label: "Flower Days" }
-    ]
-  end
-
-  def self.form_fields
-    [
-      { field: :identifier, type: :string, required: true },
-      { field: :name, type: :string },
-      { field: :strain_id, type: :association, collection: -> { Strain.all } },
-      { field: :source_type, type: :select, options: SOURCE_TYPES },
-      { field: :sex, type: :select, options: SEXES },
-      { field: :current_stage, type: :select, options: STAGES },
-      { field: :status, type: :select, options: STATUSES },
-      { field: :germination_date, type: :date },
-      { field: :flip_date, type: :date },
-      { field: :notes, type: :text }
-    ]
-  end
-end
-```
-
-### Shared Index Template
-
-```erb
-<%# app/views/application/_index.html.erb %>
-<%= turbo_frame_tag "#{collection_name}_list" do %>
-  <div class="space-y-4">
-    <%# Header with title and new button %>
-    <div class="flex justify-between items-center">
-      <h1 class="text-2xl font-bold"><%= collection_name.humanize %></h1>
-      <%= link_to "New #{resource_name.humanize}",
-          url_for(action: :new),
-          class: "btn btn-primary",
-          data: { turbo_frame: "modal" } %>
-    </div>
-
-    <%# Filters %>
-    <%= render "application/filters", grid: @grid if @grid %>
-
-    <%# Table %>
-    <div class="overflow-x-auto">
-      <table class="min-w-full divide-y divide-gray-200">
-        <thead class="bg-gray-50">
-          <tr>
-            <% resource_class.list_columns.each do |col| %>
-              <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                <%= col[:label] || col[:field].to_s.humanize %>
-              </th>
-            <% end %>
-            <th class="px-4 py-3"></th>
-          </tr>
-        </thead>
-        <tbody class="bg-white divide-y divide-gray-200">
-          <% collection.each do |item| %>
-            <%= render "application/row", item: item, columns: resource_class.list_columns %>
-          <% end %>
-        </tbody>
-      </table>
-    </div>
-
-    <%# Pagination %>
-    <%= render "application/pagination", pagy: @pagy %>
-  </div>
-<% end %>
-```
-
----
-
-## Navigation & Layout
-
-### Main Layout Structure
+### Layout
 
 ```erb
 <%# app/views/layouts/application.html.erb %>
 <!DOCTYPE html>
-<html class="h-full">
+<html class="h-full bg-gray-100">
 <head>
-  <%= render "layouts/head" %>
+  <title><%= content_for(:title) || "Phenow" %></title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+
+  <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  <%= javascript_importmap_tags %>
 </head>
-<body class="h-full bg-gray-100">
-  <%# Mobile-first responsive layout %>
+
+<body class="h-full">
   <div class="min-h-full">
-    <%# Navigation %>
     <%= render "layouts/navbar" %>
 
-    <%# Sidebar (desktop) %>
     <div class="flex">
-      <%= render "layouts/sidebar" %>
+      <%= render "layouts/sidebar" if show_sidebar? %>
 
-      <%# Main content %>
       <main class="flex-1 p-4 lg:p-8">
-        <%= render "application/flash" %>
-
-        <%# Turbo frame for main content %>
-        <%= turbo_frame_tag "main_content" do %>
-          <%= yield %>
-        <% end %>
+        <%= render "layouts/flash" %>
+        <%= yield %>
       </main>
     </div>
   </div>
 
-  <%# Modal container %>
   <%= turbo_frame_tag "modal" %>
 </body>
 </html>
 ```
 
-### Navbar Structure
+### Index View Example
 
 ```erb
-<%# app/views/layouts/_navbar.html.erb %>
-<nav class="bg-green-700 text-white">
-  <div class="max-w-7xl mx-auto px-4">
-    <div class="flex justify-between h-16">
-      <%# Logo %>
-      <div class="flex items-center">
-        <%= link_to "Phenow", root_path, class: "text-xl font-bold" %>
-      </div>
-
-      <%# Desktop nav %>
-      <div class="hidden md:flex items-center space-x-4">
-        <%= nav_link "Dashboard", root_path %>
-        <%= nav_link "Projects", teams_path %>
-        <%= nav_link "Strains", strains_path %>
-        <%= nav_link "Settings", settings_organization_path %>
-      </div>
-
-      <%# Mobile menu button %>
-      <div class="md:hidden flex items-center">
-        <button data-controller="mobile-menu" data-action="click->mobile-menu#toggle">
-          <svg class="h-6 w-6" ...></svg>
-        </button>
-      </div>
-
-      <%# User menu %>
-      <div class="flex items-center">
-        <%= render "layouts/user_menu" %>
-      </div>
-    </div>
+<%# app/views/strains/index.html.erb %>
+<div class="page-header">
+  <h1 class="page-title">Strains</h1>
+  <div class="page-actions">
+    <%= link_to "New Strain", new_strain_path, class: "btn-primary",
+        data: { turbo_frame: "modal" } %>
   </div>
-</nav>
+</div>
+
+<%# Filters %>
+<%= render "filters" %>
+
+<%# Table %>
+<div class="card">
+  <% if collection.any? %>
+    <div class="overflow-x-auto">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th><%= sort_link :name, "Name" %></th>
+            <th><%= sort_link :breeder, "Breeder" %></th>
+            <th>Type</th>
+            <th>Genetics</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% collection.each do |strain| %>
+            <%= render "row", strain: strain %>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <%= render "shared/pagination", pagy: @pagy %>
+  <% else %>
+    <%= render "shared/empty_state",
+        title: "No strains yet",
+        description: "Get started by adding your first strain.",
+        action_path: new_strain_path,
+        action_text: "Add Strain" %>
+  <% end %>
+</div>
 ```
 
-### Sidebar Navigation (Context-Aware)
+### Row Partial
 
 ```erb
-<%# app/views/layouts/_sidebar.html.erb %>
-<aside class="hidden lg:block w-64 bg-white shadow-sm">
-  <nav class="p-4 space-y-2">
-    <% if @team %>
-      <h3 class="text-sm font-semibold text-gray-500 uppercase">Team: <%= @team.name %></h3>
-      <%= sidebar_link "Projects", team_projects_path(@team), icon: "folder" %>
-      <%= sidebar_link "Members", team_memberships_path(@team), icon: "users" %>
-    <% end %>
-
-    <% if @project %>
-      <h3 class="text-sm font-semibold text-gray-500 uppercase mt-6">Project: <%= @project.name %></h3>
-      <%= sidebar_link "Plants", team_project_plants_path(@team, @project), icon: "seedling" %>
-      <%= sidebar_link "Goals", team_project_project_goals_path(@team, @project), icon: "target" %>
-    <% end %>
-  </nav>
-</aside>
+<%# app/views/strains/_row.html.erb %>
+<tr id="<%= dom_id(strain) %>">
+  <td>
+    <%= link_to strain.name, edit_strain_path(strain),
+        class: "text-green-600 hover:text-green-800 font-medium" %>
+  </td>
+  <td><%= strain.breeder %></td>
+  <td><span class="badge-info"><%= strain.strain_type&.humanize %></span></td>
+  <td><%= strain.genetics_type&.humanize %></td>
+  <td class="text-right">
+    <%= link_to "Edit", edit_strain_path(strain), class: "btn-ghost btn-sm" %>
+    <%= button_to "Delete", strain_path(strain), method: :delete,
+        class: "btn-ghost btn-sm text-red-600",
+        form: { data: { turbo_confirm: "Delete this strain?" } } %>
+  </td>
+</tr>
 ```
 
 ---
 
-## List Views with Datagrid
+## Filtering & Search
 
-### Datagrid Configuration
+### Simple Filter Implementation
+
+No gem needed - just scopes and params.
 
 ```ruby
-# app/grids/plants_grid.rb
-class PlantsGrid
-  include Datagrid
+# app/models/strain.rb
+class Strain < ApplicationRecord
+  # Search scope
+  scope :search, ->(q) {
+    where("name ILIKE :q OR breeder ILIKE :q", q: "%#{q}%")
+  }
 
-  scope { Plant.includes(:strain, :project) }
-
-  # Filters (appear above table)
-  filter(:identifier, :string, header: "Search ID") { |value, scope|
-    scope.where("identifier ILIKE ?", "%#{value}%")
-  }
-  filter(:status, :enum, select: Plant::STATUSES, header: "Status")
-  filter(:current_stage, :enum, select: Plant::STAGES, header: "Stage")
-  filter(:sex, :enum, select: Plant::SEXES, header: "Sex")
-  filter(:strain_id, :enum, select: -> { Strain.pluck(:name, :id) }, header: "Strain")
-
-  # Columns
-  column(:identifier, header: "ID", order: true)
-  column(:display_name, header: "Name")
-  column(:strain, header: "Strain") { |plant| plant.strain&.name }
-  column(:current_stage, header: "Stage", order: true) { |plant|
-    content_tag(:span, plant.current_stage.humanize,
-                class: "badge badge-#{stage_color(plant.current_stage)}")
-  }
-  column(:status, header: "Status", order: true) { |plant|
-    content_tag(:span, plant.status.humanize,
-                class: "badge badge-#{status_color(plant.status)}")
-  }
-  column(:days_in_flower, header: "Days Flower")
-  column(:actions, html: true, header: "") { |plant|
-    render "shared/row_actions", resource: plant
-  }
+  # Filter scopes
+  scope :by_type, ->(type) { where(strain_type: type) }
+  scope :by_genetics, ->(gen) { where(genetics_type: gen) }
 end
 ```
 
-### Filters Partial
+### Filter Partial
 
 ```erb
-<%# app/views/application/_filters.html.erb %>
-<%= form_with url: url_for, method: :get, data: { controller: "filters", turbo_frame: "#{collection_name}_list" } do %>
-  <div class="bg-white p-4 rounded-lg shadow-sm mb-4">
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-      <% grid.filters.each do |filter| %>
-        <div>
-          <%= label_tag "grid[#{filter.name}]", filter.header, class: "block text-sm font-medium text-gray-700" %>
-          <%= datagrid_filter_input(grid, filter.name, class: "mt-1 input") %>
-        </div>
-      <% end %>
+<%# app/views/strains/_filters.html.erb %>
+<%= form_with url: strains_path, method: :get, class: "filter-bar",
+    data: { controller: "filters", turbo_frame: "_top" } do |f| %>
+  <div class="filter-grid">
+    <div class="form-group">
+      <%= f.label :q, "Search", class: "form-label" %>
+      <%= f.text_field :q, value: params[:q], class: "form-input",
+          placeholder: "Name or breeder...",
+          data: { action: "input->filters#submit" } %>
     </div>
-    <div class="mt-4 flex justify-end space-x-2">
-      <%= link_to "Clear", url_for, class: "btn btn-secondary" %>
-      <%= submit_tag "Filter", class: "btn btn-primary" %>
+
+    <div class="form-group">
+      <%= f.label :strain_type, "Type", class: "form-label" %>
+      <%= f.select :strain_type, Strain::TYPES.map { |t| [t.humanize, t] },
+          { include_blank: "All types" },
+          class: "form-select",
+          data: { action: "change->filters#submit" } %>
     </div>
+
+    <div class="form-group">
+      <%= f.label :genetics_type, "Genetics", class: "form-label" %>
+      <%= f.select :genetics_type, Strain::GENETICS_TYPES.map { |t| [t.humanize, t] },
+          { include_blank: "All genetics" },
+          class: "form-select",
+          data: { action: "change->filters#submit" } %>
+    </div>
+  </div>
+
+  <div class="filter-actions">
+    <%= link_to "Clear", strains_path, class: "btn-secondary" %>
   </div>
 <% end %>
 ```
 
----
-
-## Form System
-
-### Simple Form Configuration
+### Sort Helper
 
 ```ruby
-# config/initializers/simple_form.rb
-SimpleForm.setup do |config|
-  config.wrappers :default, class: "mb-4" do |b|
-    b.use :html5
-    b.use :placeholder
-    b.use :label, class: "block text-sm font-medium text-gray-700 mb-1"
-    b.use :input, class: "input w-full", error_class: "input-error"
-    b.use :hint, wrap_with: { tag: :p, class: "text-sm text-gray-500 mt-1" }
-    b.use :error, wrap_with: { tag: :p, class: "text-sm text-red-600 mt-1" }
+# app/helpers/table_helper.rb
+module TableHelper
+  def sort_link(column, label)
+    direction = (params[:sort] == column.to_s && params[:dir] != "desc") ? "desc" : "asc"
+    arrow = if params[:sort] == column.to_s
+              params[:dir] == "desc" ? " ↓" : " ↑"
+            else
+              ""
+            end
+
+    link_to "#{label}#{arrow}".html_safe,
+            url_for(sort: column, dir: direction, **request.query_parameters.except(:sort, :dir)),
+            class: "hover:text-gray-700"
   end
-
-  config.default_wrapper = :default
-  config.button_class = "btn btn-primary"
 end
 ```
 
-### Shared Form Template
+---
+
+## Forms
+
+### Using Rails Form Helpers (No simple_form)
 
 ```erb
-<%# app/views/application/_form.html.erb %>
-<%= turbo_frame_tag "modal" do %>
-  <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4"
-       data-controller="modal"
-       data-action="keydown.esc->modal#close click->modal#closeOnBackdrop">
-    <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
-         data-modal-target="content">
-
-      <%# Header %>
-      <div class="flex justify-between items-center p-4 border-b">
-        <h2 class="text-xl font-semibold">
-          <%= resource.new_record? ? "New" : "Edit" %> <%= resource_name.humanize %>
-        </h2>
-        <%= link_to "×", collection_path, class: "text-2xl text-gray-500 hover:text-gray-700",
-            data: { turbo_frame: "_top" } %>
-      </div>
-
-      <%# Form %>
-      <%= simple_form_for resource, url: form_url, html: { class: "p-4" } do |f| %>
-        <% resource_class.form_fields.each do |field_config| %>
-          <%= render_form_field(f, field_config) %>
+<%# app/views/strains/_form.html.erb %>
+<%= form_with model: strain, class: "space-y-4" do |f| %>
+  <% if strain.errors.any? %>
+    <div class="flash-alert">
+      <h3 class="font-medium">Please fix the following errors:</h3>
+      <ul class="mt-2 list-disc list-inside">
+        <% strain.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
         <% end %>
-
-        <div class="flex justify-end space-x-3 mt-6 pt-4 border-t">
-          <%= link_to "Cancel", collection_path, class: "btn btn-secondary" %>
-          <%= f.submit class: "btn btn-primary" %>
-        </div>
-      <% end %>
+      </ul>
     </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :name, class: "form-label" %>
+    <%= f.text_field :name, class: form_input_class(strain, :name), required: true %>
+    <%= error_for strain, :name %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :breeder, class: "form-label" %>
+    <%= f.text_field :breeder, class: form_input_class(strain, :breeder) %>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <div class="form-group">
+      <%= f.label :strain_type, class: "form-label" %>
+      <%= f.select :strain_type, Strain::TYPES.map { |t| [t.humanize, t] },
+          { include_blank: "Select type..." },
+          class: form_input_class(strain, :strain_type) %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :genetics_type, class: "form-label" %>
+      <%= f.select :genetics_type, Strain::GENETICS_TYPES.map { |t| [t.humanize, t] },
+          { include_blank: "Select genetics..." },
+          class: form_input_class(strain, :genetics_type) %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :description, class: "form-label" %>
+    <%= f.text_area :description, rows: 4, class: form_input_class(strain, :description) %>
+  </div>
+
+  <div class="flex justify-end gap-3 pt-4 border-t border-gray-200">
+    <%= link_to "Cancel", strains_path, class: "btn-secondary" %>
+    <%= f.submit class: "btn-primary" %>
   </div>
 <% end %>
 ```
 
-### Form Field Helper
+### Form Helpers
 
 ```ruby
 # app/helpers/form_helper.rb
 module FormHelper
-  def render_form_field(form, config)
-    field = config[:field]
-    type = config[:type]
+  def form_input_class(record, field)
+    base = "form-input"
+    record.errors[field].any? ? "#{base} form-input-error" : base
+  end
 
-    case type
-    when :string
-      form.input field, as: :string, required: config[:required]
-    when :text
-      form.input field, as: :text, input_html: { rows: 4 }
-    when :select
-      form.input field, as: :select, collection: config[:options],
-                 include_blank: true, required: config[:required]
-    when :association
-      form.association field, collection: instance_exec(&config[:collection]),
-                       label_method: :name, value_method: :id
-    when :date
-      form.input field, as: :date, html5: true
-    when :boolean
-      form.input field, as: :boolean
-    when :array
-      form.input field, as: :select, collection: config[:options],
-                 input_html: { multiple: true }
-    end
+  def error_for(record, field)
+    return unless record.errors[field].any?
+    tag.p record.errors[field].first, class: "form-error"
   end
 end
 ```
 
+### Modal Form
+
+```erb
+<%# app/views/strains/new.html.erb %>
+<%= turbo_frame_tag "modal" do %>
+  <div class="modal-backdrop" data-controller="modal"
+       data-action="keydown.esc->modal#close click->modal#closeOnBackdrop">
+    <div class="modal" data-modal-target="content">
+      <div class="modal-header">
+        <h2 class="modal-title">New Strain</h2>
+        <%= link_to "×", strains_path, class: "text-2xl text-gray-400 hover:text-gray-600" %>
+      </div>
+
+      <div class="modal-body">
+        <%= render "form", strain: @resource %>
+      </div>
+    </div>
+  </div>
+<% end %>
+```
+
 ---
 
-## Turbo & Stimulus Patterns
+## Turbo & Stimulus
 
-### Key Turbo Frames
-
-```erb
-<%# Main content area - reloads on navigation %>
-<%= turbo_frame_tag "main_content" %>
-
-<%# Resource lists - update independently %>
-<%= turbo_frame_tag "plants_list" %>
-<%= turbo_frame_tag "observations_list" %>
-
-<%# Modal for new/edit forms %>
-<%= turbo_frame_tag "modal" %>
-
-<%# Sidebar that can be updated %>
-<%= turbo_frame_tag "sidebar" %>
-```
-
-### Turbo Stream Responses
-
-```erb
-<%# app/views/plants/create.turbo_stream.erb %>
-<%= turbo_stream.prepend "plants_list" do %>
-  <%= render "application/row", item: @resource, columns: Plant.list_columns %>
-<% end %>
-
-<%= turbo_stream.replace "modal" do %>
-  <%# Empty - closes modal %>
-<% end %>
-
-<%= turbo_stream.prepend "flash" do %>
-  <%= render "application/toast", message: "Plant created successfully" %>
-<% end %>
-```
-
-### Essential Stimulus Controllers
+### Stimulus Controllers
 
 ```javascript
 // app/javascript/controllers/modal_controller.js
@@ -728,7 +943,7 @@ export default class extends Controller {
   }
 
   closeOnBackdrop(event) {
-    if (!this.contentTarget.contains(event.target)) {
+    if (event.target === this.element) {
       this.close()
     }
   }
@@ -740,8 +955,6 @@ export default class extends Controller {
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["form"]
-
   submit() {
     clearTimeout(this.timeout)
     this.timeout = setTimeout(() => {
@@ -752,215 +965,89 @@ export default class extends Controller {
 ```
 
 ```javascript
-// app/javascript/controllers/live_search_controller.js
+// app/javascript/controllers/mobile_menu_controller.js
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["input", "results"]
-  static values = { url: String }
+  static targets = ["menu"]
 
-  search() {
-    clearTimeout(this.timeout)
-    this.timeout = setTimeout(async () => {
-      const response = await fetch(`${this.urlValue}?q=${this.inputTarget.value}`)
-      this.resultsTarget.innerHTML = await response.text()
-    }, 200)
+  toggle() {
+    this.menuTarget.classList.toggle("hidden")
   }
 }
+```
+
+```javascript
+// app/javascript/controllers/flash_controller.js
+import { Controller } from "@hotwired/stimulus"
+
+export default class extends Controller {
+  connect() {
+    setTimeout(() => this.dismiss(), 5000)
+  }
+
+  dismiss() {
+    this.element.remove()
+  }
+}
+```
+
+### Turbo Patterns
+
+```erb
+<%# Auto-submit filter form %>
+<%= form_with ..., data: { turbo_frame: "_top" } %>
+
+<%# Open in modal %>
+<%= link_to "New", new_path, data: { turbo_frame: "modal" } %>
+
+<%# Confirm before delete %>
+<%= button_to "Delete", path, method: :delete,
+    form: { data: { turbo_confirm: "Are you sure?" } } %>
 ```
 
 ---
 
 ## Implementation Phases
 
-### Phase 1: Foundation (Week 1)
-**Goal**: Core infrastructure working
+### Phase 1: Foundation
+1. Switch to importmaps + tailwindcss-rails
+2. Create semantic CSS component library
+3. Build CrudController concern
+4. Create layout with navbar/sidebar
+5. Add shared partials (pagination, flash, empty state)
+6. Setup Stimulus controllers
 
-```
-1. [ ] Add gems (simple_form, pagy, datagrid, pundit)
-2. [ ] Configure Tailwind with component classes
-3. [ ] Create CrudController concern
-4. [ ] Create Viewable model concern
-5. [ ] Build main layout with navbar
-6. [ ] Create shared partials (index, form, pagination)
-7. [ ] Setup Stimulus controllers (modal, filters, mobile-menu)
-8. [ ] Create DashboardController
-```
+### Phase 2: Core Resources
+1. StrainsController + views
+2. TeamsController + views
+3. ProjectsController + views
+4. PlantsController + views
 
-### Phase 2: Core Resources (Week 2)
-**Goal**: Main workflow functional
+### Phase 3: Data Collection
+1. ObservationsController + views
+2. SelectionsController + views
+3. PhotosController + uploads
+4. Plant detail page
 
-```
-1. [ ] TeamsController + views
-2. [ ] MembershipsController + views
-3. [ ] ProjectsController + views + grid
-4. [ ] PlantsController + views + grid
-5. [ ] StrainsController + views + grid
-```
-
-### Phase 3: Observations & Selections (Week 3)
-**Goal**: Data collection working
-
-```
-1. [ ] ObservationsController + views
-2. [ ] SelectionsController + views
-3. [ ] PhotosController + uploads
-4. [ ] Plant detail page (combines all)
-```
-
-### Phase 4: Settings & Polish (Week 4)
-**Goal**: Complete MVP
-
-```
-1. [ ] Settings::TraitCategoriesController
-2. [ ] Settings::TraitDefinitionsController
-3. [ ] Settings::TagsController
-4. [ ] Settings::OrganizationsController
-5. [ ] Pundit policies for all resources
-6. [ ] Mobile navigation refinement
-7. [ ] Empty states and loading states
-8. [ ] Error handling and validation messages
-```
-
----
-
-## File Structure
-
-### Final Directory Structure
-
-```
-app/
-├── controllers/
-│   ├── concerns/
-│   │   ├── crud_controller.rb
-│   │   └── authentication.rb
-│   ├── application_controller.rb
-│   ├── dashboard_controller.rb
-│   ├── teams_controller.rb
-│   ├── memberships_controller.rb
-│   ├── projects_controller.rb
-│   ├── plants_controller.rb
-│   ├── strains_controller.rb
-│   ├── observations_controller.rb
-│   ├── selections_controller.rb
-│   ├── photos_controller.rb
-│   ├── lab_tests_controller.rb
-│   └── settings/
-│       ├── trait_categories_controller.rb
-│       ├── trait_definitions_controller.rb
-│       ├── tags_controller.rb
-│       └── organizations_controller.rb
-│
-├── grids/
-│   ├── plants_grid.rb
-│   ├── projects_grid.rb
-│   ├── strains_grid.rb
-│   └── observations_grid.rb
-│
-├── helpers/
-│   ├── application_helper.rb
-│   ├── form_helper.rb
-│   ├── navigation_helper.rb
-│   └── badge_helper.rb
-│
-├── javascript/controllers/
-│   ├── modal_controller.js
-│   ├── filters_controller.js
-│   ├── live_search_controller.js
-│   ├── mobile_menu_controller.js
-│   ├── dropdown_controller.js
-│   └── flash_controller.js
-│
-├── models/concerns/
-│   └── viewable.rb
-│
-├── policies/
-│   ├── application_policy.rb
-│   ├── team_policy.rb
-│   ├── project_policy.rb
-│   ├── plant_policy.rb
-│   └── strain_policy.rb
-│
-└── views/
-    ├── application/
-    │   ├── _index.html.erb
-    │   ├── _form.html.erb
-    │   ├── _row.html.erb
-    │   ├── _card.html.erb
-    │   ├── _filters.html.erb
-    │   ├── _pagination.html.erb
-    │   ├── _empty_state.html.erb
-    │   ├── _flash.html.erb
-    │   ├── _toast.html.erb
-    │   └── _modal.html.erb
-    ├── layouts/
-    │   ├── application.html.erb
-    │   ├── _head.html.erb
-    │   ├── _navbar.html.erb
-    │   ├── _sidebar.html.erb
-    │   └── _user_menu.html.erb
-    ├── dashboard/
-    │   └── index.html.erb
-    ├── teams/
-    │   └── (overrides only)
-    ├── plants/
-    │   ├── _plant_card.html.erb (custom)
-    │   └── show.html.erb (detail page)
-    └── ...
-```
-
----
-
-## CSS Component Classes
-
-### Tailwind CSS Button Classes
-
-```css
-/* app/assets/stylesheets/components.css */
-@layer components {
-  .btn {
-    @apply px-4 py-2 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2;
-  }
-  .btn-primary {
-    @apply bg-green-600 text-white hover:bg-green-700 focus:ring-green-500;
-  }
-  .btn-secondary {
-    @apply bg-gray-200 text-gray-800 hover:bg-gray-300 focus:ring-gray-500;
-  }
-  .btn-danger {
-    @apply bg-red-600 text-white hover:bg-red-700 focus:ring-red-500;
-  }
-
-  .input {
-    @apply rounded-lg border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500;
-  }
-  .input-error {
-    @apply border-red-500 focus:border-red-500 focus:ring-red-500;
-  }
-
-  .badge {
-    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
-  }
-  .badge-green { @apply bg-green-100 text-green-800; }
-  .badge-yellow { @apply bg-yellow-100 text-yellow-800; }
-  .badge-red { @apply bg-red-100 text-red-800; }
-  .badge-blue { @apply bg-blue-100 text-blue-800; }
-  .badge-gray { @apply bg-gray-100 text-gray-800; }
-}
-```
+### Phase 4: Settings & Polish
+1. Settings controllers (TraitCategories, TraitDefinitions, Tags)
+2. Pundit policies
+3. Mobile refinement
+4. Empty states & loading states
 
 ---
 
 ## Summary
 
-This plan provides:
+| Aspect | Approach |
+|--------|----------|
+| **JS** | Importmaps - no Node.js |
+| **CSS** | Tailwind standalone + semantic components |
+| **Forms** | Rails form helpers |
+| **Tables** | Simple partials + scopes |
+| **Filters** | Query params + model scopes |
+| **Modals** | Turbo Frames |
+| **Controllers** | CrudController concern |
 
-1. **90% Code Reuse**: CrudController + shared views handle most cases
-2. **Minimal Controllers**: ~20 lines per controller on average
-3. **Zero Duplicate Views**: Data-driven templates for all resources
-4. **Mobile-First**: Responsive from the start
-5. **Turbo Native**: Frames and streams baked in
-6. **Easy Override**: Special cases can override defaults easily
-
-**Next Steps**: Start with Phase 1 foundation work 
-
+**Result**: Clean views with semantic classes, minimal dependencies, pure Rails 8 setup.
