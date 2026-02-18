@@ -3,29 +3,31 @@
 require "test_helper"
 
 class ObservationTest < ActiveSupport::TestCase
+  fixtures :all
+
   # === Validations ===
 
   test "valid observation" do
-    assert_valid observations(:plant_1_week_1)
+    assert_valid observations(:obs_1_seedling)
   end
 
   test "requires plant" do
-    observation = Observation.new(user: users(:marcus), observed_at: Time.current)
+    observation = Observation.new(observed_by: users(:marcus), observed_at: Time.current)
     assert_invalid observation, :plant
   end
 
   test "requires user" do
     observation = Observation.new(plant: plants(:plant_1), observed_at: Time.current)
-    assert_invalid observation, :user
+    assert_invalid observation, :observed_by
   end
 
   test "requires observed_at" do
-    observation = Observation.new(plant: plants(:plant_1), user: users(:marcus))
+    observation = Observation.new(plant: plants(:plant_1), observed_by: users(:marcus))
     assert_invalid observation, :observed_at
   end
 
   test "validates stage inclusion when present" do
-    observation = observations(:plant_1_week_1)
+    observation = observations(:obs_1_seedling)
     observation.stage = "invalid_stage"
     assert_invalid observation, :stage
   end
@@ -33,24 +35,24 @@ class ObservationTest < ActiveSupport::TestCase
   # === Associations ===
 
   test "belongs to plant" do
-    assert_equal plants(:plant_1), observations(:plant_1_week_1).plant
+    assert_equal plants(:plant_1), observations(:obs_1_seedling).plant
   end
 
   test "belongs to user" do
-    assert_equal users(:marcus), observations(:plant_1_week_1).user
+    assert_equal users(:marcus), observations(:obs_1_seedling).user
   end
 
   test "has many trait values" do
-    assert_respond_to observations(:plant_1_week_1), :trait_values
-    assert observations(:plant_1_week_1).trait_values.count > 0
+    assert_respond_to observations(:obs_1_seedling), :trait_values
+    assert observations(:obs_1_seedling).trait_values.count > 0
   end
 
   test "has many photos" do
-    assert_respond_to observations(:plant_1_week_4_flower), :photos
+    assert_respond_to observations(:obs_1_flowering), :photos
   end
 
   test "has many comments" do
-    assert_respond_to observations(:plant_1_week_4_flower), :comments
+    assert_respond_to observations(:obs_1_flowering), :comments
   end
 
   # === Scopes ===
@@ -73,10 +75,10 @@ class ObservationTest < ActiveSupport::TestCase
   # === Instance Methods ===
 
   test "project returns plant's project" do
-    assert_equal projects(:gmo_zkittlez_hunt), observations(:plant_1_week_1).project
+    assert_equal projects(:gmo_zkittlez_hunt), observations(:obs_1_seedling).project
   end
 
   test "organization returns plant's organization" do
-    assert_equal organizations(:exotic_genetics), observations(:plant_1_week_1).organization
+    assert_equal organizations(:exotic_genetics), observations(:obs_1_seedling).organization
   end
 end

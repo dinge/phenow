@@ -1,0 +1,33 @@
+= simple_form_for trait_category, url: trait_category.persisted? ? settings_trait_category_path(trait_category) : settings_trait_categories_path do |f|
+  = f.error_notification
+
+  = f.input :name,
+    required: true,
+    input_html: { class: "form-input", placeholder: "e.g., Vigor & Health" },
+    wrapper_html: { class: "form-group" },
+    label_html: { class: "form-label" }
+
+  = f.input :description,
+    as: :text,
+    input_html: { rows: 3, class: "form-input", placeholder: "Describe what traits belong in this category..." },
+    wrapper_html: { class: "form-group" },
+    label_html: { class: "form-label" }
+
+  = f.input :icon,
+    input_html: { class: "form-input", placeholder: "e.g., heart, flower, leaf" },
+    wrapper_html: { class: "form-group" },
+    label_html: { class: "form-label" },
+    hint: "Icon name for display (optional)",
+    hint_html: { class: "form-hint" }
+
+  = f.input :display_order,
+    as: :number,
+    input_html: { min: 0, class: "form-input", value: trait_category.display_order || 0 },
+    wrapper_html: { class: "form-group" },
+    label_html: { class: "form-label" },
+    hint: "Lower numbers appear first",
+    hint_html: { class: "form-hint" }
+
+  .form-actions
+    = link_to "Cancel", settings_trait_categories_path, class: "btn-secondary"
+    = f.submit class: "btn-primary"

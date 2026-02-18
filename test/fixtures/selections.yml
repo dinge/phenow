@@ -2,74 +2,86 @@
 
 plant_1_keeper:
   plant: plant_1
-  user: marcus
+  selected_by: marcus
   decision: breeding_mother
   reasoning: >
     Outstanding pheno combining the best of both parents. Zkittlez fruit forward
     with GMO gas undertones. Dense structure, heavy trichome coverage. 26.8% THC
     with 3.8% total terpenes. Perfect mother for breeding program.
   selected_at: <%= 3.days.ago %>
-  metadata:
-    thc: 26.8
-    terps: 3.8
-    score: 9.5
+  score: 9.5
+  standout_traits:
+    - terpene_profile
+    - trichome_density
+    - structure
+  concerns: []
   created_at: <%= 3.days.ago %>
   updated_at: <%= 3.days.ago %>
 
 plant_2_cull:
   plant: plant_2
-  user: marcus
+  selected_by: marcus
   decision: cull
   reasoning: Male plant identified at day 10 of flower. Culled immediately to prevent pollination of females.
   selected_at: <%= 50.days.ago %>
-  metadata:
-    reason: male
+  score: ~
+  standout_traits: []
+  concerns:
+    - male_plant
   created_at: <%= 50.days.ago %>
   updated_at: <%= 50.days.ago %>
 
 plant_4_keeper:
   plant: plant_4
-  user: marcus
+  selected_by: marcus
   decision: keep
   reasoning: >
     Excellent yield, dense buds. Strong GMO structure. Terps not quite as
     impressive as #1 but still very good. Keep for further evaluation.
   selected_at: <%= 2.days.ago %>
-  metadata:
-    thc: 24.2
-    dry_weight: 142
+  score: 8.2
+  standout_traits:
+    - yield
+    - structure
+  concerns: []
   created_at: <%= 2.days.ago %>
   updated_at: <%= 2.days.ago %>
 
 plant_5_cull:
   plant: plant_5
-  user: sarah
+  selected_by: sarah
   decision: cull
   reasoning: Consistently weak vigor from day 1. Yellow leaves, slow growth. Not worth the space.
   selected_at: <%= 70.days.ago %>
-  metadata:
-    reason: weak_vigor
+  score: ~
+  standout_traits: []
+  concerns:
+    - weak_vigor
   created_at: <%= 70.days.ago %>
   updated_at: <%= 70.days.ago %>
 
 plant_9_cull:
   plant: plant_9
-  user: sarah
+  selected_by: sarah
   decision: cull
   reasoning: Damped off during seedling stage. Overwatering likely cause.
   selected_at: <%= 40.days.ago %>
-  metadata:
-    reason: damping_off
+  score: ~
+  standout_traits: []
+  concerns:
+    - damping_off
   created_at: <%= 40.days.ago %>
   updated_at: <%= 40.days.ago %>
 
 pp_1_keep:
   plant: pp_1
-  user: marcus
+  selected_by: marcus
   decision: keep
   reasoning: Original Purple Punch phenotype. Preserved for future cloning and breeding.
   selected_at: <%= 95.days.ago %>
-  metadata:
-    preserved: true
+  score: 8.5
+  standout_traits:
+    - genetics_preservation
+  concerns: []
   created_at: <%= 95.days.ago %>
   updated_at: <%= 95.days.ago %>

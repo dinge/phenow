@@ -3,6 +3,8 @@
 require "test_helper"
 
 class OrganizationTest < ActiveSupport::TestCase
+  fixtures :all
+
   # === Validations ===
 
   test "valid organization" do

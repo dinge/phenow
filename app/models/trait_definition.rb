@@ -23,6 +23,7 @@ class TraitDefinition < ApplicationRecord
   scope :system_defaults, -> { where(system_default: true) }
   scope :for_organization, ->(org) { where(organization_id: [nil, org.id]) }
   scope :for_stage, ->(stage) { where("? = ANY(applicable_stages) OR applicable_stages = '{}'", stage) }
+  scope :by_type, ->(type) { where(data_type: type) }
 
   # Callbacks
   before_validation :set_defaults
@@ -49,6 +50,10 @@ class TraitDefinition < ApplicationRecord
 
   def text?
     data_type == "text"
+  end
+
+  def applicable_to_stage?(stage)
+    applicable_stages.empty? || applicable_stages.include?(stage)
   end
 
   private

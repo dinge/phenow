@@ -3,6 +3,8 @@
 require "test_helper"
 
 class CommentTest < ActiveSupport::TestCase
+  fixtures :all
+
   # === Validations ===
 
   test "valid comment" do
@@ -52,7 +54,7 @@ class CommentTest < ActiveSupport::TestCase
   test "polymorphic commentable - Observation" do
     comment = comments(:observation_comment)
     assert_equal "Observation", comment.commentable_type
-    assert_equal observations(:plant_1_week_4_flower), comment.commentable
+    assert_equal observations(:obs_1_flowering), comment.commentable
   end
 
   test "polymorphic commentable - Strain" do

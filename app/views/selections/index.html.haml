@@ -1,0 +1,18 @@
+.page-header
+  %h1.page-title= "Selections - #{@plant.display_name}"
+  .page-actions
+    = link_to "New Selection", new_team_project_plant_selection_path(@team, @project, @plant), class: "btn-primary", data: { turbo_frame: "modal" }
+
+= datagrid_form_for @grid, url: team_project_plant_selections_path(@team, @project, @plant), html: { class: "mb-4" }
+
+.card
+  - if @grid.assets.any?
+    .overflow-x-auto
+      = datagrid_table(@grid, class: "data-table") do |grid|
+        - grid.column(:actions, html: true) do |selection|
+          .cell-actions
+            = link_to "Edit", edit_selection_path(selection), class: "btn-ghost btn-sm", data: { turbo_frame: "modal" }
+            = button_to "Delete", selection_path(selection), method: :delete, class: "btn-ghost btn-sm btn-danger", form: { data: { turbo_confirm: "Delete this selection?" } }
+    = render "shared/pagination", pagy: @pagy
+  - else
+    = render "shared/empty_state", title: "No selections yet", description: "Record your first keep/cull decision for this plant.", action_path: new_team_project_plant_selection_path(@team, @project, @plant), action_text: "Add Selection"

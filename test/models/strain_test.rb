@@ -3,6 +3,8 @@
 require "test_helper"
 
 class StrainTest < ActiveSupport::TestCase
+  fixtures :all
+
   # === Validations ===
 
   test "valid strain" do

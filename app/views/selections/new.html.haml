@@ -1,0 +1,9 @@
+= turbo_frame_tag "modal" do
+  .modal-backdrop{ data: { controller: "modal", action: "keydown.esc->modal#close click->modal#closeOnBackdrop" } }
+    .modal{ data: { modal_target: "content" } }
+      .modal-header
+        %h2.modal-title= "New Selection - #{@plant.display_name}"
+        = link_to "x", team_project_plant_selections_path(@team, @project, @plant), class: "modal-close"
+
+      .modal-body
+        = render "form", selection: @resource

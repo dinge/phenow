@@ -1,0 +1,19 @@
+.page-header
+  %h1.page-title= "Observations - #{@plant.display_name}"
+  .page-actions
+    = link_to "New Observation", new_team_project_plant_observation_path(@team, @project, @plant), class: "btn-primary", data: { turbo_frame: "modal" }
+
+= datagrid_form_for @grid, url: team_project_plant_observations_path(@team, @project, @plant), html: { class: "mb-4", data: { turbo_frame: "content" } }
+
+= turbo_frame_tag "content" do
+  .card
+    - if @grid.assets.any?
+      .overflow-x-auto
+        = datagrid_table(@grid, class: "data-table") do |grid|
+          - grid.column(:actions, html: true) do |observation|
+            .action-menu
+              = link_to "Edit", edit_observation_path(observation), class: "action-link", data: { turbo_frame: "modal" }
+              = link_to "Delete", observation_path(observation), class: "action-link action-link-danger", data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to delete this observation?" }
+      = render "shared/pagination", pagy: @pagy
+    - else
+      = render "shared/empty_state", title: "No observations yet", description: "Start tracking this plant's progress by adding your first observation.", action_path: new_team_project_plant_observation_path(@team, @project, @plant), action_text: "Add Observation"

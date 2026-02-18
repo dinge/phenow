@@ -1,0 +1,17 @@
+= simple_form_for selection, url: (selection.new_record? ? team_project_plant_selections_path(@team, @project, @plant) : selection_path(selection)), html: { class: "space-y-4" } do |f|
+  = f.error_notification
+
+  = f.input :decision, collection: Selection::DECISIONS.map { |d| [d.titleize.gsub("_", " "), d] }, prompt: "Select decision...", required: true, hint: "Keep/cull decision or breeding designation"
+
+  = f.input :reasoning, as: :text, input_html: { rows: 4 }, required: true, hint: "Why this decision? Standout traits? Concerns? Be specific."
+
+  .form-row
+    .form-group
+      = f.input :score, label: "Overall Score (1-10)", input_html: { min: 1, max: 10, step: 0.1, placeholder: "Optional" }, hint: "Subjective rating of this phenotype", required: false
+
+    .form-group
+      = f.input :selected_at, label: "Selection Date", as: :datetime_local, required: true, input_html: { value: (selection.selected_at || Time.current).strftime("%Y-%m-%dT%H:%M") }, hint: false
+
+  .form-actions
+    = link_to "Cancel", team_project_plant_selections_path(@team, @project, @plant), class: "btn-secondary"
+    = f.submit selection.new_record? ? "Create Selection" : "Update Selection", class: "btn-primary"

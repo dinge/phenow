@@ -15,6 +15,8 @@ class Comment < ApplicationRecord
   # Scopes
   scope :chronological, -> { order(created_at: :asc) }
   scope :reverse_chronological, -> { order(created_at: :desc) }
+  scope :recent, -> { order(created_at: :desc) }
+  scope :by_user, ->(user) { where(user: user) }
   scope :top_level, -> { where(parent_comment_id: nil) }
 
   def reply?

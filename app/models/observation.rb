@@ -18,15 +18,24 @@ class Observation < ApplicationRecord
   # Validations
   validates :observed_at, presence: true
   validates :overall_score, numericality: { greater_than_or_equal_to: 1, less_than_or_equal_to: 10 }, allow_nil: true
+  validates :stage, inclusion: { in: Plant::STAGES }, allow_blank: true
 
   # Scopes
+  scope :search, ->(query) {
+    where("notes ILIKE :q", q: "%#{query}%")
+  }
   scope :chronological, -> { order(observed_at: :asc) }
   scope :reverse_chronological, -> { order(observed_at: :desc) }
+  scope :recent, -> { order(observed_at: :desc) }
   scope :by_user, ->(user) { where(observed_by: user) }
   scope :in_stage, ->(stage) { where(stage: stage) }
+  scope :for_stage, ->(stage) { where(stage: stage) }
 
   # Callbacks
   before_validation :set_defaults
+
+  # Alias for tests that use 'user'
+  alias_method :user, :observed_by
 
   def display_date
     observed_at.strftime("%b %d, %Y")
@@ -35,7 +44,6 @@ class Observation < ApplicationRecord
   private
 
   def set_defaults
-    self.observed_at ||= Time.current
     self.stage ||= plant&.current_stage
   end
 end

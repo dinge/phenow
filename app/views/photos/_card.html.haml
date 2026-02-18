@@ -1,0 +1,38 @@
+-#
+  Locals:
+    photo: Photo - The photo to display
+
+.photo-card{ id: dom_id(photo) }
+  .photo-card-image
+    - if photo.image.attached?
+      = link_to photo_path(photo), data: { turbo_frame: "modal" } do
+        = image_tag photo.image.variant(resize_to_limit: [400, 400]), alt: photo.caption || "Plant photo", class: "photo-thumbnail", loading: "lazy"
+
+      - if photo.is_primary
+        %span.photo-badge.photo-badge-primary Primary
+
+      - if photo.photo_type.present?
+        %span.photo-badge.photo-badge-type= photo.photo_type.titleize
+    - else
+      .photo-placeholder
+        %span No image
+
+  .photo-card-content
+    - if photo.caption.present?
+      %p.photo-caption= photo.caption
+
+    .photo-meta
+      - if photo.stage.present?
+        %span.photo-meta-item
+          %span.photo-meta-label Stage:
+          %span{ class: "badge badge-#{photo.stage}" }= photo.stage.titleize.gsub("_", " ")
+
+      - if photo.taken_at.present?
+        %span.photo-meta-item
+          %span.photo-meta-label Taken:
+          %time{ datetime: photo.taken_at.iso8601 }
+            = photo.taken_at.strftime("%b %d, %Y")
+
+    .photo-actions
+      = link_to "Edit", edit_photo_path(photo), class: "btn-text", data: { turbo_frame: "modal" }
+      = link_to "Delete", photo_path(photo), method: :delete, data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to delete this photo? This cannot be undone." }, class: "btn-text btn-text-danger"

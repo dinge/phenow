@@ -19,4 +19,11 @@ class Tag < ApplicationRecord
   def tagged_count
     taggings.count
   end
+
+  alias_method :usage_count, :tagged_count
+
+  # Override FriendlyId to only generate slug when blank
+  def should_generate_new_friendly_id?
+    slug.blank?
+  end
 end

@@ -5,7 +5,6 @@ keeper_tag:
   name: Keeper
   slug: keeper
   color: "#10B981"
-  description: Marked for keeping
   created_at: <%= 1.year.ago %>
   updated_at: <%= 1.year.ago %>
 
@@ -14,7 +13,6 @@ terpy_tag:
   name: High Terps
   slug: high-terps
   color: "#F59E0B"
-  description: Outstanding terpene expression
   created_at: <%= 1.year.ago %>
   updated_at: <%= 1.year.ago %>
 
@@ -23,7 +21,6 @@ frosty_tag:
   name: Frosty
   slug: frosty
   color: "#60A5FA"
-  description: Heavy trichome coverage
   created_at: <%= 1.year.ago %>
   updated_at: <%= 1.year.ago %>
 
@@ -32,7 +29,6 @@ fast_flower_tag:
   name: Fast Flower
   slug: fast-flower
   color: "#EC4899"
-  description: Quick flowering time
   created_at: <%= 1.year.ago %>
   updated_at: <%= 1.year.ago %>
 
@@ -41,7 +37,6 @@ high_yield_tag:
   name: High Yield
   slug: high-yield
   color: "#8B5CF6"
-  description: Above average yield
   created_at: <%= 1.year.ago %>
   updated_at: <%= 1.year.ago %>
 
@@ -50,6 +45,5 @@ priority_tag:
   name: Priority
   slug: priority
   color: "#EF4444"
-  description: High priority for attention
   created_at: <%= 1.year.ago %>
   updated_at: <%= 1.year.ago %>

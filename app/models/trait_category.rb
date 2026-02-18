@@ -11,7 +11,7 @@ class TraitCategory < ApplicationRecord
 
   # Validations
   validates :name, presence: true
-  validates :slug, presence: true
+  validates :slug, presence: true, uniqueness: true
 
   # Scopes
   scope :ordered, -> { order(display_order: :asc, name: :asc) }
@@ -23,6 +23,10 @@ class TraitCategory < ApplicationRecord
 
   def system_default?
     organization_id.nil?
+  end
+
+  def trait_count
+    trait_definitions.count
   end
 
   private

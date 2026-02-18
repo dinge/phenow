@@ -13,12 +13,15 @@ class Photo < ApplicationRecord
   # Validations
   validates :image, presence: true, on: :create
   validates :photo_type, inclusion: { in: PHOTO_TYPES }, allow_blank: true
+  validates :stage, inclusion: { in: Plant::STAGES }, allow_blank: true
 
   # Scopes
   scope :primary, -> { where(is_primary: true) }
   scope :by_type, ->(type) { where(photo_type: type) }
+  scope :for_stage, ->(stage) { where(stage: stage) }
   scope :chronological, -> { order(taken_at: :asc, created_at: :asc) }
   scope :reverse_chronological, -> { order(taken_at: :desc, created_at: :desc) }
+  scope :recent, -> { order(taken_at: :desc, created_at: :desc) }
 
   # Callbacks
   before_validation :set_defaults
@@ -33,6 +36,17 @@ class Photo < ApplicationRecord
 
   def large
     image.variant(resize_to_limit: [1200, 1200])
+  end
+
+  def plant
+    case photographable_type
+    when "Plant"
+      photographable
+    when "Observation"
+      photographable.plant
+    else
+      nil
+    end
   end
 
   private

@@ -1,0 +1,32 @@
+%nav.navbar
+  .max-w-7xl.mx-auto.px-4.sm:px-6.lg:px-8
+    .flex.items-center.justify-between.h-16
+      -# Logo
+      .flex.items-center
+        = link_to root_path, class: "navbar-brand" do
+          Phenow
+
+      -# Desktop Navigation
+      .hidden.md:flex.items-center.space-x-4
+        = nav_link "Dashboard", root_path
+        = nav_link "Teams", teams_path
+        = nav_link "Strains", strains_path
+        = nav_link "Settings", settings_organization_path
+
+      -# Right Side: User Menu & Mobile Toggle
+      .flex.items-center.space-x-4
+        = render "layouts/user_menu"
+
+        -# Mobile Menu Button
+        .md:hidden
+          %button{ type: "button", class: "text-green-100 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-green-700 rounded-md p-2", data: { controller: "mobile-menu", action: "click->mobile-menu#toggle" } }
+            %svg.h-6.w-6(fill="none" viewBox="0 0 24 24" stroke="currentColor")
+              %path(stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16")
+
+    -# Mobile Navigation Menu
+    .hidden.md:hidden.pb-4{ data: { mobile_menu_target: "menu" } }
+      .flex.flex-col.space-y-2
+        = nav_link "Dashboard", root_path
+        = nav_link "Teams", teams_path
+        = nav_link "Strains", strains_path
+        = nav_link "Settings", settings_organization_path

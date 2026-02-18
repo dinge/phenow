@@ -3,6 +3,8 @@
 require "test_helper"
 
 class PlantStageTransitionTest < ActiveSupport::TestCase
+  fixtures :all
+
   # === Validations ===
 
   test "valid plant stage transition" do

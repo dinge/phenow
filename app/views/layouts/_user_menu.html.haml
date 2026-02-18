@@ -1,0 +1,13 @@
+- if user_signed_in?
+  .relative{ data: { controller: "dropdown" } }
+    %button{ type: "button", class: "flex items-center text-sm text-green-100 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-green-700 rounded-md px-3 py-2", data: { action: "click->dropdown#toggle" } }
+      %span.hidden.sm:inline= current_user.email
+      %svg.ml-2.h-5.w-5(fill="none" viewBox="0 0 24 24" stroke="currentColor")
+        %path(stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7")
+
+    .hidden.absolute.right-0.mt-2.w-48.rounded-md.shadow-lg.bg-white.ring-1.ring-black.ring-opacity-5.z-50{ data: { dropdown_target: "menu" } }
+      .py-1
+        = link_to "Profile", edit_user_registration_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+        = button_to "Sign Out", destroy_user_session_path, method: :delete, class: "block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+- else
+  = link_to "Sign In", new_user_session_path, class: "btn-secondary"

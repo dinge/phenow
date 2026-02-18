@@ -1,0 +1,19 @@
+= simple_form_for observation, url: (observation.new_record? ? team_project_plant_observations_path(plant.team, plant.project, plant) : observation_path(observation)), html: { class: "observation-form" } do |f|
+  = f.error_notification
+
+  .form-grid
+    .form-group
+      = f.input :observed_at, as: :datetime_local, label: "Date & Time", required: true, input_html: { value: observation.observed_at&.strftime("%Y-%m-%dT%H:%M") }, hint: false
+
+    .form-group
+      = f.input :stage, label: "Growth Stage", collection: Plant::STAGES.map { |s| [s.titleize.gsub("_", " "), s] }, selected: observation.stage || plant.current_stage, hint: "Current stage: #{plant.current_stage.titleize.gsub('_', ' ')}"
+
+  = f.input :overall_score, label: "Overall Score (1-10)", input_html: { min: 1, max: 10, step: 0.1 }, hint: "Rate this plant's overall performance (optional)", required: false
+
+  = f.input :week_number, label: "Week Number", input_html: { min: 0 }, hint: "Week of this stage (optional)", required: false
+
+  = f.input :notes, label: "Observation Notes", as: :text, input_html: { rows: 6, placeholder: "Describe what you're seeing: structure, health, terpenes, frost development...\n\nInclude environmental conditions: Temp, RH, light schedule\nPrivate notes and observations" }, hint: "All notes including environment conditions and personal observations", required: false
+
+  .form-actions
+    = link_to "Cancel", team_project_plant_observations_path(plant.team, plant.project, plant), class: "btn-secondary"
+    = f.submit observation.new_record? ? "Create Observation" : "Update Observation", class: "btn-primary"

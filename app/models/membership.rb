@@ -16,24 +16,23 @@ class Membership < ApplicationRecord
   scope :admins, -> { where(role: %w[owner admin]) }
   scope :members, -> { where(role: %w[owner admin member]) }
 
-  # Callbacks
-  before_validation :set_default_role
-
   def owner?
     role == "owner"
   end
 
   def admin?
-    role.in?(%w[owner admin])
+    role == "admin"
+  end
+
+  def member?
+    role == "member"
+  end
+
+  def viewer?
+    role == "viewer"
   end
 
   def can_edit?
-    role.in?(%w[owner admin member])
-  end
-
-  private
-
-  def set_default_role
-    self.role ||= "member"
+    role.in?(%w[owner admin])
   end
 end

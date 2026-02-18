@@ -1,0 +1,27 @@
+.page-header
+  %h1.page-title Teams
+  .page-actions
+    = link_to "New Team", new_team_path, class: "btn-primary", data: { turbo_frame: "modal" }
+
+-# Datagrid filters and table
+.card
+  = datagrid_form_for @grid, url: teams_path, method: :get, html: { class: "filter-bar", data: { controller: "filters", turbo_frame: "_top" } } do |f|
+    .filter-grid
+      .form-group
+        = f.label :name, "Search", class: "form-label"
+        = f.datagrid_filter :name, class: "form-input", placeholder: "Search teams...", data: { action: "input->filters#submit" }
+
+    .filter-actions
+      = link_to "Clear", teams_path, class: "btn-secondary btn-sm"
+
+  - if @grid.assets.any?
+    .overflow-x-auto
+      = datagrid_table(@grid, class: "data-table") do |grid|
+        - grid.column(:actions) do |team|
+          .text-right
+            = link_to "Edit", edit_team_path(team), class: "btn-ghost btn-sm", data: { turbo_frame: "modal" }
+            = button_to "Delete", team_path(team), method: :delete, class: "btn-ghost btn-sm text-red-600", form: { data: { turbo_confirm: "Delete this team? All projects and data will also be deleted." } }
+
+    = render "shared/pagination", pagy: @pagy
+  - else
+    = render "shared/empty_state", title: "No teams found", description: (params[:q].present? ? "Try adjusting your search." : "Get started by creating your first team."), action_path: new_team_path, action_text: "New Team"

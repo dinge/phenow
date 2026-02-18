@@ -1,121 +1,175 @@
-# Observations for Plant #1 (Keeper)
+# Observations for GMO x Zkittlez Hunt
+# Plant #1 (Gassy Grape) - Keeper - multiple observations throughout lifecycle
+
 plant_1_week_1:
   plant: plant_1
-  user: marcus
+  observed_by: marcus
   observed_at: <%= 83.days.ago %>
   stage: vegetative
-  notes: Strong start, healthy green leaves. Good root development visible.
-  conditions:
-    temperature: 78
-    humidity: 55
-    light_hours: 18
+  overall_score: 7
+  notes: "Strong start, healthy green leaves. Good root development visible."
+  week_number: 1
   created_at: <%= 83.days.ago %>
   updated_at: <%= 83.days.ago %>
 
-plant_1_week_3:
+obs_1_seedling:
   plant: plant_1
-  user: marcus
-  observed_at: <%= 69.days.ago %>
-  stage: vegetative
-  notes: Vigorous growth, topped once. Zkittlez leaf structure showing.
-  conditions:
-    temperature: 76
-    humidity: 50
-  created_at: <%= 69.days.ago %>
-  updated_at: <%= 69.days.ago %>
+  observed_by: marcus
+  observed_at: <%= 85.days.ago %>
+  stage: seedling
+  overall_score: 7
+  notes: "Strong taproot, good vigor from start. Quick germination - 48hrs. Env - Temp 78F, RH 65%, 18/6 light"
+  week_number: 1
+  created_at: <%= 85.days.ago %>
+  updated_at: <%= 85.days.ago %>
 
-plant_1_flip:
+obs_1_veg:
   plant: plant_1
-  user: marcus
+  observed_by: sarah
+  observed_at: <%= 70.days.ago %>
+  stage: vegetative
+  overall_score: 8
+  notes: "Excellent lateral branching, tight node spacing. Week 3 veg, starting to show structure. Env - Temp 76F, RH 60%, 18/6 light"
+  week_number: 3
+  created_at: <%= 70.days.ago %>
+  updated_at: <%= 70.days.ago %>
+
+obs_1_preflower:
+  plant: plant_1
+  observed_by: marcus
   observed_at: <%= 60.days.ago %>
   stage: pre_flower
-  notes: Flipped to 12/12. Strong structure, ready for flower.
-  conditions:
-    temperature: 75
-    humidity: 45
+  overall_score: 9
+  notes: "Sex confirmed female, first pistils showing. Terpene production already starting. Flipped to 12/12. Early terp expression is very promising. Env - Temp 75F, RH 55%, 12/12 light"
+  week_number: 1
   created_at: <%= 60.days.ago %>
   updated_at: <%= 60.days.ago %>
 
-plant_1_week_2_flower:
-  plant: plant_1
-  user: sarah
-  observed_at: <%= 46.days.ago %>
-  stage: flowering
-  notes: Confirmed female day 5. Stretch beginning, internodes lengthening.
-  conditions:
-    temperature: 77
-    humidity: 45
-  created_at: <%= 46.days.ago %>
-  updated_at: <%= 46.days.ago %>
-
 plant_1_week_4_flower:
   plant: plant_1
-  user: marcus
+  observed_by: marcus
   observed_at: <%= 32.days.ago %>
   stage: flowering
-  notes: Incredible terpene development! Zkittlez fruit + GMO gas. Frost building.
-  conditions:
-    temperature: 75
-    humidity: 40
+  overall_score: 9
+  notes: "Incredible terpene development! Zkittlez fruit + GMO gas. Frost building."
+  week_number: 4
   created_at: <%= 32.days.ago %>
   updated_at: <%= 32.days.ago %>
 
-plant_1_week_6_flower:
+obs_1_flowering:
   plant: plant_1
-  user: marcus
-  observed_at: <%= 18.days.ago %>
+  observed_by: sarah
+  observed_at: <%= 30.days.ago %>
   stage: flowering
-  notes: Buds fattening, heavy frost. Best terps in the room. Potential keeper.
-  conditions:
-    temperature: 74
-    humidity: 40
-  created_at: <%= 18.days.ago %>
-  updated_at: <%= 18.days.ago %>
+  overall_score: 9
+  notes: "Week 4 flower - incredible frost development. Gassy grape aroma dominant. This one is special. Heavy resin production. Env - Temp 72F, RH 45%, 12/12 light"
+  week_number: 4
+  created_at: <%= 30.days.ago %>
+  updated_at: <%= 30.days.ago %>
 
-plant_1_harvest:
+obs_1_harvest:
   plant: plant_1
-  user: marcus
+  observed_by: marcus
   observed_at: <%= 14.days.ago %>
   stage: harvest
-  notes: Harvested at 15-20% amber. Dense, frosty colas. Outstanding.
-  conditions: {}
+  overall_score: 10
+  notes: "Harvested at 15% amber. Perfect trichome development. Keeper candidate. Dense nugs, exceptional terpene profile. Definitely keeping this one. Env - Temp 70F, RH 50%"
+  week_number: 8
   created_at: <%= 14.days.ago %>
   updated_at: <%= 14.days.ago %>
 
-# Observations for Plant #3 (Active)
-plant_3_week_4_flower:
-  plant: plant_3
-  user: sarah
-  observed_at: <%= 14.days.ago %>
-  stage: flowering
-  notes: Week 4 flower. Heavy frost developing. GMO structure, mixed terps.
-  conditions:
-    temperature: 76
-    humidity: 42
-  created_at: <%= 14.days.ago %>
-  updated_at: <%= 14.days.ago %>
+# Plant #3 - Active flowering plant with recent observations
 
-plant_3_week_6_flower:
+obs_3_veg:
   plant: plant_3
-  user: marcus
-  observed_at: <%= 1.day.ago %>
-  stage: flowering
-  notes: Week 6 flower. Looking excellent. Dense buds forming nicely.
-  conditions:
-    temperature: 75
-    humidity: 40
-  created_at: <%= 1.day.ago %>
-  updated_at: <%= 1.day.ago %>
+  observed_by: jake
+  observed_at: <%= 75.days.ago %>
+  stage: vegetative
+  overall_score: 7
+  notes: "Good growth rate, healthy green color. Standard development, nothing remarkable yet. Env - Temp 77F, RH 60%, 18/6 light"
+  week_number: 3
+  created_at: <%= 75.days.ago %>
+  updated_at: <%= 75.days.ago %>
 
-# Testing observations by Jake
-plant_1_smoke_test:
-  plant: plant_1
-  user: jake
-  observed_at: <%= 2.days.ago %>
-  stage: testing
-  notes: >
-    Initial smoke test after 3 days cure. Smooth inhale, fruity/gassy exhale.
-    Strong euphoric onset, settles into deep relaxation. Excellent potency.
-  conditions: {}
-  created_at: <%= 2.days.ago %>
-  updated_at: <%= 2.days.ago %>
+obs_3_flowering:
+  plant: plant_3
+  observed_by: sarah
+  observed_at: <%= 7.days.ago %>
+  stage: flowering
+  overall_score: 8
+  notes: "Week 6 flower. Heavy frost, GMO structure dominant. Good resin production. Watching this one closely. Good potential. Env - Temp 71F, RH 45%, 12/12 light"
+  week_number: 6
+  created_at: <%= 7.days.ago %>
+  updated_at: <%= 7.days.ago %>
+
+# Plant #6 - GMO leaner, mid-flower
+
+obs_6_seedling:
+  plant: plant_6
+  observed_by: sarah
+  observed_at: <%= 85.days.ago %>
+  stage: seedling
+  overall_score: 6
+  notes: "Slow start, smaller than siblings. A bit behind the others. Env - Temp 78F, RH 65%, 18/6 light"
+  week_number: 1
+  created_at: <%= 85.days.ago %>
+  updated_at: <%= 85.days.ago %>
+
+obs_6_veg:
+  plant: plant_6
+  observed_by: jake
+  observed_at: <%= 65.days.ago %>
+  stage: vegetative
+  overall_score: 7
+  notes: "Caught up in growth. Wider leaf structure suggesting GMO dominance. Growth rate improved significantly. Env - Temp 76F, RH 60%, 18/6 light"
+  week_number: 4
+  created_at: <%= 65.days.ago %>
+  updated_at: <%= 65.days.ago %>
+
+obs_6_flowering:
+  plant: plant_6
+  observed_by: marcus
+  observed_at: <%= 3.days.ago %>
+  stage: flowering
+  overall_score: 8
+  notes: "Week 4 flower. Heavy GMO leaner - strong garlic/onion nose. Dense bud structure. Classic GMO expression. This pheno is all gas. Env - Temp 72F, RH 45%, 12/12 light"
+  week_number: 4
+  created_at: <%= 3.days.ago %>
+  updated_at: <%= 3.days.ago %>
+
+# Plant #8 - Still in veg, limited observations
+
+obs_8_seedling:
+  plant: plant_8
+  observed_by: sarah
+  observed_at: <%= 40.days.ago %>
+  stage: seedling
+  overall_score: 7
+  notes: "Healthy seedling, good vigor. Second batch germination went well. Env - Temp 78F, RH 65%, 18/6 light"
+  week_number: 1
+  created_at: <%= 40.days.ago %>
+  updated_at: <%= 40.days.ago %>
+
+obs_8_veg:
+  plant: plant_8
+  observed_by: jake
+  observed_at: <%= 10.days.ago %>
+  stage: vegetative
+  overall_score: 7
+  notes: "Week 4 veg, healthy growth. No issues. On track, normal development. Env - Temp 76F, RH 60%, 18/6 light"
+  week_number: 4
+  created_at: <%= 10.days.ago %>
+  updated_at: <%= 10.days.ago %>
+
+# Purple Punch project observations (archived)
+
+obs_pp1_final:
+  plant: pp_1
+  observed_by: marcus
+  observed_at: <%= 100.days.ago %>
+  stage: harvest
+  overall_score: 9
+  notes: "Original cut harvested. Beautiful purple coloration, sweet grape terps. This is why we preserve genetics like this. Env - Temp 68F, RH 50%"
+  week_number: 8
+  created_at: <%= 100.days.ago %>
+  updated_at: <%= 100.days.ago %>

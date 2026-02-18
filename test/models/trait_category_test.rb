@@ -3,6 +3,8 @@
 require "test_helper"
 
 class TraitCategoryTest < ActiveSupport::TestCase
+  fixtures :all
+
   # === Validations ===
 
   test "valid trait category" do
@@ -15,9 +17,10 @@ class TraitCategoryTest < ActiveSupport::TestCase
   end
 
   test "requires unique slug" do
+    existing = trait_categories(:vigor_health)
     duplicate = TraitCategory.new(
       name: "Different Name",
-      slug: trait_categories(:vigor_health).slug
+      slug: existing.slug  # Explicitly set same slug
     )
     assert_invalid duplicate, :slug
   end

@@ -7,6 +7,8 @@ class TraitValue < ApplicationRecord
 
   # Delegations
   delegate :data_type, :name, :unit, to: :trait_definition, prefix: :trait
+  delegate :plant, :observed_by, to: :observation
+  alias_method :user, :observed_by
 
   # Validations
   validates :trait_definition_id, uniqueness: { scope: :observation_id }

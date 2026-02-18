@@ -12,6 +12,14 @@ class StrainLineage < ApplicationRecord
   validates :parent_strain_id, uniqueness: { scope: :child_strain_id }
   validate :not_self_referencing
 
+  def mother?
+    parent_role == "mother"
+  end
+
+  def father?
+    parent_role == "father"
+  end
+
   private
 
   def not_self_referencing

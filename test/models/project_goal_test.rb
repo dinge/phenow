@@ -3,6 +3,8 @@
 require "test_helper"
 
 class ProjectGoalTest < ActiveSupport::TestCase
+  fixtures :all
+
   # === Validations ===
 
   test "valid project goal" do

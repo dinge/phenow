@@ -2,7 +2,7 @@
 
 class Strain < ApplicationRecord
   extend FriendlyId
-  friendly_id :name, use: [:slugged, :scoped], scope: :organization
+  friendly_id :name, use: :slugged
 
   STRAIN_TYPES = %w[indica sativa hybrid ruderalis].freeze
   GENETICS_TYPES = %w[regular feminized autoflower].freeze
@@ -29,11 +29,14 @@ class Strain < ApplicationRecord
 
   # Validations
   validates :name, presence: true
-  validates :slug, presence: true, uniqueness: { scope: :organization_id }
+  validates :slug, presence: true, uniqueness: true
   validates :strain_type, inclusion: { in: STRAIN_TYPES }, allow_blank: true
   validates :genetics_type, inclusion: { in: GENETICS_TYPES }, allow_blank: true
 
   # Scopes
+  scope :search, ->(query) {
+    where("name ILIKE :q OR breeder ILIKE :q OR COALESCE(description, '') ILIKE :q", q: "%#{query}%")
+  }
   scope :public_strains, -> { where(public: true) }
   scope :verified, -> { where(verified: true) }
   scope :by_type, ->(type) { where(strain_type: type) }
@@ -65,5 +68,10 @@ class Strain < ApplicationRecord
     self.dominant_terpenes ||= []
     self.effects ||= []
     self.aromas ||= []
+  end
+
+  # Override FriendlyId to only generate slug when blank, not to resolve conflicts
+  def should_generate_new_friendly_id?
+    slug.blank?
   end
 end

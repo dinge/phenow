@@ -3,6 +3,8 @@
 require "test_helper"
 
 class TaggingTest < ActiveSupport::TestCase
+  fixtures :all
+
   # === Validations ===
 
   test "valid tagging" do

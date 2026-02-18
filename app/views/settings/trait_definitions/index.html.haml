@@ -1,0 +1,14 @@
+.page-header
+  %h1.page-title Trait Definitions
+  .page-actions
+    - if defined?(trait_categories)
+      = link_to "New Trait Definition", new_settings_trait_category_trait_definition_path(trait_categories(:vigor_health)), class: "btn-primary"
+
+.card
+  - if collection.any?
+    = datagrid_table(@grid, collection, class: "data-table")
+    = render "shared/pagination", pagy: @pagy
+  - else
+    = render "shared/empty_state",
+      title: "No trait definitions found",
+      description: "Get started by creating your first trait definition."

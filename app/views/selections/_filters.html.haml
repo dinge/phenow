@@ -1,0 +1,12 @@
+= form_with url: team_project_plant_selections_path(@team, @project, @plant), method: :get, class: "filter-bar", data: { controller: "filters", turbo_frame: "_top" } do |f|
+  .filter-grid
+    .form-group
+      = f.label :q, "Search", class: "form-label"
+      = f.text_field :q, value: params[:q], class: "form-input", placeholder: "Search reasoning or notes...", data: { action: "input->filters#submit" }
+
+    .form-group
+      = f.label :decision, "Decision", class: "form-label"
+      = f.select :decision, Selection::DECISIONS.map { |d| [d.titleize.gsub("_", " "), d] }, { include_blank: "All decisions" }, class: "form-select", data: { action: "change->filters#submit" }
+
+  .filter-actions
+    = link_to "Clear", team_project_plant_selections_path(@team, @project, @plant), class: "btn-secondary"
